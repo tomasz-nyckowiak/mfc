@@ -12,25 +12,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainPageController extends AbstractController 
-{
-    //private $mainTitle = "Moja Filmoteka";
-    
-    private array $messages = [
-        "Hello", "Hi", "Bye"
-    ];
-    
+{    
     #[Route('/', name: 'app_index')]
     public function index(): Response
     {
         return $this->render('hello/index.html.twig');
-    }
-
-    #[Route('/messages/{id<\d+>}', name: 'app_show_one')]
-    public function showOne(int $id): Response
-    {
-        return $this->render('hello/show_one.html.twig', [
-                'message' => $this->messages[$id]
-        ]);
     }
 
     #[Route('/movies', name: 'app_show_movies')]
@@ -42,11 +28,11 @@ class MainPageController extends AbstractController
         ]);
     }
 
-    #[Route('/movies/{movie}', name: 'app_show_movies_test')]
+    #[Route('/movies/{movie}', name: 'app_movie_show')]
     public function test(Movie $movie): Response
     {
         //dd($movie);
-        return $this->render('movie/index.html.twig', [
+        return $this->render('movie/show.html.twig', [
                 'movie' => $movie
         ]);
     }
@@ -95,7 +81,7 @@ class MainPageController extends AbstractController
             return $this->redirectToRoute('app_show_movies');
         }
         
-        return $this->renderForm('movie/add.html.twig', [
+        return $this->renderForm('movie/edit.html.twig', [
                 'form' => $form
         ]);
     }

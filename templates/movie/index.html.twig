@@ -3,15 +3,24 @@
 {% block title %}All Movies{% endblock %}
 
 {% block body %}
-<h1>Test</h1>
-<div>
-    <a href="{{ path('app_index') }}">Main Page</a>
-</div>
-<div>
+<div class="grid grid-cols-1 gap-2">
     {% if movies|length > 0 %}
         {% for movie in movies %}
+            <div class="mb-2">
+                <div class="text-xl">
+                    <a href="{{ path('app_movie_show', { movie: movie.id }) }}">
+                        {{ movie.title }}
+                    </a>                    
+                </div>                
+            </div>
+            <div class="text-xl dark:text-gray-400">
+                {{ movie.summary }}
+            </div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">
+                <a href="#">user@email.com</a>
+            </div>
             <div>
-                {{ movie.title }}
+                <a href="{{ path('app_movies_edit', { movie: movie.id }) }}">Edit</a>
             </div>
         {% endfor %}
     {% else %}

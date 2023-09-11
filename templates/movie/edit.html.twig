@@ -2,6 +2,10 @@
 
 {% block title %}Edit Movie{% endblock %}
 
+{% block bread %}
+    → Edit Movie
+{% endblock %}
+
 {% block body %}
     {{ include('movie/_form.html.twig') }}
 {% endblock %}

@@ -30,6 +30,15 @@ class MovieRepository extends ServiceEntityRepository
         }
     }
 
+    public function remove(Movie $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
 //    /**
 //     * @return Movie[] Returns an array of Movie objects
 //     */

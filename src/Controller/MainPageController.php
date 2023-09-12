@@ -3,8 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Entity\Review;
+use App\Entity\User;
+use App\Entity\UserProfile;
 use App\Form\MovieType;
 use App\Repository\MovieRepository;
+use App\Repository\ReviewRepository;
+use App\Repository\UserProfileRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,8 +19,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainPageController extends AbstractController 
 {    
     #[Route('/', name: 'app_index')]
-    public function index(): Response
+    public function index(MovieRepository $movies, ReviewRepository $reviews): Response
     {
+        $movie = $movies->find(5);
+        
+        $review = new Review();
+        $review->setText('Moja pierwsza recenzja!');        
+        $review->setMovie($movie);
+        //$movie->addReview($review);
+        //$movies->add($movie, true);
+        $reviews->add($review, true);
+        
         return $this->render('hello/index.html.twig');
     }
 

@@ -10,6 +10,7 @@ use App\Form\MovieType;
 use App\Repository\MovieRepository;
 use App\Repository\ReviewRepository;
 use App\Repository\UserProfileRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,14 +22,14 @@ class MainPageController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(MovieRepository $movies, ReviewRepository $reviews): Response
     {
-        $movie = $movies->find(5);
+        // $movie = $movies->find(5);
         
-        $review = new Review();
-        $review->setText('Moja pierwsza recenzja!');        
-        $review->setMovie($movie);
-        //$movie->addReview($review);
-        //$movies->add($movie, true);
-        $reviews->add($review, true);
+        // $review = new Review();
+        // $review->setText('Moja pierwsza recenzja!');        
+        // $review->setMovie($movie);
+        // //$movie->addReview($review);
+        // //$movies->add($movie, true);
+        // $reviews->add($review, true);
         
         return $this->render('hello/index.html.twig');
     }
@@ -51,16 +52,18 @@ class MainPageController extends AbstractController
         ]);
     }
     
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/movies/add', name: 'app_movies_add', priority: 2)]
     public function add(Request $request, MovieRepository $movies): Response
     {
+        //dd($this->getUser());
         $form = $this->createForm(MovieType::class, new Movie());
         
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $movieData = $form->getData();
-            //dd($movieData);
+            //$movieData->setAuthor($this->getUser());
             
             $movies->add($movieData, true);
 

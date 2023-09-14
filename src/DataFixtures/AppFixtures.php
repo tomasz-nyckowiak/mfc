@@ -2,14 +2,42 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use App\Entity\Movie;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    public function __construct(
+        private UserPasswordHasherInterface $userPasswordHasher
+    ) {
+    }    
+    
     public function load(ObjectManager $manager): void
     {
+        $user1 = new User();
+        $user1->setEmail('test@test.com');
+        $user1->setPassword(
+            $this->userPasswordHasher->hashPassword(
+                $user1,
+                '123456789'
+            )
+        );
+        $manager->persist($user1);
+
+        $user2 = new User();
+        $user2->setEmail('john@test.com');
+        $user2->setPassword(
+            $this->userPasswordHasher->hashPassword(
+                $user2,
+                '123456789'
+            )
+        );
+        $manager->persist($user2);
+        
+        
         $movie1 = new Movie();
         $movie1->setTitle('Avatar');
         $movie1->setSummary('A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.');

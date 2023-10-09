@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>
+        {{ include('api/_search_form.html.twig') }}
+    </div>
+    <div class="mb-1">
+        {% if temp is not null %}
+            <h4 class="text-3xl">Search "{{ temp }}"</h4>
+        {% else %}
+            No result!
+        {% endif %}
+    </div>
+    <div class="mt-2">
+        {% if data|length > 0 %}
+            {# {{ data|length }} #}
+            <h4 class="text-xl">Titles</h4>
+            <ul>
+                {% for value_a in data %}
+                <li>
+                    <div class="inline-block">
+                        {% if value_a.image != null %}
+                        <img src="{{ value_a.image.url }}" class="" alt="Cover" width="50" height="75">
+                        {% else %}
+                        <img src="public\img\clapper.jpg" width="50" height="75">
+                        {% endif %}
+                    </div>
+                    <div class="inline-block">
+                        <div class="font-bold">
+                            {{ value_a.originalTitle }}
+                        </div>
+                        <div>
+                            {% if value_a.titleType == "Movie" %}
+                                {{ value_a.releaseDate.year }}
+                            {% else %}
+                                {{ value_a.releaseDate.year }} - {{ value_a.releaseDate.endYear }} | {{ value_a.titleType }}
+                            {% endif %}
+                        </div>
+                        <div>
+                            {% for value_b in value_a.genres|slice(0, 3) %}
+                            <span class="">{{ value_b }}</span>
+                            {% endfor %}                     
+                        </div>
+                        <div>
+                            {% for value_c in value_a.cast|slice(0, 2) %}
+                                {% if loop.last == false %}
+                                <span class="">{{ value_c }},</span>
+                                {% else %}
+                                <span class="">{{ value_c }}</span>
+                                {% endif %}
+                            {% endfor %}                     
+                        </div>
+                    </div>
+                    
+                </li>
+                {% endfor %}                
+            </ul>            
+        {% else %}
+            No result!
+        {% endif %}
+    </div>
+    <div class="mt-2">
+        {% if next == true %}           
+            <div>
+                {% if page >= 2 %}
+                    <a href="{{ path('app_show_more', { 'temp': temp, 'pageNumber': page - 1 }) }}">
+                        <button class="inline-block bg-indigo-600 text-white rounded-md border p-2 mt-4 mb-2">Previous</button>
+                    </a>
+                {% endif %}
+                <a href="{{ path('app_show_more', { 'temp': temp, 'pageNumber': page + 1 }) }}">
+                    <button class="inline-block bg-indigo-600 text-white rounded-md border p-2 mt-4 mb-2">More</button>
+                </a>                
+            </div>            
+        {% else %}
+            {% if page != 1 %}
+                <div>
+                    <a href="{{ path('app_show_more', { 'temp': temp, 'pageNumber': page - 1 }) }}">
+                        <button class="inline-block bg-indigo-600 text-white rounded-md border p-2 mt-4 mb-2">Previous</button>
+                    </a>
+                </div>
+            {% else %}
+                Only one page!
+            {% endif %}
+        {% endif %}       
+    </div>
+{% endblock %}

@@ -35,7 +35,7 @@ class ApiController extends AbstractController
     }
     
     #[Route('/search/{temp}/{pageNumber}', name: 'app_show_more')]
-    public function more($temp, $pageNumber): Response {
+    public function find($temp, $pageNumber): Response {
         $service = new Service();
         $model = new Model();
 
@@ -69,15 +69,15 @@ class ApiController extends AbstractController
         $mainCast = $model->extractingMainCast($response, $howManyOutcomes);
         
         // Get makers (creator/s, director/s and writer/s)
-        $urlCreators = $service->creatingUrlForCreatorsDirectorsWriters($url);     
-        $response = $service->search($urlCreators);
-        $creators = [];
-        $creators = $model->extractingCreators($response, $howManyOutcomes);
+        // $urlCreators = $service->creatingUrlForCreators($url);     
+        // $response = $service->search($urlCreators);
+        // $creators = [];
+        // $creators = $model->extractingCreators($response, $howManyOutcomes);
 
         // Merging all data arrays into one
         for ($i = 0; $i < $howManyOutcomes; $i++) {
-            $allData[$i] = array_merge($baseInfo[$i], $mainCast[$i], $creators[$i]);
-        }        
+            $allData[$i] = array_merge($baseInfo[$i], $mainCast[$i]);
+        }
 
         //dd($allData);     
 
@@ -87,5 +87,41 @@ class ApiController extends AbstractController
             'data' => $allData,
             'temp' => $temp
         ]);        
+    }
+
+    #[Route('/title/{id}', name: 'app_details')]
+    public function showDetails($id): Response {        
+        $service = new Service();
+        $model = new Model();
+        
+        // Preparing url
+        $url = $service->creatingBasicUrlWithoutOptionalInfoForSingleEntry($id);
+        
+        // Get main info
+        $urlBaseInfo = $service->creatingBaseInfoUrlForSingleEntry($url); 
+        $response = $service->search($urlBaseInfo);       
+        $baseInfo = [];
+        $baseInfo = $model->extractingMainDataFromSingleEntry($response);
+        
+        // Get cast
+        $urlExtendedCast = $service->creatingUrlForExtendedCastForSingleEntry($url);
+        $response = $service->search($urlExtendedCast);
+        $mainCast = [];
+        $mainCast = $model->extractingMainCastFromSingleEntry($response);
+        
+        // Get makers (creator/s, director/s and writer/s)
+        $urlCreators = $service->creatingUrlForCreatorsForSingleEntry($url);     
+        $response = $service->search($urlCreators);
+        $creators = [];
+        $creators = $model->extractingCreatorsFromSingleEntry($response);
+
+        // Merging all data arrays into one
+        $data = array_merge($baseInfo, $mainCast, $creators);
+                
+        //dd($data);
+        
+        return $this->render('movie/details.html.twig', [
+            'data' => $data     
+        ]);
     }
 }

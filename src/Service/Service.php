@@ -74,15 +74,72 @@ class Service
         return $urlFinal;       
     }
 
-    public function creatingUrlForCreatorsDirectorsWriters(string $url) {
-        $info = "&info=creators_directors_writers";
+    // public function creatingUrlForCreators(string $url) {
+    //     $info = "&info=creators_directors_writers";
+    //     $urlFinal = $url . $info;
+        
+    //     return $urlFinal;       
+    // }
+
+    public function creatingBasicUrlWithoutOptionalInfoForSingleEntry(string $id) {
+        $url = "https://moviesdatabase.p.rapidapi.com";
+        $endPoint = "/titles/";      
+
+        $urlFinal = $url . $endPoint . $id;
+        
+        return $urlFinal;       
+    }
+    
+    public function creatingBaseInfoUrlForSingleEntry(string $url) {
+        $info = "?info=base_info";
+        $urlFinal = $url . $info;
+        
+        return $urlFinal;       
+    }
+
+    public function creatingUrlForExtendedCastForSingleEntry(string $url) {
+        $info = "?info=extendedCast";
+        $urlFinal = $url . $info;
+        
+        return $urlFinal;       
+    }
+
+    public function creatingUrlForCreatorsForSingleEntry(string $url) {
+        $info = "?info=creators_directors_writers";
         $urlFinal = $url . $info;
         
         return $urlFinal;       
     }
     
-    
+    //UPCOMING TITLES
+    public function creatingBasicUrlForUpcomingTitles($stYear, $eYear) {
+        $url = "https://moviesdatabase.p.rapidapi.com";
+        $endPoint = "/titles/x/upcoming";
+        $startYear = "?startYear=" . $stYear;
+        $sort = "&sort=year.incr"; 
+        $limit = "&limit=5";        
+        $endYear = "&endYear=" . $eYear;          
 
+        $urlFinal = $url . $endPoint . $startYear . $sort . $limit . $endYear;
+        
+        return $urlFinal;       
+    }
+
+    public function creatingBaseInfoUrlForUpcomingTitles(string $url) {
+        $info = "&info=base_info";
+        $urlFinal = $url . $info;
+        
+        return $urlFinal;       
+    }
+
+    // public function creatingExtendedCastUrlForUpcomingTitles(string $url) {
+    //     $info = "&info=extendedCast";
+    //     $urlFinal = $url . $info;
+        
+    //     return $urlFinal;       
+    // }
+    
+    //ADULT
     public function creatingUrlWithAdult(string $userInput, int $pageNumber) {
         $url = "https://moviesdatabase.p.rapidapi.com";
         $endPointTitle = "/titles/search/title/";

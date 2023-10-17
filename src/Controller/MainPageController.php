@@ -2,36 +2,70 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Model\Model;
 use App\Entity\Movie;
 use App\Entity\Review;
-use App\Entity\User;
-use App\Entity\UserProfile;
 use App\Form\MovieType;
+use App\Model\Auxiliary;
+use App\Service\Service;
+use App\Entity\UserProfile;
 use App\Repository\MovieRepository;
 use App\Repository\ReviewRepository;
 use App\Repository\UserProfileRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainPageController extends AbstractController 
 {    
     #[Route('/', name: 'app_index')]
-    public function index(MovieRepository $movies, ReviewRepository $reviews): Response
+    public function index(): Response
     {
-        // $movie = $movies->find(5);
+        $service = new Service();
+        $model = new Model();
+        $other = new Auxiliary();
+
+        $startYear = $other->setStartYear();
+        $endYear = $other->setEndYear();
         
-        // $review = new Review();
-        // $review->setText('Moja pierwsza recenzja!');        
-        // $review->setMovie($movie);
-        // //$movie->addReview($review);
-        // //$movies->add($movie, true);
-        // $reviews->add($review, true);
+        // Preparing url
+        $url = $service->creatingBasicUrlForUpcomingTitles($startYear, $endYear);
         
-        return $this->render('hello/index.html.twig');
+        // Get main info
+        $urlBaseInfo = $service->creatingBaseInfoUrlForUpcomingTitles($url);
+
+        $response = [];
+        //$test = "https://moviesdatabase.p.rapidapi.com/titles/x/upcoming&limit=5?info=base_info";
+        $response = $service->search($urlBaseInfo);              
+        
+        // How many results we got
+        $howManyOutcomes = $response['entries'];               
+               
+        $baseInfo = [];
+        $baseInfo = $model->extractingMainDataForUpcomingTitles($response, $howManyOutcomes);       
+
+        // Get cast
+        // $urlExtendedCast = $service->creatingExtendedCastUrlForUpcomingTitles($url);
+        // $response = $service->search($urlExtendedCast);
+        // $mainCast = [];
+        // $mainCast = $model->extractingMainCastForUpcomingTitles($response, $howManyOutcomes);
+
+        // Merging all data arrays into one
+        // for ($i = 0; $i < $howManyOutcomes; $i++) {
+        //     $allData[$i] = array_merge($baseInfo[$i], $mainCast[$i]);
+        // }
+        
+        //Randomize elements (titles)
+        shuffle($baseInfo);
+        //dd($baseInfo);
+        
+        return $this->render('hello/index.html.twig', [
+            'data' => $baseInfo
+        ]);
     }
 
     #[Route('/movies', name: 'app_show_movies')]

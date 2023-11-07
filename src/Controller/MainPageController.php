@@ -12,6 +12,7 @@ use App\Service\Service;
 use App\Entity\UserProfile;
 use App\Repository\MovieRepository;
 use App\Repository\ReviewRepository;
+use App\Repository\TitleInformationRepository;
 use App\Repository\UserProfileRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

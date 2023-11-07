@@ -8,6 +8,17 @@
     {% endif %}
 {% endblock %}
 
+{% block footer %}
+    <script src="/js/testy.js"></script>
+    <script type="text/javascript">
+        function addNewTitle() {
+            let test = '{{ data.originalTitle }}';
+            console.log(test);
+        }
+        
+    </script>
+{% endblock %}
+
 {% block body %}
     <div>
         {{ include('api/_search_form.html.twig') }}
@@ -56,6 +67,15 @@
                         <div>/10</div>
                     </div>
                 </div>
+            </div>
+            <div class="ml-6">                
+                <div class="flex items-center">
+                    <button class="border-solid border-2 border-gray-500" onclick="addNewTitle()">                     
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>                                                        
+                    </button>                            
+                </div>                                       
             </div>
         </div>        
     </div>    

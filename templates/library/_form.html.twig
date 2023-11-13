@@ -1,0 +1,166 @@
+<form action="{{ path('app_add_title') }}" method="POST">
+    <div>
+        <label class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please enter the title</label>
+        <input type="text"
+            class="block w-full shadow-sm border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2"
+            required>
+    </div>
+
+    <div>
+        <p class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please choose the title type</p>
+
+        <input type="radio" id="type1" name="title_type" value="movie">
+        <label for="type1">movie</label>
+        <input type="radio" id="type2" name="title_type" value="musicVideo">
+        <label for="type2">musicVideo</label>
+        <input type="radio" id="type3" name="title_type" value="podcastEpisode">
+        <label for="type3">podcastEpisode</label>
+        <input type="radio" id="type4" name="title_type" value="podcastSeries">
+        <label for="type4">podcastSeries</label>
+        <input type="radio" id="type5" name="title_type" value="short">
+        <label for="type5">short</label>
+        <input type="radio" id="type6" name="title_type" value="tvEpisode">
+        <label for="type6">tvEpisode</label>
+        <input type="radio" id="type7" name="title_type" value="tvMiniSeries">
+        <label for="type7">tvMiniSeries</label>
+        <input type="radio" id="type8" name="title_type" value="tvMovie">
+        <label for="type8">tvMovie</label>
+        <input type="radio" id="type9" name="title_type" value="tvPilot">
+        <label for="type9">tvPilot</label>
+        <input type="radio" id="type10" name="title_type" value="tvSeries">
+        <label for="type10">tvSeries</label>
+        <input type="radio" id="type11" name="title_type" value="tvShort">
+        <label for="type11">tvShort</label>
+        <input type="radio" id="type12" name="title_type" value="tvSpecial">
+        <label for="type12">tvSpecial</label>
+        <input type="radio" id="type13" name="title_type" value="video">
+        <label for="type13">video</label>
+        <input type="radio" id="type14" name="title_type" value="videoGame">
+        <label for="type14">videoGame</label>
+    </div>
+    
+    <div>
+        <p class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please choose the genres</p>
+        
+        <input type="checkbox" id="genre1" name="genre1" value="Action">
+        <label for="genre1">Action</label>
+        <input type="checkbox" id="genre2" name="genre2" value="Adult">
+        <label for="genre2">Adult</label>
+        <input type="checkbox" id="genre3" name="genre3" value="Adventure">
+        <label for="genre3">Adventure</label>
+        <input type="checkbox" id="genre4" name="genre4" value="Animation">
+        <label for="genre4">Animation</label>
+        <input type="checkbox" id="genre5" name="genre5" value="Biography">
+        <label for="genre5">Biography</label>
+        <input type="checkbox" id="genre6" name="genre6" value="Comedy">
+        <label for="genre6">Comedy</label>
+        <input type="checkbox" id="genre7" name="genre7" value="Crime">
+        <label for="genre7">Crime</label>
+        <input type="checkbox" id="genre8" name="genre8" value="Documentary">
+        <label for="genre8">Documentary</label>
+        <input type="checkbox" id="genre9" name="genre9" value="Drama">
+        <label for="genre9">Drama</label>
+        <input type="checkbox" id="genre10" name="genre10" value="Family">
+        <label for="genre10">Family</label>
+        <input type="checkbox" id="genre11" name="genre11" value="Fantasy">
+        <label for="genre11">Fantasy</label>
+        <input type="checkbox" id="genre12" name="genre12" value="Film-Noir">
+        <label for="genre12">Film-Noir</label>
+        <input type="checkbox" id="genre13" name="genre13" value="Game-Show">
+        <label for="genre13">Game-Show</label>
+        <input type="checkbox" id="genre14" name="genre14" value="History">
+        <label for="genre14">History</label>
+        <input type="checkbox" id="genre15" name="genre15" value="Horror">
+        <label for="genre15">Horror</label>
+        <input type="checkbox" id="genre16" name="genre16" value="Music">
+        <label for="genre16">Music</label>
+        <input type="checkbox" id="genre17" name="genre17" value="Musical">
+        <label for="genre17">Musical</label>
+        <input type="checkbox" id="genre18" name="genre18" value="Mystery">
+        <label for="genre18">Mystery</label>
+        <input type="checkbox" id="genre19" name="genre19" value="News">
+        <label for="genre19">News</label>
+        <input type="checkbox" id="genre20" name="genre20" value="Reality-TV">
+        <label for="genre20">Reality-TV</label>
+        <input type="checkbox" id="genre21" name="genre21" value="Romance">
+        <label for="genre21">Romance</label>
+        <input type="checkbox" id="genre22" name="genre22" value="Sci-Fi">
+        <label for="genre22">Sci-Fi</label>
+        <input type="checkbox" id="genre23" name="genre23" value="Short">
+        <label for="genre23">Short</label>
+        <input type="checkbox" id="genre24" name="genre24" value="Sport">
+        <label for="genre24">Sport</label>
+        <input type="checkbox" id="genre25" name="genre25" value="Talk-Show">
+        <label for="genre25">Talk-Show</label>
+        <input type="checkbox" id="genre26" name="genre26" value="Thriller">
+        <label for="genre26">Thriller</label>
+        <input type="checkbox" id="genre27" name="genre27" value="War">
+        <label for="genre27">War</label>
+        <input type="checkbox" id="genre28" name="genre28" value="Western">
+        <label for="genre28">Western</label>
+    </div>
+
+    <div>
+        <label for="cast" class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please enter the cast</label>
+        <input type="text" id="cast" name="cast" class="dark:text-gray-800">
+    </div>
+
+    <div>
+        <label for="releaseDate" class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please enter the release date (year)</label>
+        <input type="number" id="releaseDate" name="releaseDate" min="1888" max="3000" step="1">
+    </div>
+
+    <div>
+        <label for="rating" class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please enter your rating</label>
+        <input type="number" id="rating" name="rating" min="1" max="10" step="0.1">
+    </div>
+
+    <div>
+        <label for="imdbRating" class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please enter the IMDb rating</label>
+        <input type="number" id="imdbRating" name="imdbRating" min="1" max="10" step="0.1">
+    </div>
+
+    <div>
+        <label for="runtime" class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please enter the runtime (in minutes)</label>
+        <input type="number" id="runtime" name="runtime" min="1" max="5220" step="1">
+    </div>
+
+    <div>
+        <label for="director" class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please enter the director/s</label>
+        <input type="text" id="director" name="director">
+    </div>
+
+    <div>
+        <label for="creator" class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please enter the creator/s</label>
+        <input type="text" id="creator" name="creator">
+    </div>
+
+    <div>
+        <label for="writer" class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please enter the writer/s</label>
+        <input type="text" id="writer" name="writer">
+    </div>
+
+    <div>
+        <p class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please enter the plot</p>
+        <textarea name="plot" rows="10" cols="30"></textarea>
+    </div>
+
+    <div>
+        <input type="hidden" id="imageUrl" name="imageUrl" value="URL">
+    </div>
+    
+    <div>
+        <p class="block text-sm text-gray-700 dark:text-gray-300 font-medium">Please enter your review</p>
+        <textarea name="review" rows="10" cols="30"></textarea>
+    </div>
+
+    <div>
+        <input type="checkbox" id="toWatch" name="toWatch" value="toWatch">
+        <label for="toWatch">to Watch</label>
+    </div>
+
+    <div>
+        <button type="submit"
+            class="block dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded-md border">Save!</button>
+    </div>    
+</form>

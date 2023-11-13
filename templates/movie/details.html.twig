@@ -8,15 +8,27 @@
     {% endif %}
 {% endblock %}
 
-{% block footer %}
-    <script src="/js/testy.js"></script>
+{% block footer %}    
     <script type="text/javascript">
+        let test = '{{ data.originalTitle }}';
+        
         function addNewTitle() {
-            let test = '{{ data.originalTitle }}';
-            console.log(test);
+            //let data = {};
+            
+            //console.log(test);
+            
+            //data.id = 2;
+            //data.title = '{{ data.originalTitle }}';
+
+            //const xhttp = new XMLHttpRequest();
+            //xhttp.open("POST", "Save.php", true);
+            //xhttp.send();
+
+            
         }
         
     </script>
+    <script src="/js/testy.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -70,11 +82,16 @@
             </div>
             <div class="ml-6">                
                 <div class="flex items-center">
-                    <button class="border-solid border-2 border-gray-500" onclick="addNewTitle()">                     
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                        </svg>                                                        
-                    </button>                            
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% set info = data|json_encode() %}
+                    <a href="{{ path('app_add_title', { 'id': titleId }) }}">
+                        <button class="border-solid border-2 border-gray-500">                     
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>                                                        
+                        </button>
+                    </a>
+                    {% endif %}                           
                 </div>                                       
             </div>
         </div>        

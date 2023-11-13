@@ -60,8 +60,8 @@ class TitleInformation
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $review = null;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $toWatch = null;
+    #[ORM\Column(nullable: true)]
+    private ?bool $toWatch = null;
 
     public function getId(): ?int
     {
@@ -248,12 +248,12 @@ class TitleInformation
         return $this;
     }
 
-    public function getToWatch(): ?int
+    public function isToWatch(): ?bool
     {
         return $this->toWatch;
     }
 
-    public function setToWatch(?int $toWatch): static
+    public function setToWatch(?bool $toWatch): static
     {
         $this->toWatch = $toWatch;
 

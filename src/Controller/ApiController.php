@@ -121,7 +121,8 @@ class ApiController extends AbstractController
         //dd($data);
         
         return $this->render('movie/details.html.twig', [
-            'data' => $data     
+            'data' => $data,
+            'titleId' => $id
         ]);
     }
 }

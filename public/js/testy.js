@@ -1,3 +1,5 @@
+let data = test;
+
 function expenseInput() {		
 	let input = document.getElementById("inputNewExpense").value;			
 	return input;

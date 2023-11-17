@@ -9,16 +9,26 @@
 {% endblock %}
 
 {% block footer %}    
-    <script src="/js/testy.js"></script>
     <script type="text/javascript">
         let test = '{{ data.originalTitle }}';
-        //const dataFromPHPasJson = '{{ data|json_encode|raw }}';
-
-        //document.getElementById("myBtn").addEventListener("click", addNewTitle);               
         
+        function addNewTitle() {
+            //let data = {};
+            
+            //console.log(test);
+            
+            //data.id = 2;
+            //data.title = '{{ data.originalTitle }}';
+
+            //const xhttp = new XMLHttpRequest();
+            //xhttp.open("POST", "Save.php", true);
+            //xhttp.send();
+
+            
+        }
         
     </script>
-    
+    <script src="/js/testy.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -71,16 +81,24 @@
                 </div>
             </div>
             <div class="ml-6">                
-                <div class="flex items-center"> 
+                <div class="flex items-center">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="{{ path('app_add_title', { 'id': titleId }) }}">
-                        <button class="border-solid border-2 border-gray-500">                     
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </svg>                                                        
-                        </button>
-                    </a>
-                    {% endif %}                                                                                     
+                        {% if alreadyExist == true %}
+                            <button class="border-solid border-2 border-gray-500">                     
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                </svg>                                                        
+                            </button>
+                        {% else %}
+                        <a href="{{ path('app_add_title', { 'id': titleId }) }}">
+                            <button class="border-solid border-2 border-gray-500">                     
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>                                                        
+                            </button>
+                        </a>
+                        {% endif %}
+                    {% endif %}                          
                 </div>                                       
             </div>
         </div>        

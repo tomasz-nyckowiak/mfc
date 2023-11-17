@@ -2,15 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Model\Model;
 use App\Service\Service;
+use App\Entity\TitleInformation;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\TitleInformationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Validator\Constraints\Length;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ApiController extends AbstractController
 {    
@@ -119,10 +124,10 @@ class ApiController extends AbstractController
         $data = array_merge($baseInfo, $mainCast, $creators);
                 
         //dd($data);
-        
+
         return $this->render('movie/details.html.twig', [
             'data' => $data,
-            'titleId' => $id
-        ]);
+            'titleId' => $id,
+        ]);  
     }
 }

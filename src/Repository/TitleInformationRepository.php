@@ -39,6 +39,21 @@ class TitleInformationRepository extends ServiceEntityRepository
         }
     }
 
+    public function checkIfTitleAlreadyExistInLibraryForCurrentUser(int $userId, string $title)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            SELECT original_title FROM title_information
+            WHERE title_information.original_title = '$title'
+            AND title_information.user_id = '$userId'
+        ";
+        
+        $resultSet = $conn->executeQuery($sql);
+        
+        return $resultSet->fetchOne();
+    }
+
 //    /**
 //     * @return TitleInformation[] Returns an array of TitleInformation objects
 //     */

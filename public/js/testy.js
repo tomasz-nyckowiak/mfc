@@ -1,15 +1,17 @@
-let data = test;
+function addNewTitle() {
+    //let data = {};
+    
+    //console.log("OK");
+    alert("BU!");
+    
+    //data.id = 2;
+    //data.title = '{{ data.originalTitle }}';
 
-function expenseInput() {		
-	let input = document.getElementById("inputNewExpense").value;			
-	return input;
+    //const xhttp = new XMLHttpRequest();
+    //xhttp.open("POST", "Save.php", true);
+    //xhttp.send();
+
+    
 }
 
-function addNewTitle2() {		
-	//const dataFromPHPasJson = '{{ data|json_encode }}';
-    // const dataObj = JSON.parse(dataFromPHPasJson);
-    // console.log(JSON.stringify(dataObj.genres));
-    let test = '{{ data.originalTitle|json_encode }}';
-    console.log(test);
-    //alert("Works!");
-}
+

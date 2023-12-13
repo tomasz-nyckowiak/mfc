@@ -153,4 +153,18 @@ class Service
         
         return $urlFinal;       
     }
+
+    //UPDATE FOR IMDB RATING AND IMAGE
+    public function creatingUrlForTitleUpdate(string $title) {
+        $url = "https://moviesdatabase.p.rapidapi.com";
+        $endPointTitle = "/titles/search/title/";
+        $exact = "?exact=true";
+        $info = "&info=base_info";
+        $page = "&page=1";
+        $limit = "&limit=1";
+
+        $urlFinal = $url . $endPointTitle . $title . $exact . $info . $page . $limit;
+        
+        return $urlFinal;       
+    }
 }

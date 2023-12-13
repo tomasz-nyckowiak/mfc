@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\TitleInformation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use mysqli;
+use Symfony\Component\VarDumper\Caster\MysqliCaster;
 
 /**
  * @extends ServiceEntityRepository<TitleInformation>
@@ -52,6 +54,106 @@ class TitleInformationRepository extends ServiceEntityRepository
         $resultSet = $conn->executeQuery($sql);
         
         return $resultSet->fetchOne();
+    }
+
+    public function addToLibrary(int $id, $ratingValue, $review, $toWatch)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        if (str_contains($ratingValue, ',')) {
+            $rating = str_replace(",", ".", $ratingValue);
+        } else $rating = $ratingValue;
+        
+        $review = addslashes($review);
+
+        //ALL 3 NOT EMPTY
+        if (!empty($rating) && !empty($review) && !empty($toWatch)) {
+            $sql = "
+                UPDATE title_information
+                SET rating = '$rating', review = '$review', to_watch = '$toWatch'
+                WHERE id = '$id'
+            ";
+        }
+        
+        //1 EMPTY VALUE
+        if (empty($rating) && !empty($review) && !empty($toWatch)) {
+            $sql = "
+                UPDATE title_information
+                SET rating = NULL, review = '$review', to_watch = '$toWatch'
+                WHERE id = '$id'
+            ";
+        }
+
+        if (!empty($rating) && empty($review) && !empty($toWatch)) {
+            $sql = "
+                UPDATE title_information
+                SET rating = '$rating', review = NULL, to_watch = '$toWatch'
+                WHERE id = '$id'
+            ";
+        }
+
+        if (!empty($rating) && !empty($review) && empty($toWatch)) {
+            $sql = "
+                UPDATE title_information
+                SET rating = '$rating', review = '$review', to_watch = NULL
+                WHERE id = '$id'
+            ";
+        }
+
+        //2 EMPTY VALUES
+        if (!empty($rating) && empty($review) && empty($toWatch)) {
+            $sql = "
+                UPDATE title_information
+                SET rating = '$rating', review = NULL, to_watch = NULL
+                WHERE id = '$id'
+            ";
+        }
+
+        if (empty($rating) && !empty($review) && empty($toWatch)) {
+            $sql = "
+                UPDATE title_information
+                SET rating = NULL, review = '$review', to_watch = NULL
+                WHERE id = '$id'
+            ";
+        }
+
+        if (empty($rating) && empty($review) && !empty($toWatch)) {
+            $sql = "
+                UPDATE title_information
+                SET rating = NULL, review = NULL, to_watch = '$toWatch'
+                WHERE id = '$id'
+            ";
+        }
+        
+        //ALL 3 ARE EMPTY
+        if (empty($rating) && empty($review) && empty($toWatch)) {
+            $sql = "
+                UPDATE title_information
+                SET rating = NULL, review = NULL, to_watch = NULL
+                WHERE id = '$id'
+            ";
+        }        
+        
+        $resultSet = $conn->executeQuery($sql);
+            
+        return $resultSet->fetchOne();
+    }
+
+    public function findAllOtherThanMovieAndTvSeries(int $id): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.titleType != :titleType1')
+            ->andWhere('p.titleType != :titleType2')
+            ->setParameter('titleType1', 'Movie')
+            ->setParameter('titleType2', 'Tv Series')
+            ->setParameter('userId', $id)           
+        ;
+
+        $qb->andWhere('p.user = :userId');
+
+        $query = $qb->getQuery();
+
+        return $query->execute();
     }
 
 //    /**

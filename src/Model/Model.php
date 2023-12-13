@@ -63,6 +63,7 @@ class Model
 
     // For single entry (movie)
     public function extractingMainDataFromSingleEntry(array $baseInfo) {
+        $titleId = $baseInfo['results']['id'];
         $rating = $baseInfo['results']['ratingsSummary']['aggregateRating'];
         $totalVotes = $baseInfo['results']['ratingsSummary']['voteCount'];
         $votes = number_format($totalVotes, 0, ",", " ");
@@ -94,7 +95,8 @@ class Model
             $plot = $baseInfo['results']['plot']['plotText']['plainText'];           
         }
 
-        $titleBaseInfo = [ 
+        $titleBaseInfo = [
+            "titleId" => $titleId, 
             "rating" => $rating, 
             "votes" => $votes, 
             "image" => $imageUrl, 
@@ -236,20 +238,19 @@ class Model
         return $titlesBaseInfo;       
     }
 
-    // public function extractingMainCastForUpcomingTitles(array $mainCast, int $entries) {
-    //     $casts = [];
+    public function extractingNeededData(array $baseInfo) {
+        $rating = $baseInfo['results'][0]['ratingsSummary']['aggregateRating'];
+        if ($rating != null) {
+            $imdbRating = $baseInfo['results'][0]['ratingsSummary']['aggregateRating'];            
+        } else $imdbRating = null;
         
-    //     for ($i = 0; $i < $entries; $i++) {
-    //         $casts[$i] = $mainCast['results'][$i]['cast']['edges'];
-    //         $castsCounter = count($casts[$i]);
-    //         $castList = [];
-    //         for ($j = 0; $j < $castsCounter; $j++) {
-    //             $castList[$j] = $casts[$i][$j]['node']['name']['nameText']['text'];
-    //         }
-    //         $casts[$i] = $castList;
-    //         $fullCasts[$i] = ["cast" => $casts[$i]];
-    //     }
+        $image = $baseInfo['results'][0]['primaryImage'];
+        if ($image != null) {
+            $imageUrl = $baseInfo['results'][0]['primaryImage']['url'];            
+        } else $imageUrl = null;
         
-    //     return $fullCasts;      
-    // }
+        $titleInfo = ["rating" => $imdbRating, "image" => $imageUrl];
+
+        return $titleInfo;      
+    }
 }

@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Constraints\NotEqualTo;
 
 class LibraryController extends AbstractController
 {  
@@ -24,10 +25,16 @@ class LibraryController extends AbstractController
     #[Route('/library', name: 'app_library')]
     public function filmLibrary(TitleInformationRepository $titles): Response
     {
-        dd($titles->findAll());
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
         
+        $data = $titles->findby(['user' => $userId]);
+
+        //dd($data);
+                
         return $this->render('library/default_list.html.twig', [
-                'titles' => $titles->findAll()
+                'data' => $data,
         ]);
     }
 
@@ -65,7 +72,6 @@ class LibraryController extends AbstractController
         // Merging all data arrays into one
         $data = array_merge($baseInfo, $mainCast, $creators);
 
-        //dd($currentUser->getId());
         $title = new TitleInformation();
 
         $title->setUser($currentUser);
@@ -74,7 +80,7 @@ class LibraryController extends AbstractController
         $title->setReleaseDate($data['releaseDate']['year']);
         
         if ($data['rating'] != null) {
-            $title->setRating($data['rating']);
+            $title->setImdbRating($data['rating']);
         }        
         if ($data['image'] != null) {
             $title->setImageUrl($data['image']);
@@ -131,13 +137,252 @@ class LibraryController extends AbstractController
         $result = $titles->checkIfTitleAlreadyExistInLibraryForCurrentUser($userId, $temp);
         if (!$result) {
             $titles->add($title, true);
-        } else $someFlag = true;
-        
-        //dd($someFlag);                      
+        } else $someFlag = true;                      
         
         return $this->render('library/details.html.twig', [
             'data' => $data,
             'alreadyExist' => $someFlag
         ]);
+    }
+
+    //ADD/EDIT STUFF
+    #[Route('/library/edit/{id}', name: 'app_library_edit_title')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function editTitle($id, TitleInformationRepository $titles): Response
+    {        
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();        
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $rating = $_POST['rating'];
+            $review = $_POST['review'];
+            
+            if (isset($_POST['toWatch'])) {
+                $toWatch = 1;
+            } else $toWatch = "";                       
+
+            $titles->addToLibrary($id, $rating, $review, $toWatch);
+
+            $this->addFlash('success', 'Title has been updated!');
+            
+            $data = $titles->findby(['user' => $userId]);
+
+            return $this->render('library/default_list.html.twig', [
+                    'data' => $data,
+                    'id' => $id
+            ]);
+        }       
+    }
+    
+    //DELETE TITLE
+    #[Route('/library/delete/{id}', name: 'app_library_remove_title')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function deleteTitle($id, TitleInformationRepository $titles): Response
+    {        
+        $result = $titles->findOneBy(['id' => $id]);
+        $titleToRemove = $result->getOriginalTitle();
+        $message = "Title " . $titleToRemove . " has been successfully removed from your library!";
+
+        $titles->remove($result, true);
+
+        $this->addFlash('delete', $message);
+        
+        return $this->redirectToRoute('app_library');      
+    }
+
+    //LIBRARY LIST FILTER BY TITLE
+    #[Route('/library/title', name: 'app_library_title_filter')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function filterLibraryByTitle(TitleInformationRepository $titles): Response
+    {        
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
+        
+        $data = $titles->findby(['user' => $userId], ['originalTitle' => 'ASC']);
+        
+        return $this->render('library/default_list.html.twig', [
+            'data' => $data,
+            'title' => 'Title'
+        ]);      
+    }
+
+    //LIBRARY LIST FILTER BY TITLETYPE (MOVIE)
+    #[Route('/library/titletype/movie', name: 'app_library_titletype_movie_filter')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function filterLibraryByTitleTypeMovie(TitleInformationRepository $titles): Response
+    {        
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
+        
+        $data = $titles->findby(['user' => $userId, 'titleType' => 'Movie']);
+        
+        return $this->render('library/default_list.html.twig', [
+            'data' => $data,
+            'typeMovie' => 'Movie'
+        ]);      
+    }
+
+    //LIBRARY LIST FILTER BY TITLETYPE (TV SERIES)
+    #[Route('/library/titletype/tvseries', name: 'app_library_titletype_tvseries_filter')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function filterLibraryByTitleTypeTvSeries(TitleInformationRepository $titles): Response
+    {        
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
+        
+        $data = $titles->findby(['user' => $userId, 'titleType' => 'Tv Series']);
+        
+        return $this->render('library/default_list.html.twig', [
+            'data' => $data,
+            'typeSeries' => 'Tv Series'
+        ]);      
+    }
+
+    //LIBRARY LIST FILTER BY TITLETYPE (OTHER)
+    #[Route('/library/titletype/other', name: 'app_library_titletype_other_filter')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function filterLibraryByTitleTypeOther(TitleInformationRepository $titles): Response
+    {        
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
+        
+        $data = $titles->findAllOtherThanMovieAndTvSeries($userId);
+
+        return $this->render('library/default_list.html.twig', [
+            'data' => $data,
+            'typeOther' => 'Type: Other'
+        ]);      
+    }
+
+    //LIBRARY LIST FILTER BY RATING (ASC)
+    #[Route('/library/rating/asc', name: 'app_library_rating_asc_filter')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function filterLibraryByRatingAsc(TitleInformationRepository $titles): Response
+    {        
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
+        
+        $data = $titles->findby(['user' => $userId], ['rating' => 'ASC']);
+
+        return $this->render('library/default_list.html.twig', [
+            'data' => $data,
+            'ratASC' => 'Rating (ASC)'
+        ]);      
+    }
+
+    //LIBRARY LIST FILTER BY RATING (DESC)
+    #[Route('/library/rating/desc', name: 'app_library_rating_desc_filter')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function filterLibraryByRatingDesc(TitleInformationRepository $titles): Response
+    {        
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
+        
+        $data = $titles->findby(['user' => $userId], ['rating' => 'DESC']);
+
+        return $this->render('library/default_list.html.twig', [
+            'data' => $data,
+            'ratDESC' => 'Rating (DESC)'
+        ]);      
+    }
+
+    //LIBRARY LIST FILTER BY IMDB RATING (ASC)
+    #[Route('/library/imdbrating/asc', name: 'app_library_imdbrating_asc_filter')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function filterLibraryByImdbRatingAsc(TitleInformationRepository $titles): Response
+    {        
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
+
+        $data = $titles->findby(['user' => $userId], ['ImdbRating' => 'ASC']);
+
+        return $this->render('library/default_list.html.twig', [
+            'data' => $data,
+            'imdbRatASC' => 'IMDb Rating (ASC)'
+        ]);      
+    }
+
+    //LIBRARY LIST FILTER BY IMDB RATING (DESC)
+    #[Route('/library/imdbrating/desc', name: 'app_library_imdbrating_desc_filter')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function filterLibraryByImdbRatingDesc(TitleInformationRepository $titles): Response
+    {        
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
+
+        $data = $titles->findby(['user' => $userId], ['ImdbRating' => 'DESC']);
+
+        return $this->render('library/default_list.html.twig', [
+            'data' => $data,
+            'imdbRatDESC' => 'IMDb Rating (DESC)'
+        ]);      
+    }
+
+    //LIBRARY LIST FILTER BY TOWATCH
+    #[Route('/library/toWatch', name: 'app_library_towatch_filter')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function filterLibraryByToWatch(TitleInformationRepository $titles): Response
+    {        
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
+        
+        $data = $titles->findby(['user' => $userId, 'toWatch' => true]);
+        
+        return $this->render('library/default_list.html.twig', [
+            'data' => $data,
+            'toWatch' => 'To Watch'
+        ]);      
+    }
+
+    //UPDATE IMDB RATING & IMAGE
+    #[Route('/library/update/{id}', name: 'app_library_update')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function updateImdbRatingAndImage($id, TitleInformationRepository $titles): Response
+    {        
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
+        
+        $service = new Service();
+        $model = new Model();
+
+        $result = $titles->findOneBy(['id' => $id]);
+        $titleToUpdate = $result->getOriginalTitle();
+
+        //Preparing url
+        $updatedTitle = $service->preparingUserInput($titleToUpdate);
+        $url = $service->creatingUrlForTitleUpdate($updatedTitle);
+        
+        // Get info
+        $response = $service->search($url);      
+        $baseInfo = [];
+        $baseInfo = $model->extractingNeededData($response);
+        
+        $imdbRating = $baseInfo['rating'];
+        $imageUrl = $baseInfo['image'];
+
+        $result->setImdbRating($imdbRating);
+        $result->setImageUrl($imageUrl);
+
+        $titles->add($result, true);
+
+        $this->addFlash('success', 'Title has been updated!');
+
+        $data = $titles->findby(['user' => $userId]);
+        
+        return $this->render('library/default_list.html.twig', [
+            'data' => $data,
+            'id' => $id
+        ]);      
     }
 }

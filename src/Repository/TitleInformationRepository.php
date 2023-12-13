@@ -156,6 +156,21 @@ class TitleInformationRepository extends ServiceEntityRepository
         return $query->execute();
     }
 
+    public function findUserRating(int $id, string $title)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            SELECT rating FROM title_information
+            WHERE title_information.original_title = '$title'
+            AND title_information.user_id = '$id'
+        ";
+        
+        $resultSet = $conn->executeQuery($sql);
+        
+        return $resultSet->fetchOne();
+    }
+
 //    /**
 //     * @return TitleInformation[] Returns an array of TitleInformation objects
 //     */

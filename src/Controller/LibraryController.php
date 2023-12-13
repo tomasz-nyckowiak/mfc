@@ -41,9 +41,10 @@ class LibraryController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/library/add/{id}', name: 'app_add_title')]
     public function addTitleToLibrary($id, TitleInformationRepository $titles): Response
-    {   
+    {        
         /** @var User $currentUser */
         $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
 
         $service = new Service();
         $model = new Model();
@@ -128,20 +129,18 @@ class LibraryController extends AbstractController
                 $writersAsString = implode(", ", $data['writers']);
                 $title->setWriter($writersAsString);
             } else $title->setWriter($data['writers'][0]);            
-        }       
+        }
         
-        $temp = $data['originalTitle'];
-        $userId = $currentUser->getId();
-        $someFlag = false;
+        $userRating = null;
+
+        $titles->add($title, true);
         
-        $result = $titles->checkIfTitleAlreadyExistInLibraryForCurrentUser($userId, $temp);
-        if (!$result) {
-            $titles->add($title, true);
-        } else $someFlag = true;                      
+        $nowTitleIsInLibrary = true;
         
-        return $this->render('library/details.html.twig', [
+        return $this->render('title/details.html.twig', [
             'data' => $data,
-            'alreadyExist' => $someFlag
+            'alreadyExist' => $nowTitleIsInLibrary,
+            'userRating' => $userRating
         ]);
     }
 

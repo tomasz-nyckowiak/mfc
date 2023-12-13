@@ -15,50 +15,52 @@
     </div>
     <div class="mt-2">
         {% if data|length > 0 %}
-            <h4 class="text-xl my-2">Titles</h4>
+            <h4 class="text-xl my-2">Titles</h4>            
             <ul>
-                {% for value_a in data %}
-                <li>
-                    <div class="inline-block">
-                        <div class="relative h-20 w-12">
-                            {% if value_a.image != null %}
-                            <a href="{{ path('app_details', { 'id': value_a.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="{{ value_a.image }}" alt="Cover"></a>
-                            {% else %}
-                            <a href="{{ path('app_details', { 'id': value_a.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover"></a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="inline-block">
-                        <div class="font-bold">
-                            <a href="{{ path('app_details', { 'id': value_a.id }) }}">{{ value_a.originalTitle }}</a>
-                        </div>
-                        <div>
-                            {% if value_a.titleType == "Movie" %}
-                                {{ value_a.releaseDate.year }}
-                            {% else %}
-                                {{ value_a.releaseDate.year }} - {{ value_a.releaseDate.endYear }} | {{ value_a.titleType }}
-                            {% endif %}
-                        </div>                        
-                        <div class="">
-                            {% for value_b in value_a.genres|slice(0, 3) %}
-                            <span class="">{{ value_b }}</span>
-                            {% endfor %}                     
-                        </div>                                                                      
-                    </div>
-                    <div class="inline-block">
-                        <div class="">
-                            {% for value_c in value_a.cast|slice(0, 2) %}
-                                {% if loop.last == false %}
-                                <span class="">{{ value_c }},</span>
-                                {% else %}
-                                <span class="">{{ value_c }}</span>
-                                {% endif %}
-                            {% endfor %}                     
-                        </div>
-                    </div>                    
-                </li>
+                {% for value in data %}
+                    {% if value.meterRanking != null %}
+                        <li>
+                            <div class="inline-block">
+                                <div class="relative h-20 w-12">
+                                    {% if value.image != null %}
+                                    <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="{{ value.image }}" alt="Cover"></a>
+                                    {% else %}
+                                    <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover"></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="inline-block">
+                                <div class="font-bold">
+                                    <a href="{{ path('app_details', { 'id': value.id }) }}">{{ value.originalTitle }}</a>
+                                </div>
+                                <div>
+                                    {% if value.titleType == "Movie" %}
+                                        {{ value.releaseDate.year }}
+                                    {% else %}
+                                        {{ value.releaseDate.year }} - {{ value.releaseDate.endYear }} | {{ value.titleType }}
+                                    {% endif %}
+                                </div>                        
+                                <div class="">
+                                    {% for genre in value.genres|slice(0, 3) %}
+                                    <span class="">{{ genre }}</span>
+                                    {% endfor %}                     
+                                </div>                                                                      
+                            </div>
+                            <div class="inline-block">
+                                <div class="">
+                                    {% for star in value.cast|slice(0, 2) %}
+                                        {% if loop.last == false %}
+                                        <span class="">{{ star }},</span>
+                                        {% else %}
+                                        <span class="">{{ star }}</span>
+                                        {% endif %}
+                                    {% endfor %}                     
+                                </div>
+                            </div>
+                        </li>
+                    {% endif %}   
                 {% endfor %}                
-            </ul>            
+            </ul>                       
         {% else %}
             No result!
         {% endif %}

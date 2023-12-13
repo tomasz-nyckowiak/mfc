@@ -95,7 +95,7 @@ class ApiController extends AbstractController
     }
 
     #[Route('/title/{id}', name: 'app_details')]
-    public function showDetails($id): Response {        
+    public function showDetails($id, TitleInformationRepository $titles): Response {        
         $service = new Service();
         $model = new Model();
         
@@ -122,12 +122,36 @@ class ApiController extends AbstractController
 
         // Merging all data arrays into one
         $data = array_merge($baseInfo, $mainCast, $creators);
-                
+
         //dd($data);
 
-        return $this->render('movie/details.html.twig', [
-            'data' => $data,
-            'titleId' => $id,
-        ]);  
+        if (!$this->getUser()) {            
+            
+            return $this->render('title/details.html.twig', [
+                'data' => $data
+            ]);            
+        } else {
+            /** @var User $currentUser */
+            $currentUser = $this->getUser();            
+            $userId = $currentUser->getId();
+
+            $title = $data['originalTitle'];            
+            
+            $result = $titles->checkIfTitleAlreadyExistInLibraryForCurrentUser($userId, $title);
+            
+            if (!$result) {
+                $isTitleAlreadyInLibrary = false;
+                $userRating = null;
+            } else {
+                $isTitleAlreadyInLibrary = true;
+                $userRating = $titles->findUserRating($userId, $title);
+            }                      
+            
+            return $this->render('title/details.html.twig', [
+                'data' => $data,
+                'alreadyExist' => $isTitleAlreadyInLibrary,
+                'userRating' => $userRating
+            ]);
+        }          
     }
 }

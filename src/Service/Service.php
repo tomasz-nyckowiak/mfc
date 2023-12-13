@@ -53,7 +53,7 @@ class Service
         $endPoint = "/titles/search/title/";
         $exact = "?exact=false";
         $page = "&page=";
-        $limit = "&limit=3";
+        $limit = "&limit=10";
 
         $urlFinal = $url . $endPoint . $userInput . $exact . $page . $pageNumber . $limit;
         

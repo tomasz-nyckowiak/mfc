@@ -12,6 +12,7 @@ class Model
         $genres = [];
         $originalTitles = [];
         $releaseDates = [];
+        $meterRanking = [];
         
         for ($i = 0; $i < $entries; $i++) {
             $titlesId[$i] = $baseInfo['results'][$i]['id'];
@@ -21,15 +22,24 @@ class Model
             } else $imagesUrl[$i] = null;
 
             $titlesType[$i] = $baseInfo['results'][$i]['titleType']['text'];
-            $genres[$i] = $baseInfo['results'][$i]['genres']['genres'];
-            $genresCounter = count($genres[$i]);
-            $genresListAsStrings = [];
-            for ($j = 0; $j < $genresCounter; $j++) {
-                $genresListAsStrings[$j] = $genres[$i][$j]['text'];
-            }
-            $genres[$i] = $genresListAsStrings;
+            
+            if ($baseInfo['results'][$i]['genres'] != null) {
+                $genres[$i] = $baseInfo['results'][$i]['genres']['genres'];
+                $genresCounter = count($genres[$i]);
+                $genresListAsStrings = [];
+                
+                for ($j = 0; $j < $genresCounter; $j++) {
+                    $genresListAsStrings[$j] = $genres[$i][$j]['text'];
+                }
+                $genres[$i] = $genresListAsStrings;
+            } else $genres[$i] = null;
+            
             $originalTitles[$i] = $baseInfo['results'][$i]['originalTitleText']['text'];
             $releaseDates[$i] = $baseInfo['results'][$i]['releaseYear'];
+
+            if ($baseInfo['results'][$i]['meterRanking'] != null) {
+                $meterRanking[$i] = $baseInfo['results'][$i]['meterRanking']['currentRank'];
+            } else $meterRanking[$i] = null;
 
             $titlesBaseInfo[$i] = [
                 "id" => $titlesId[$i], 
@@ -38,6 +48,7 @@ class Model
                 "genres" => $genres[$i], 
                 "originalTitle" => $originalTitles[$i], 
                 "releaseDate" => $releaseDates[$i],
+                "meterRanking" => $meterRanking[$i]
             ];
         }
 

@@ -41,13 +41,14 @@ class TitleInformationRepository extends ServiceEntityRepository
         }
     }
 
-    public function checkIfTitleAlreadyExistInLibraryForCurrentUser(int $userId, string $title)
+    public function checkIfTitleAlreadyExistInLibraryForCurrentUser(int $userId, string $title, string $titleType)
     {
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = "
             SELECT original_title FROM title_information
             WHERE title_information.original_title = '$title'
+            AND title_information.title_type = '$titleType'
             AND title_information.user_id = '$userId'
         ";
         

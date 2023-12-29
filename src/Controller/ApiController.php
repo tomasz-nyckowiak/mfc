@@ -34,17 +34,18 @@ class ApiController extends AbstractController
         }        
         
         return $this->redirectToRoute('app_show_more', [
-            'temp' => $userInput,
+            'title' => $userInput,
             'pageNumber' => $pageNumberAsInt            
         ]);
     }
     
-    #[Route('/search/{temp}/{pageNumber}', name: 'app_show_more')]
-    public function find($temp, $pageNumber): Response {
+    #[Route('/search/{title}/{pageNumber}', name: 'app_show_more')]
+    public function find($title, $pageNumber): Response 
+    {
         $service = new Service();
         $model = new Model();
 
-        $input = $service->preparingUserInput($temp);
+        $input = $service->preparingUserInput($title);
         
         // Preparing url + sending first request for information about results and pages
         $url = $service->creatingBasicUrlWithoutOptionalInfo($input, $pageNumber);                
@@ -72,12 +73,6 @@ class ApiController extends AbstractController
         $response = $service->search($urlExtendedCast);
         $mainCast = [];
         $mainCast = $model->extractingMainCast($response, $howManyOutcomes);
-        
-        // Get makers (creator/s, director/s and writer/s)
-        // $urlCreators = $service->creatingUrlForCreators($url);     
-        // $response = $service->search($urlCreators);
-        // $creators = [];
-        // $creators = $model->extractingCreators($response, $howManyOutcomes);
 
         // Merging all data arrays into one
         for ($i = 0; $i < $howManyOutcomes; $i++) {
@@ -90,7 +85,7 @@ class ApiController extends AbstractController
             'page' => $pageNumber,
             'next' => $nextPage,
             'data' => $allData,
-            'temp' => $temp
+            'title' => $title
         ]);        
     }
 
@@ -137,7 +132,7 @@ class ApiController extends AbstractController
 
             $title = $data['originalTitle'];            
             
-            $result = $titles->checkIfTitleAlreadyExistInLibraryForCurrentUser($userId, $title);
+            $result = $titles->checkIfTitleAlreadyExistInLibraryForCurrentUser($userId, $title, $baseInfo['titleType']);
             
             if (!$result) {
                 $isTitleAlreadyInLibrary = false;

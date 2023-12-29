@@ -7,59 +7,31 @@
         {{ include('api/_search_form.html.twig') }}
     </div>
     <div class="mb-1">
-        {% if temp is not null %}
-            <h4 class="text-3xl">Search "{{ temp }}"</h4>
+        {% if title is not null %}
+            <h4 class="text-3xl">Search "{{ title }}"</h4>
         {% else %}
             No result!
-        {% endif %}
+        {% endif %}               
+        <div>Not happy with the result? Add the title manually <a href="{{ path('app_form_add_title_manually')}}">here</a>.</div>      
     </div>
     <div class="mt-2">
-        {% if data|length > 0 %}
-            <h4 class="text-xl my-2">Titles</h4>            
+        {% if data|length > 0 %}            
+            <h4 class="text-xl my-2">Titles</h4>
+            <div>(Most popular ones)</div>                      
             <ul>
                 {% for value in data %}
                     {% if value.meterRanking != null %}
-                        <li>
-                            <div class="inline-block">
-                                <div class="relative h-20 w-12">
-                                    {% if value.image != null %}
-                                    <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="{{ value.image }}" alt="Cover"></a>
-                                    {% else %}
-                                    <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover"></a>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="inline-block">
-                                <div class="font-bold">
-                                    <a href="{{ path('app_details', { 'id': value.id }) }}">{{ value.originalTitle }}</a>
-                                </div>
-                                <div>
-                                    {% if value.titleType == "Movie" %}
-                                        {{ value.releaseDate.year }}
-                                    {% else %}
-                                        {{ value.releaseDate.year }} - {{ value.releaseDate.endYear }} | {{ value.titleType }}
-                                    {% endif %}
-                                </div>                        
-                                <div class="">
-                                    {% for genre in value.genres|slice(0, 3) %}
-                                    <span class="">{{ genre }}</span>
-                                    {% endfor %}                     
-                                </div>                                                                      
-                            </div>
-                            <div class="inline-block">
-                                <div class="">
-                                    {% for star in value.cast|slice(0, 2) %}
-                                        {% if loop.last == false %}
-                                        <span class="">{{ star }},</span>
-                                        {% else %}
-                                        <span class="">{{ star }}</span>
-                                        {% endif %}
-                                    {% endfor %}                     
-                                </div>
-                            </div>
-                        </li>
-                    {% endif %}   
-                {% endfor %}                
+                        {{ include('api/_search_list_result.html.twig') }}                       
+                    {% endif %} 
+                {% endfor %}
+                <div>
+                    <hr class="my-2 h-0 border border-t-0 border-solid border-neutral-700 opacity-25 dark:border-neutral-200">
+                </div>
+                {% for value in data %}
+                    {% if value.meterRanking == null %}
+                        {{ include('api/_search_list_result.html.twig') }}
+                    {% endif %}
+                {% endfor %}               
             </ul>                       
         {% else %}
             No result!
@@ -69,18 +41,18 @@
         {% if next == true %}           
             <div>
                 {% if page >= 2 %}
-                    <a href="{{ path('app_show_more', { 'temp': temp, 'pageNumber': page - 1 }) }}">
+                    <a href="{{ path('app_show_more', { 'title': title, 'pageNumber': page - 1 }) }}">
                         <button class="inline-block bg-indigo-600 text-white rounded-md border p-2 mt-4 mb-2">Previous</button>
                     </a>
                 {% endif %}
-                <a href="{{ path('app_show_more', { 'temp': temp, 'pageNumber': page + 1 }) }}">
+                <a href="{{ path('app_show_more', { 'title': title, 'pageNumber': page + 1 }) }}">
                     <button class="inline-block bg-indigo-600 text-white rounded-md border p-2 mt-4 mb-2">More</button>
                 </a>                
             </div>            
         {% else %}
             {% if page != 1 %}
                 <div>
-                    <a href="{{ path('app_show_more', { 'temp': temp, 'pageNumber': page - 1 }) }}">
+                    <a href="{{ path('app_show_more', { 'title': title, 'pageNumber': page - 1 }) }}">
                         <button class="inline-block bg-indigo-600 text-white rounded-md border p-2 mt-4 mb-2">Previous</button>
                     </a>
                 </div>

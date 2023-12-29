@@ -104,7 +104,7 @@ class Model
         $plot = $baseInfo['results']['plot'];
         if ($plot != null) {
             $plot = $baseInfo['results']['plot']['plotText']['plainText'];           
-        }
+        } else $plot = null;
 
         $titleBaseInfo = [
             "titleId" => $titleId, 
@@ -136,13 +136,18 @@ class Model
         $imagesUrlList = [];
         for ($i = 0; $i < $castCounter; $i++) {
             $castList[$i] = $cast[$i]['node']['name']['nameText']['text'];
+            
             $images[$i] = $cast[$i]['node']['name']['primaryImage'];
             if ($images[$i] != null) {
                 $imagesUrlList[$i] = $cast[$i]['node']['name']['primaryImage']['url'];            
             } else $imagesUrlList[$i] = null;
             
             $actorsId[$i] = $cast[$i]['node']['name']['id'];
-            $charactersNames[$i] = $cast[$i]['node']['characters'][0]['name'];         
+            
+            $charactersLists[$i] = $cast[$i]['node']['characters'];
+            if ($charactersLists[$i] != null) {
+                $charactersNames[$i] = $cast[$i]['node']['characters'][0]['name'];            
+            } else $charactersNames[$i] = null;        
 
             $allDataAboutCast[$i] = [
                 "id" => $actorsId[$i],

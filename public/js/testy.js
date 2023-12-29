@@ -6,14 +6,39 @@ let revBtns = document.getElementsByClassName("revBtn");
 let allInfoCheckB = document.getElementsByClassName("allInfo");
 
 function thatCollapse(id) {
+    const arrayOfGenres = ["Action", "Adult", "Adventure", "Animation", "Biography", "Comedy", "Crime",
+    "Documentary", "Drama", "Family", "Fantasy", "Film-Noir", "Game-Show", "History", "Horror", "Music",
+    "Musical", "Mystery", "News", "Reality-TV", "Romance", "Sci-Fi", "Short", "Sport", "Talk-Show", "Thriller",
+    "War", "Western"];
+    
     let titleTypeId = "titleType" + id;
     let defaultValueId = "hiddenValueTitleType" + id;
     let chosen = document.getElementById(titleTypeId);
-    let defaultValue = document.getElementById(defaultValueId).value;
-    //const singleSelect = document.querySelector("titleTypeId");
+    let defaultValue = document.getElementById(defaultValueId).value;    
     const singleSelectInstance = te.Select.getInstance(chosen);
     singleSelectInstance.setValue(defaultValue);
-    //console.log(defaultValue);
+    
+    //Multiple selection
+    let genresId = "genres" + id;
+    let hiddenValueForGenres = "hiddenValueGenres" + id;
+    let multiSelect = document.getElementById(genresId);
+    let defaultGenresValue = document.getElementById(hiddenValueForGenres).value;
+    //let temp = [];
+    //console.log(multiSelect);
+    //const multiSelectInstance = te.Select.getInstance(multiSelect);
+    for (let i = 0; i < arrayOfGenres.length; i++) {
+        if (defaultGenresValue.includes(arrayOfGenres[i])) {
+            //temp.push(arrayOfGenres[i]);
+            multiSelect.getElementsByTagName('option')[i].setAttribute("selected", true);
+        }       
+    }
+
+    // for (let i = 0; i < temp.length; i++) {
+    //     //multiSelectInstance.setValue([arrayOfGenres[i]]);
+    //     //multiSelect.getElementsByTagName('option')[temp[i]].setAttribute("selected", true);      
+    // }
+    //let sth = multiSelect.getElementsByTagName('option')[0].setAttribute("selected", true);
+    //console.log(sth);   
 }
 
 function getIdOut(id) {
@@ -29,7 +54,7 @@ for (let i = 0; i < editBtns.length; i++) {
         let idNumber = getIdOut(IdToRemember);
         formIdToRemember = "form" + idNumber;
         let modalId = "exampleModal" + idNumber;
-        //console.log(formIdToRemember);
+        //console.log("MODAL: " + modalId + "; FORM: " + formIdToRemember);
         test23(modalId);
         getIdOut3(idNumber);
         thatCollapse(idNumber);

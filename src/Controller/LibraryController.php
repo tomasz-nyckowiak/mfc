@@ -7,6 +7,8 @@ use App\Model\Model;
 use App\Service\Service;
 use App\Entity\TitleInformation;
 use App\Form\TitleInformationType;
+use App\Model\Add;
+use App\Model\AddTitle;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\TitleInformationRepository;
@@ -142,6 +144,72 @@ class LibraryController extends AbstractController
             'alreadyExist' => $nowTitleIsInLibrary,
             'userRating' => $userRating
         ]);
+    }
+
+    //FORM FOR ADDING TITLE MANUALLY
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[Route('/library/addtitle', name: 'app_form_add_title_manually')]
+    public function addTitleToLibraryManually(): Response
+    {
+        return $this->render('library/add_title_manually.html.twig');
+    }
+    
+    //ADD TITLE MANUALLY
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[Route('/library/addtitle/success', name: 'app_add_title_manually_success')]
+    public function addTitleManuallySuccess(TitleInformationRepository $titles): Response
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
+
+        $newTitle = new AddTitle();
+        $allData = $newTitle->addTitleManually();        
+        
+        $title = new TitleInformation();
+        $title->setUser($currentUser);
+        $title->setOriginalTitle($allData['title']);
+        $title->setTitleType($allData['titleType']);
+        
+        //Genres
+        if ($allData['genres'] != null) {
+            $genresAsString = implode(", ", $allData['genres']);
+            $title->setGenres($genresAsString);
+        }
+
+        //Creators
+        $title->setCreator($allData['creators']);
+        $title->setDirector($allData['directors']);
+        $title->setWriter($allData['writers']);
+
+        //Cast
+        $title->setStars($allData['cast']);
+
+        $title->setRuntime($allData['runtime']);
+        $title->setReleaseDate($allData['releaseDate']);
+        $title->setRating($allData['rating']);
+        $title->setImdbRating($allData['imdbRating']);
+        $title->setPlot($allData['plot']);
+        $title->setImageUrl($allData['imageUrl']);
+        $title->setToWatch($allData['toWatch']);
+        $title->setReview($allData['review']);
+
+        $result = $titles->checkIfTitleAlreadyExistInLibraryForCurrentUser($userId, $allData['title'], $allData['titleType']);
+
+        if (!$result) {
+            //$isTitleAlreadyInLibrary = false;
+            $message = "Title " . $allData['title'] . " has been successfully added to your library!";
+            $this->addFlash('success', $message);
+            $titles->add($title, true);
+        } else {
+            //$isTitleAlreadyInLibrary = true;
+            $message = "Title " . $allData['title'] . " is already in your library!";
+            $this->addFlash('fail', $message);
+        }
+
+        //dd($isTitleAlreadyInLibrary);        
+        
+        return $this->render('library/add_title_manually.html.twig');
     }
 
     //ADD/EDIT STUFF
@@ -363,25 +431,37 @@ class LibraryController extends AbstractController
         $url = $service->creatingUrlForTitleUpdate($updatedTitle);
         
         // Get info
-        $response = $service->search($url);      
-        $baseInfo = [];
-        $baseInfo = $model->extractingNeededData($response);
-        
-        $imdbRating = $baseInfo['rating'];
-        $imageUrl = $baseInfo['image'];
+        $response = $service->search($url);
+        //dd($response);
+        if ($response['entries'] == 1) {
+            $baseInfo = [];
+            $baseInfo = $model->extractingNeededData($response);
+            
+            $imdbRating = $baseInfo['rating'];
+            $imageUrl = $baseInfo['image'];
 
-        $result->setImdbRating($imdbRating);
-        $result->setImageUrl($imageUrl);
+            $result->setImdbRating($imdbRating);
+            $result->setImageUrl($imageUrl);
 
-        $titles->add($result, true);
+            $titles->add($result, true);
 
-        $this->addFlash('success', 'Title has been updated!');
+            $this->addFlash('success', 'Title has been updated!');
 
-        $data = $titles->findby(['user' => $userId]);
-        
-        return $this->render('library/default_list.html.twig', [
-            'data' => $data,
-            'id' => $id
-        ]);      
+            $data = $titles->findby(['user' => $userId]);
+            
+            return $this->render('library/default_list.html.twig', [
+                'data' => $data,
+                'id' => $id
+            ]);
+        } else {
+            $this->addFlash('fail', 'Update failed! This title was not found in the IMDb database!');
+
+            $data = $titles->findby(['user' => $userId]);
+            
+            return $this->render('library/default_list.html.twig', [
+                'data' => $data,
+                'id' => $id
+            ]);
+        }              
     }
 }

@@ -1,0 +1,47 @@
+<li>
+    <div class="inline-block">
+        <div class="relative h-20 w-12">
+            {% if value.image != null %}
+            <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="{{ value.image }}" alt="Cover"></a>
+            {% else %}
+            <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover"></a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="inline-block">
+        <div class="font-bold">
+            <a href="{{ path('app_details', { 'id': value.id }) }}">{{ value.originalTitle }}</a>
+        </div>
+        <div>
+            {% if value.titleType == "Movie" %}
+                {{ value.releaseDate.year }}
+            {% else %}
+                {% if value.releaseDate.endYear != null %}
+                    {% if value.releaseDate.year != value.releaseDate.endYear %}
+                        {{ value.releaseDate.year }} - {{ value.releaseDate.endYear }} | {{ value.titleType }}
+                    {% else %}
+                        {{ value.releaseDate.year }} | {{ value.titleType }}
+                    {% endif %}                    
+                {% else %}
+                    {{ value.releaseDate.year }} | {{ value.titleType }}
+                {% endif %}                
+            {% endif %}
+        </div>                        
+        <div class="">
+            {% for genre in value.genres|slice(0, 3) %}
+            <span class="">{{ genre }}</span>
+            {% endfor %}                     
+        </div>                                                                      
+    </div>
+    <div class="inline-block">
+        <div class="">
+            {% for star in value.cast|slice(0, 2) %}
+                {% if loop.last == false %}
+                <span class="">{{ star }},</span>
+                {% else %}
+                <span class="">{{ star }}</span>
+                {% endif %}
+            {% endfor %}                     
+        </div>
+    </div>
+</li>

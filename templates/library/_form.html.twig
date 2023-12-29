@@ -74,7 +74,206 @@
                 rows="5" 
                 cols="50"></textarea>
             {% endif %}
-        </div>     
+        </div>
+
+        <!--Other Optional Information Checkbox-->
+        <div class="inline-flex mb-4">
+            <input 
+                class="allInfo relative float-left hover:cursor-pointer" 
+                type="checkbox" 
+                id="optionalInfoCheckbox{{ value.id }}" 
+                name="noteOptionalInfo">
+            <label 
+                class="inline-block hover:cursor-pointer" 
+                for="optionalInfoCheckbox{{ value.id }}">
+                Note: Yes, I want to change other information about the title.
+            </label>
+        </div>
+
+        <!--Hidden inputs-->
+        <div class="hidden" id="hiddenItems{{ value.id }}">
+            <!--Title input-->
+            <div>
+                <label 
+                    for="originalTitle{{ value.id }}" 
+                    class="inline-block"
+                    >Title (required):
+                </label>
+                <input 
+                    type="text" 
+                    class="dark:text-neutral-600 w-64" 
+                    id="originalTitle{{ value.id }}" 
+                    name="originalTitle" 
+                    value="{{ value.originalTitle }}">
+                <div id="requiredTitle{{ value.id }}"></div>
+            </div>
+
+            <!--Release date input-->
+            <div>
+                <label class="inline-block">Release Date:</label>
+                <input 
+                    type="text" 
+                    class="dark:text-neutral-600" 
+                    id="releaseDate{{ value.id }}" 
+                    name="releaseDate" 
+                    value="{{ value.releaseDate }}">
+            </div>
+            
+            <!--Title type input-->
+            <div>
+                <input type="hidden" id="hiddenValueTitleType{{ value.id }}" name="hiddenValueTitleType" value="{{ value.titleType }}">
+            </div>
+            
+            <label for="titleType">Title type:</label>
+            <div class="inline-block border-2 border-sky-500 w-64">
+                <select name="titleType" id="titleType{{ value.id }}" data-te-select-init>
+                    <option value="Movie">Movie</option>
+                    <option value="Music Video">Music Video</option>
+                    <option value="Podcast Episode">Podcast Episode</option>
+                    <option value="Podcast Series">Podcast Series</option>
+                    <option value="Short">Short</option>
+                    <option value="Tv Episode">Tv Episode</option>
+                    <option value="Tv Mini Series">Tv Mini Series</option>
+                    <option value="Tv Movie">Tv Movie</option>
+                    <option value="Tv Pilot">Tv Pilot</option>
+                    <option value="Tv Series">Tv Series</option>
+                    <option value="Tv Short">Tv Short</option>
+                    <option value="Tv Special">Tv Special</option>
+                    <option value="Video">Video</option>
+                    <option value="Video Game">Video Game</option>
+                </select>
+            </div>
+
+            <!--Runtime input-->
+            <div>
+                <label class="inline-block">Runtime:</label>
+                <input 
+                    type="text" 
+                    class="dark:text-neutral-600" 
+                    id="runtime{{ value.id }}" 
+                    name="runtime" 
+                    value="{{ value.runtime }}">
+            </div>
+
+            <!--Director input-->
+            <div>
+                <label class="inline-block">Director(s):</label>
+                <input 
+                    type="text" 
+                    class="dark:text-neutral-600" 
+                    id="director{{ value.id }}" 
+                    name="director" 
+                    value="{{ value.director }}">
+            </div>
+
+            <!--Writer input-->
+            <div>
+                <label class="inline-block">Writer(s):</label>
+                <input 
+                    type="text" 
+                    class="dark:text-neutral-600 w-64" 
+                    id="writer{{ value.id }}" 
+                    name="writer" 
+                    value="{{ value.writer }}">
+            </div>
+        
+            <!--Creator input-->
+            <div>
+                <label class="inline-block">Creator(s):</label>
+                <input 
+                    type="text" 
+                    class="dark:text-neutral-600" 
+                    id="creator{{ value.id }}" 
+                    name="creator" 
+                    value="{{ value.creator }}">
+            </div>            
+
+            <!--IMDb Rating input-->
+            <div>
+                <label for="rating{{ value.id }}" class="inline-block">IMDb Rating:</label>
+                {% if value.ImdbRating != null %}
+                <input 
+                    type="text" 
+                    class="dark:text-neutral-600 w-12" 
+                    id="imdbRating{{ value.id }}" 
+                    name="imdbRating" 
+                    minlength="1" 
+                    maxlength="3"            
+                    value="{{ value.ImdbRating }}">
+                {% else %}
+                <input 
+                    type="text" 
+                    class="dark:text-neutral-600 w-12" 
+                    id="imdbRating{{ value.id }}" 
+                    name="imdbRating" 
+                    minlength="1" 
+                    maxlength="3">
+                {% endif %}
+            </div>
+
+            <!--Genres input-->
+            <div>
+                <div>
+                    <input type="hidden" id="hiddenValueGenres{{ value.id }}" name="hiddenValueGenres" value="{{ value.genres }}">
+                </div>
+
+                <label for="genres">Genres:</label>
+                <div class="inline-block border-2 border-sky-500 w-80">
+                    <select name="genres[]" id="genres{{ value.id }}" data-te-select-init multiple>
+                        <option value="Action">Action</option>
+                        <option value="Adult">Adult</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Animation">Animation</option>
+                        <option value="Biography">Biography</option>
+                        <option value="Comedy">Comedy</option>
+                        <option value="Crime">Crime</option>
+                        <option value="Documentary">Documentary</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Family">Family</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Film-Noir">Film-Noir</option>
+                        <option value="Game-Show">Game-Show</option>
+                        <option value="History">History</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Music">Music</option>
+                        <option value="Musical">Musical</option>
+                        <option value="Mystery">Mystery</option>
+                        <option value="News">News</option>
+                        <option value="Reality-TV">Reality-TV</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Sci-Fi">Sci-Fi</option>
+                        <option value="Short">Short</option>
+                        <option value="Sport">Sport</option>
+                        <option value="Talk-Show">Talk-Show</option>
+                        <option value="Thriller">Thriller</option>
+                        <option value="War">War</option>
+                        <option value="Western">Western</option>
+                    </select>
+                </div>
+            </div>
+
+            <!--Cast input-->
+            <div>
+                <label class="inline-block">Stars:</label>
+                <input 
+                    type="text" 
+                    class="dark:text-neutral-600 w-64" 
+                    id="cast{{ value.id }}" 
+                    name="cast" 
+                    value="{{ value.stars }}">
+            </div>
+
+            <!--Plot input-->
+            <div class="relative mb-3">
+                <label class="inline-block">Plot:</label>
+                <textarea
+                    class="block dark:text-neutral-600"
+                    id="plot{{ value.id }}"
+                    name="plot"
+                    rows="5"
+                    cols="50">{{ value.plot }}</textarea>
+            </div>
+        </div>         
 
         <!--Submit button-->
         <div class="flex justify-end">

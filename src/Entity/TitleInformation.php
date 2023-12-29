@@ -30,14 +30,14 @@ class TitleInformation
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $stars = null;
 
-    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
-    private ?int $releaseDate = null;
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $releaseDate = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $rating = null;
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $rating = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $ImdbRating = null;
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $ImdbRating = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $runtime = null;
@@ -128,36 +128,36 @@ class TitleInformation
         return $this;
     }
 
-    public function getReleaseDate(): ?int
+    public function getReleaseDate(): ?string
     {
         return $this->releaseDate;
     }
 
-    public function setReleaseDate(?int $releaseDate): static
+    public function setReleaseDate(?string $releaseDate): static
     {
         $this->releaseDate = $releaseDate;
 
         return $this;
     }
 
-    public function getRating(): ?float
+    public function getRating(): ?string
     {
         return $this->rating;
     }
 
-    public function setRating(?float $rating): static
+    public function setRating(?string $rating): static
     {
         $this->rating = $rating;
 
         return $this;
     }
 
-    public function getImdbRating(): ?float
+    public function getImdbRating(): ?string
     {
         return $this->ImdbRating;
     }
 
-    public function setImdbRating(?float $ImdbRating): static
+    public function setImdbRating(?string $ImdbRating): static
     {
         $this->ImdbRating = $ImdbRating;
 

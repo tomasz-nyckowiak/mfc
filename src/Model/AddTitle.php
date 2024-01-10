@@ -50,14 +50,18 @@ class AddTitle
             if ($releaseDateEndYear == "") {
                 if ($titleType == "Tv Series" || $titleType == "Podcast Episode" || 
                     $titleType == "Podcast Series" || $titleType == "Tv Mini Series") {
-                    $finalReleaseDate = $releaseDate . "-";
+                    if ($releaseDate == date("Y")) {
+                        $finalReleaseDate = $releaseDate . "-";
+                    } else $finalReleaseDate = $releaseDate;                        
                 } else $finalReleaseDate = $releaseDate;                
             } else $finalReleaseDate = $releaseDate . "-" . $releaseDateEndYear;
+            
             ##### ##### #####
             
             ##### Ratings #####
-            if (isset($_POST['hiddenRatingInput'])) {
-                $rating = $_POST['hiddenRatingInput'];
+            if (isset($_POST['rating'])) {
+                $tempRating = $_POST['rating'];
+                $rating = str_replace(",", ".", $tempRating);
             } else $rating = "";
             
             if (isset($_POST['imdbRating'])) {
@@ -70,8 +74,8 @@ class AddTitle
                 $plot = $_POST['plot'];
             } else $plot = "";
             
-            if (isset($_POST['formFile'])) {
-                $image = $_POST['formFile'];
+            if (isset($_POST['fileName'])) {
+                $image = $_POST['fileName'];
             } else $image = "";
             
             if (isset($_POST['toWatchManually'])) {

@@ -1,5 +1,5 @@
 <div>
-    <form id="form{{ value.id }}" action="{{ path('app_library_edit_title', { id: value.id }) }}" method="POST" novalidate>
+    <form id="editForm{{ value.id }}" action="{{ path('app_library_edit_title', { id: value.id }) }}" method="POST" novalidate>
         <!--Rating input-->
         <div class="relative mb-4">
             <label 
@@ -25,36 +25,39 @@
                 minlength="1" 
                 maxlength="3">
             {% endif %}
-            <p id="demo{{ value.id }}"></p>
+            <div class="inline-block" id="errorMessageForRating{{ value.id }}"></div>
         </div>
 
         <!--To Watch Checkbox-->
-        <div class="inline-flex mb-4">
-            {% if value.toWatch == 1 %}
-            <input 
-                class="relative float-left hover:cursor-pointer" 
-                type="checkbox" 
-                id="checkboxToWatch{{ value.id }}" 
-                name="toWatch"
-                checked>
-            <label 
-                class="inline-block hover:cursor-pointer" 
-                for="checkboxToWatch{{ value.id }}">
-                to Watch
-            </label>
-            {% else %}
-            <input 
-                class="relative float-left hover:cursor-pointer" 
-                type="checkbox" 
-                id="checkboxToWatch{{ value.id }}" 
-                name="toWatch">
-            <label 
-                class="inline-block hover:cursor-pointer" 
-                for="checkboxToWatch{{ value.id }}">
-                to Watch
-            </label>
-            {% endif %}
+        <div class="inline-block">
+            <div class="inline-flex mb-4">
+                {% if value.toWatch == 1 %}
+                    <input 
+                        class="relative float-left hover:cursor-pointer" 
+                        type="checkbox" 
+                        id="checkboxToWatch{{ value.id }}" 
+                        name="toWatch"
+                        checked>
+                    <label 
+                        class="inline-block hover:cursor-pointer" 
+                        for="checkboxToWatch{{ value.id }}">
+                        to Watch
+                    </label>
+                {% else %}
+                    <input 
+                        class="relative float-left hover:cursor-pointer" 
+                        type="checkbox" 
+                        id="checkboxToWatch{{ value.id }}" 
+                        name="toWatch">
+                    <label 
+                        class="inline-block hover:cursor-pointer" 
+                        for="checkboxToWatch{{ value.id }}">
+                        to Watch
+                    </label>
+                {% endif %}
+            </div>
         </div>
+        
 
         <!--Review-->
         <div class="mb-4">
@@ -91,7 +94,7 @@
         </div>
 
         <!--Hidden inputs-->
-        <div class="hidden" id="hiddenItems{{ value.id }}">
+        <div class="hidden" id="hiddenInputs{{ value.id }}">
             <!--Title input-->
             <div>
                 <label 
@@ -105,20 +108,9 @@
                     id="originalTitle{{ value.id }}" 
                     name="originalTitle" 
                     value="{{ value.originalTitle }}">
-                <div id="requiredTitle{{ value.id }}"></div>
+                <div id="errorMessageForTitle{{ value.id }}"></div>
             </div>
 
-            <!--Release date input-->
-            <div>
-                <label class="inline-block">Release Date:</label>
-                <input 
-                    type="text" 
-                    class="dark:text-neutral-600" 
-                    id="releaseDate{{ value.id }}" 
-                    name="releaseDate" 
-                    value="{{ value.releaseDate }}">
-            </div>
-            
             <!--Title type input-->
             <div>
                 <input type="hidden" id="hiddenValueTitleType{{ value.id }}" name="hiddenValueTitleType" value="{{ value.titleType }}">
@@ -126,7 +118,7 @@
             
             <label for="titleType">Title type:</label>
             <div class="inline-block border-2 border-sky-500 w-64">
-                <select name="titleType" id="titleType{{ value.id }}" data-te-select-init>
+                <select onchange="selectTitleTypeEdit(event)" name="titleType" id="titleType{{ value.id }}" data-te-select-init>
                     <option value="Movie">Movie</option>
                     <option value="Music Video">Music Video</option>
                     <option value="Podcast Episode">Podcast Episode</option>
@@ -135,13 +127,55 @@
                     <option value="Tv Episode">Tv Episode</option>
                     <option value="Tv Mini Series">Tv Mini Series</option>
                     <option value="Tv Movie">Tv Movie</option>
-                    <option value="Tv Pilot">Tv Pilot</option>
                     <option value="Tv Series">Tv Series</option>
                     <option value="Tv Short">Tv Short</option>
                     <option value="Tv Special">Tv Special</option>
                     <option value="Video">Video</option>
                     <option value="Video Game">Video Game</option>
                 </select>
+            </div>
+            
+            <!--Release date input-->
+            <div>
+                <label class="inline-block">Release Date:</label>
+                {% set startDate = "" %}
+                {% set endDate = "" %}
+                {% if '-' in value.releaseDate %}
+                    {% set startDate = value.releaseDate[:4] %}
+                    {% set endDate = value.releaseDate[5:] %}                
+                    <input 
+                        type="text" 
+                        class="dark:text-neutral-600 w-12" 
+                        id="releaseDate{{ value.id }}" 
+                        name="releaseDate"
+                        maxlength="4" 
+                        value="{{ startDate }}">
+                    <div class="inline-block">-</div>
+                    <input 
+                        type="text" 
+                        class="inline-block dark:text-neutral-600 w-12" 
+                        id="releaseDateEndYear{{ value.id }}" 
+                        name="releaseDateEndYear"
+                        maxlength="4" 
+                        value="{{ endDate }}">
+                {% else %}
+                    <input 
+                        type="text" 
+                        class="dark:text-neutral-600 w-12" 
+                        id="releaseDate{{ value.id }}" 
+                        name="releaseDate"
+                        maxlength="4" 
+                        value="{{ value.releaseDate }}">
+                    <div class="inline-block">-</div>
+                    <input 
+                        type="text" 
+                        class="inline-block dark:text-neutral-600 w-12" 
+                        id="releaseDateEndYear{{ value.id }}" 
+                        name="releaseDateEndYear"
+                        maxlength="4" 
+                        disabled>
+                {% endif %}
+                <div class="inline-block" id="errorMessageForReleaseDate{{ value.id }}"></div>
             </div>
 
             <!--Runtime input-->
@@ -209,6 +243,7 @@
                     minlength="1" 
                     maxlength="3">
                 {% endif %}
+                <div class="inline-block" id="errorMessageForIMDbRating{{ value.id }}"></div>
             </div>
 
             <!--Genres input-->
@@ -261,6 +296,19 @@
                     id="cast{{ value.id }}" 
                     name="cast" 
                     value="{{ value.stars }}">
+            </div>
+
+            <!--IMAGE INPUT-->
+            <div class="relative">
+                <label for="fileName" class="inline-block">Select an image</label>
+                <input 
+                    class="relative hover:cursor-pointer" 
+                    type="file" 
+                    id="fileName{{ value.id }}"
+                    name="fileName"
+                    accept=".jpg, .jpeg, .png"
+                    onchange="validateFileTypeForEditTitle()">
+                <div class="inline-block" id="errorMessageForEditFileType{{ value.id }}"></div>
             </div>
 
             <!--Plot input-->

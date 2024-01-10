@@ -9,6 +9,7 @@ use App\Entity\TitleInformation;
 use App\Form\TitleInformationType;
 use App\Model\Add;
 use App\Model\AddTitle;
+use App\Model\EditTitle;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\TitleInformationRepository;
@@ -19,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotEqualTo;
 
 class LibraryController extends AbstractController
@@ -164,7 +166,9 @@ class LibraryController extends AbstractController
         $userId = $currentUser->getId();
 
         $newTitle = new AddTitle();
-        $allData = $newTitle->addTitleManually();        
+        $allData = $newTitle->addTitleManually();
+        
+        dd($allData);
         
         $title = new TitleInformation();
         $title->setUser($currentUser);
@@ -175,7 +179,7 @@ class LibraryController extends AbstractController
         if ($allData['genres'] != null) {
             $genresAsString = implode(", ", $allData['genres']);
             $title->setGenres($genresAsString);
-        }
+        } else $title->setGenres($allData['genres']);
 
         //Creators
         $title->setCreator($allData['creators']);
@@ -207,7 +211,7 @@ class LibraryController extends AbstractController
             $this->addFlash('fail', $message);
         }
 
-        //dd($isTitleAlreadyInLibrary);        
+                
         
         return $this->render('library/add_title_manually.html.twig');
     }
@@ -215,31 +219,56 @@ class LibraryController extends AbstractController
     //ADD/EDIT STUFF
     #[Route('/library/edit/{id}', name: 'app_library_edit_title')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function editTitle($id, TitleInformationRepository $titles): Response
+    public function editTitle($id, TitleInformationRepository $titles, EntityManagerInterface $entityManager): Response
     {        
         /** @var User $currentUser */
         $currentUser = $this->getUser();
-        $userId = $currentUser->getId();        
+        $userId = $currentUser->getId();
+        
+        $editTitle = new EditTitle();
+        $allData = $editTitle->editTitle();
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $rating = $_POST['rating'];
-            $review = $_POST['review'];
+        //dd($allData);
+
+        $title = $entityManager->getRepository(TitleInformation::class)->find($id);
+        
+        if (count($allData) > 3) {
+            $title->setOriginalTitle($allData['title']);
+            $title->setTitleType($allData['titleType']);
             
-            if (isset($_POST['toWatch'])) {
-                $toWatch = 1;
-            } else $toWatch = "";                       
-
-            $titles->addToLibrary($id, $rating, $review, $toWatch);
-
-            $this->addFlash('success', 'Title has been updated!');
+            if ($allData['genres'] != null) {
+                $genresAsString = implode(", ", $allData['genres']);
+                $title->setGenres($genresAsString);
+            } else $title->setGenres($allData['genres']);
             
-            $data = $titles->findby(['user' => $userId]);
+            $title->setDirector($allData['directors']);
+            $title->setWriter($allData['writers']);
+            $title->setCreator($allData['creators']);
+            $title->setStars($allData['cast']);
+            $title->setRuntime($allData['runtime']);
+            $title->setReleaseDate($allData['releaseDate']);
+            $title->setRating($allData['rating']);
+            $title->setImdbRating($allData['imdbRating']);
+            $title->setPlot($allData['plot']);
+            $title->setImageUrl($allData['imageUrl']);
+            $title->setToWatch($allData['toWatch']);
+            $title->setReview($allData['review']);
+        } else {
+            $title->setRating($allData['rating']);
+            $title->setToWatch($allData['toWatch']);
+            $title->setReview($allData['review']);
+        }        
 
-            return $this->render('library/default_list.html.twig', [
-                    'data' => $data,
-                    'id' => $id
-            ]);
-        }       
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Title has been updated!');
+        
+        $data = $titles->findby(['user' => $userId]);
+
+        return $this->render('library/default_list.html.twig', [
+                'data' => $data,
+                'id' => $id
+        ]);      
     }
     
     //DELETE TITLE

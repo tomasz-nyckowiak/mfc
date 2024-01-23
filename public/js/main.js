@@ -2,7 +2,7 @@ const errorMessageForNoTitle = "Title is required!";
 const errorMessageForReleaseDate = "Invalid date!";
 const errorMessageForRatings = "Invalid value!";
 const errorMessageForFileType = "Only jpg/jpeg and png files are allowed!";
-const colorForErrorMessages = "rgb(239 68 68)";
+const colorForErrorMessages = "rgb(175 30 30)";
 
 let IdToRemember = "";
 let reviewsBtnsId = "";

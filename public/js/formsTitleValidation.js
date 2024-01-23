@@ -136,7 +136,7 @@ function clearingErrorMessagesForEditForm() {
     document.getElementById(titleElement).innerHTML = "";
     let idTitleInput = "originalTitle" + IdToRemember;
     let titleUserInput = document.getElementById(idTitleInput);
-    titleUserInput.classList.remove("border-2", "border-red-500");
+    titleUserInput.classList.remove("border-2", "border-[#af1e1e]");
     let releaseDateElement = "errorMessageForReleaseDate" + IdToRemember;
     document.getElementById(releaseDateElement).innerHTML = "";
     let imdbRatingElement = "errorMessageForIMDbRating" + IdToRemember;

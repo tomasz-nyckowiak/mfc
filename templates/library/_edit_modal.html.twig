@@ -2,11 +2,9 @@
 <button
   type="button"
   id="btn{{ value.id }}"
-  class="edit inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+  class="edit inline-block text-xs uppercase leading-normal text-indigo-400 tracking-wide px-3 py-1 border-2 border-[#778899] rounded shadow-lg shadow-indigo-500/50 transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600 hover:shadow-[#778899]/75"
   data-te-toggle="modal"
-  data-te-target="#editModal{{ value.id }}"
-  data-te-ripple-init
-  data-te-ripple-color="light">
+  data-te-target="#editModal{{ value.id }}">
   Edit
 </button>
 
@@ -24,19 +22,19 @@
     data-te-modal-dialog-ref
     class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
     <div
-      class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+      class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-[#708090] text-current shadow-lg outline-none">
       <div
         class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
         <!--Modal title-->
         <h5
-          class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200"
+          class="text-xl font-medium uppercase leading-normal text-[#031e49]"
           id="editModalLabel">
-          Add / Edit selected title
+          Edit selected title
         </h5>
         <!--Close button-->
         <button
           type="button"
-          class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+          class="box-content text-[#031e49] rounded-none border-none hover:no-underline hover:text-white focus:opacity-100 focus:shadow-none focus:outline-none"
           data-te-modal-dismiss
           aria-label="Close">
           <svg
@@ -53,12 +51,10 @@
           </svg>
         </button>        
       </div>
-
       <!--Modal body-->
       <div class="relative flex-auto p-4" data-te-modal-body-ref>
-          {{ include('library/_edit_form.html.twig') }}
-      </div>
-      
+        {{ include('library/_edit_form.html.twig') }}
+      </div>      
     </div>
   </div>
 </div>

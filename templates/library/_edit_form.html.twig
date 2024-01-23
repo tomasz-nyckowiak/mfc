@@ -1,16 +1,16 @@
 <div>
     <form id="editForm{{ value.id }}" action="{{ path('app_library_edit_title', { id: value.id }) }}" method="POST" novalidate>
         <!--Rating input-->
-        <div class="relative mb-4">
+        <div class="mb-4">
             <label 
                 for="rating{{ value.id }}" 
-                class="inline-block"
+                class="inline-block text-[#031e49]"
                 >My Rating:
             </label>
             {% if value.rating != null %}
             <input 
                 type="text" 
-                class="dark:text-neutral-600 w-12" 
+                class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                 id="rating{{ value.id }}" 
                 name="rating" 
                 minlength="1" 
@@ -19,13 +19,14 @@
             {% else %}
             <input 
                 type="text" 
-                class="dark:text-neutral-600 w-12" 
+                class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                 id="rating{{ value.id }}" 
                 name="rating" 
                 minlength="1" 
                 maxlength="3">
             {% endif %}
-            <div class="inline-block" id="errorMessageForRating{{ value.id }}"></div>
+            <div class="inline-block text-sm font-semibold" id="errorMessageForRating{{ value.id }}"></div>
+            <div class="text-xs text-[#031e49] tracking-wide">*Proper values: 7; 5.5; 6,2</div>
         </div>
 
         <!--To Watch Checkbox-->
@@ -33,45 +34,44 @@
             <div class="inline-flex mb-4">
                 {% if value.toWatch == 1 %}
                     <input 
-                        class="relative float-left hover:cursor-pointer" 
+                        class="relative float-left accent-indigo-500 rounded-[0.25rem] outline-none hover:cursor-pointer" 
                         type="checkbox" 
                         id="checkboxToWatch{{ value.id }}" 
                         name="toWatch"
                         checked>
                     <label 
-                        class="inline-block hover:cursor-pointer" 
+                        class="inline-block text-[#031e49] ml-1 hover:cursor-pointer" 
                         for="checkboxToWatch{{ value.id }}">
-                        to Watch
+                        Add to watchlist
                     </label>
                 {% else %}
                     <input 
-                        class="relative float-left hover:cursor-pointer" 
+                        class="relative float-left accent-indigo-500 rounded-[0.25rem] outline-none hover:cursor-pointer" 
                         type="checkbox" 
                         id="checkboxToWatch{{ value.id }}" 
                         name="toWatch">
                     <label 
-                        class="inline-block hover:cursor-pointer" 
+                        class="inline-block text-[#031e49] ml-1 hover:cursor-pointer" 
                         for="checkboxToWatch{{ value.id }}">
-                        to Watch
+                        Add to watchlist
                     </label>
                 {% endif %}
             </div>
-        </div>
-        
+        </div>        
 
         <!--Review-->
         <div class="mb-4">
-            <div>My Review:</div>
+            <div class="text-[#031e49]">My Review:</div>
             {% if value.review != null %}
             <textarea 
-                class="dark:text-neutral-600"
+                class="text-slate-200 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 p-1.5 outline-none focus:border-slate-300"
                 id="reviewFor{{ value.id }}"
                 name="review" 
                 rows="5" 
                 cols="50">{{ value.review }}</textarea>
             {% else %}
             <textarea 
-                class="dark:text-neutral-600"
+                class="text-slate-200 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 p-1.5 outline-none focus:border-slate-300"
                 id="reviewFor{{ value.id }}"
                 name="review" 
                 rows="5" 
@@ -82,62 +82,65 @@
         <!--Other Optional Information Checkbox-->
         <div class="inline-flex mb-4">
             <input 
-                class="allInfo relative float-left hover:cursor-pointer" 
+                class="allInfo relative float-left accent-indigo-500 hover:cursor-pointer" 
                 type="checkbox" 
                 id="optionalInfoCheckbox{{ value.id }}" 
                 name="noteOptionalInfo">
             <label 
-                class="inline-block hover:cursor-pointer" 
+                class="inline-block text-[#031e49] ml-1 hover:cursor-pointer" 
                 for="optionalInfoCheckbox{{ value.id }}">
-                Note: Yes, I want to change other information about the title.
+                Yes, I want to change other information about the title.
             </label>
         </div>
 
         <!--Hidden inputs-->
         <div class="hidden" id="hiddenInputs{{ value.id }}">
             <!--Title input-->
-            <div>
+            <div class="mb-4">
                 <label 
                     for="originalTitle{{ value.id }}" 
-                    class="inline-block"
-                    >Title (required):
+                    class="inline-block text-[#031e49]"
+                    >Title:
                 </label>
                 <input 
                     type="text" 
-                    class="dark:text-neutral-600 w-64" 
+                    class="text-slate-200 w-80 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                     id="originalTitle{{ value.id }}" 
-                    name="originalTitle" 
+                    name="originalTitle"
+                    maxlength="100" 
                     value="{{ value.originalTitle }}">
-                <div id="errorMessageForTitle{{ value.id }}"></div>
+                <div class="inline-block text-sm font-semibold" id="errorMessageForTitle{{ value.id }}"></div>
             </div>
 
             <!--Title type input-->
-            <div>
-                <input type="hidden" id="hiddenValueTitleType{{ value.id }}" name="hiddenValueTitleType" value="{{ value.titleType }}">
-            </div>
+            <div class="mb-4">
+                <div>
+                    <input type="hidden" id="hiddenValueTitleType{{ value.id }}" name="hiddenValueTitleType" value="{{ value.titleType }}">
+                </div>            
             
-            <label for="titleType">Title type:</label>
-            <div class="inline-block border-2 border-sky-500 w-64">
-                <select onchange="selectTitleTypeEdit(event)" name="titleType" id="titleType{{ value.id }}" data-te-select-init>
-                    <option value="Movie">Movie</option>
-                    <option value="Music Video">Music Video</option>
-                    <option value="Podcast Episode">Podcast Episode</option>
-                    <option value="Podcast Series">Podcast Series</option>
-                    <option value="Short">Short</option>
-                    <option value="Tv Episode">Tv Episode</option>
-                    <option value="Tv Mini Series">Tv Mini Series</option>
-                    <option value="Tv Movie">Tv Movie</option>
-                    <option value="Tv Series">Tv Series</option>
-                    <option value="Tv Short">Tv Short</option>
-                    <option value="Tv Special">Tv Special</option>
-                    <option value="Video">Video</option>
-                    <option value="Video Game">Video Game</option>
-                </select>
+                <label class="inline-block text-[#031e49]" for="titleType">Title type:</label>
+                <div class="inline-block w-2/4 font-light border border-[#031e49]">
+                    <select onchange="selectTitleTypeEdit(event)" name="titleType" id="titleType{{ value.id }}" data-te-select-init>
+                        <option value="Movie">Movie</option>
+                        <option value="Music Video">Music Video</option>
+                        <option value="Podcast Episode">Podcast Episode</option>
+                        <option value="Podcast Series">Podcast Series</option>
+                        <option value="Short">Short</option>
+                        <option value="Tv Episode">Tv Episode</option>
+                        <option value="Tv Mini Series">Tv Mini Series</option>
+                        <option value="Tv Movie">Tv Movie</option>
+                        <option value="Tv Series">Tv Series</option>
+                        <option value="Tv Short">Tv Short</option>
+                        <option value="Tv Special">Tv Special</option>
+                        <option value="Video">Video</option>
+                        <option value="Video Game">Video Game</option>
+                    </select>
+                </div>
             </div>
             
             <!--Release date input-->
-            <div>
-                <label class="inline-block">Release Date:</label>
+            <div class="mb-4">
+                <label class="inline-block text-[#031e49]">Release Date:</label>
                 {% set startDate = "" %}
                 {% set endDate = "" %}
                 {% if '-' in value.releaseDate %}
@@ -145,15 +148,15 @@
                     {% set endDate = value.releaseDate[5:] %}                
                     <input 
                         type="text" 
-                        class="dark:text-neutral-600 w-12" 
+                        class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                         id="releaseDate{{ value.id }}" 
                         name="releaseDate"
                         maxlength="4" 
                         value="{{ startDate }}">
-                    <div class="inline-block">-</div>
+                    <div class="inline-block text-[#031e49]">-</div>
                     <input 
                         type="text" 
-                        class="inline-block dark:text-neutral-600 w-12" 
+                        class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                         id="releaseDateEndYear{{ value.id }}" 
                         name="releaseDateEndYear"
                         maxlength="4" 
@@ -161,74 +164,187 @@
                 {% else %}
                     <input 
                         type="text" 
-                        class="dark:text-neutral-600 w-12" 
+                        class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                         id="releaseDate{{ value.id }}" 
                         name="releaseDate"
                         maxlength="4" 
                         value="{{ value.releaseDate }}">
-                    <div class="inline-block">-</div>
+                    <div class="inline-block text-[#031e49]">-</div>
                     <input 
                         type="text" 
-                        class="inline-block dark:text-neutral-600 w-12" 
+                        class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
                         id="releaseDateEndYear{{ value.id }}" 
                         name="releaseDateEndYear"
                         maxlength="4" 
                         disabled>
                 {% endif %}
-                <div class="inline-block" id="errorMessageForReleaseDate{{ value.id }}"></div>
+                <div class="inline-block text-sm font-semibold" id="errorMessageForReleaseDate{{ value.id }}"></div>
             </div>
 
             <!--Runtime input-->
-            <div>
-                <label class="inline-block">Runtime:</label>
+            <div class="mb-4">
+                <label class="inline-block text-[#031e49]">Runtime:</label>
                 <input 
                     type="text" 
-                    class="dark:text-neutral-600" 
+                    class="text-slate-200 w-20 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                     id="runtime{{ value.id }}" 
-                    name="runtime" 
+                    name="runtime"
+                    maxlength="50" 
                     value="{{ value.runtime }}">
             </div>
 
-            <!--Director input-->
-            <div>
-                <label class="inline-block">Director(s):</label>
-                <input 
-                    type="text" 
-                    class="dark:text-neutral-600" 
-                    id="director{{ value.id }}" 
-                    name="director" 
-                    value="{{ value.director }}">
-            </div>
-
-            <!--Writer input-->
-            <div>
-                <label class="inline-block">Writer(s):</label>
-                <input 
-                    type="text" 
-                    class="dark:text-neutral-600 w-64" 
-                    id="writer{{ value.id }}" 
-                    name="writer" 
-                    value="{{ value.writer }}">
-            </div>
-        
-            <!--Creator input-->
-            <div>
-                <label class="inline-block">Creator(s):</label>
-                <input 
-                    type="text" 
-                    class="dark:text-neutral-600" 
-                    id="creator{{ value.id }}" 
-                    name="creator" 
-                    value="{{ value.creator }}">
-            </div>            
+            <!--Director, writer and creator inputs-->
+            {% if value.titleType == "Movie" or value.titleType == "Short" or value.titleType == "Tv Episode" or 
+                value.titleType == "Tv Movie" or value.titleType == "Tv Short" or value.titleType == "Tv Special" or
+                value.titleType == "Video" or value.titleType == "Video Game" %}
+                <div class="mb-4">
+                    <label class="inline-block text-[#031e49]">Director(s):</label>
+                    <input 
+                        type="text" 
+                        class="text-slate-200 w-3/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
+                        id="director{{ value.id }}" 
+                        name="director"
+                        maxlength="100" 
+                        value="{{ value.director }}">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="inline-block text-[#031e49]">Writer(s):</label>
+                    <input 
+                        type="text" 
+                        class="inline-block text-slate-200 w-5/6 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
+                        id="writer{{ value.id }}" 
+                        name="writer"
+                        maxlength="100" 
+                        value="{{ value.writer }}">
+                </div>            
+                
+                <div class="mb-4">
+                    <label class="inline-block text-[#031e49]">Creator(s):</label>
+                    <input 
+                        type="text" 
+                        class="inline-block text-slate-200 w-4/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        id="creator{{ value.id }}" 
+                        name="creator"
+                        maxlength="100" 
+                        value="{{ value.creator }}"
+                        disabled>
+                </div>            
+            {% elseif value.titleType == "Tv Series" or value.titleType == "Tv Mini Series" %}
+                <div class="mb-4">
+                    <label class="inline-block text-[#031e49]">Director(s):</label>
+                    <input 
+                        type="text" 
+                        class="text-slate-200 w-3/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        id="director{{ value.id }}" 
+                        name="director"
+                        maxlength="100" 
+                        value="{{ value.director }}"
+                        disabled>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="inline-block text-[#031e49]">Writer(s):</label>
+                    <input 
+                        type="text" 
+                        class="inline-block text-slate-200 w-5/6 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        id="writer{{ value.id }}" 
+                        name="writer"
+                        maxlength="100" 
+                        value="{{ value.writer }}"
+                        disabled>
+                </div>            
+                
+                <div class="mb-4">
+                    <label class="inline-block text-[#031e49]">Creator(s):</label>
+                    <input 
+                        type="text" 
+                        class="inline-block text-slate-200 w-4/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
+                        id="creator{{ value.id }}" 
+                        name="creator"
+                        maxlength="100" 
+                        value="{{ value.creator }}">
+                </div>
+            {% elseif value.titleType == "Podcast Episode" or value.titleType == "Podcast Series" %}
+                <div class="mb-4">
+                    <label class="inline-block text-[#031e49]">Director(s):</label>
+                    <input 
+                        type="text" 
+                        class="text-slate-200 w-3/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        id="director{{ value.id }}" 
+                        name="director"
+                        maxlength="100" 
+                        value="{{ value.director }}"
+                        disabled>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="inline-block text-[#031e49]">Writer(s):</label>
+                    <input 
+                        type="text" 
+                        class="inline-block text-slate-200 w-5/6 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        id="writer{{ value.id }}" 
+                        name="writer"
+                        maxlength="100" 
+                        value="{{ value.writer }}"
+                        disabled>
+                </div>            
+                
+                <div class="mb-4">
+                    <label class="inline-block text-[#031e49]">Creator(s):</label>
+                    <input 
+                        type="text" 
+                        class="inline-block text-slate-200 w-4/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        id="creator{{ value.id }}" 
+                        name="creator"
+                        maxlength="100" 
+                        value="{{ value.creator }}"
+                        disabled>
+                </div>
+            {% elseif value.titleType == "Music Video" %}
+                <div class="mb-4">
+                    <label class="inline-block text-[#031e49]">Director(s):</label>
+                    <input 
+                        type="text" 
+                        class="text-slate-200 w-3/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
+                        id="director{{ value.id }}" 
+                        name="director"
+                        maxlength="100" 
+                        value="{{ value.director }}">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="inline-block text-[#031e49]">Writer(s):</label>
+                    <input 
+                        type="text" 
+                        class="inline-block text-slate-200 w-5/6 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        id="writer{{ value.id }}" 
+                        name="writer"
+                        maxlength="100" 
+                        value="{{ value.writer }}"
+                        disabled>
+                </div>            
+                
+                <div class="mb-4">
+                    <label class="inline-block text-[#031e49]">Creator(s):</label>
+                    <input 
+                        type="text" 
+                        class="inline-block text-slate-200 w-4/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        id="creator{{ value.id }}" 
+                        name="creator"
+                        maxlength="100" 
+                        value="{{ value.creator }}"
+                        disabled>
+                </div>
+            {% endif %}
 
             <!--IMDb Rating input-->
-            <div>
-                <label for="rating{{ value.id }}" class="inline-block">IMDb Rating:</label>
+            <div class="mb-4">
+                <label for="rating{{ value.id }}" class="inline-block text-[#031e49]">IMDb Rating:</label>
                 {% if value.ImdbRating != null %}
                 <input 
                     type="text" 
-                    class="dark:text-neutral-600 w-12" 
+                    class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                     id="imdbRating{{ value.id }}" 
                     name="imdbRating" 
                     minlength="1" 
@@ -237,23 +353,23 @@
                 {% else %}
                 <input 
                     type="text" 
-                    class="dark:text-neutral-600 w-12" 
+                    class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                     id="imdbRating{{ value.id }}" 
                     name="imdbRating" 
                     minlength="1" 
                     maxlength="3">
                 {% endif %}
-                <div class="inline-block" id="errorMessageForIMDbRating{{ value.id }}"></div>
+                <div class="inline-block text-sm font-semibold" id="errorMessageForIMDbRating{{ value.id }}"></div>
             </div>
 
             <!--Genres input-->
-            <div>
+            <div class="mb-4">
                 <div>
                     <input type="hidden" id="hiddenValueGenres{{ value.id }}" name="hiddenValueGenres" value="{{ value.genres }}">
                 </div>
 
-                <label for="genres">Genres:</label>
-                <div class="inline-block border-2 border-sky-500 w-80">
+                <label for="genres" class="inline-block text-[#031e49]">Genres:</label>
+                <div class="inline-block font-light border border-[#031e49] w-4/5">
                     <select name="genres[]" id="genres{{ value.id }}" data-te-select-init multiple>
                         <option value="Action">Action</option>
                         <option value="Adult">Adult</option>
@@ -288,19 +404,20 @@
             </div>
 
             <!--Cast input-->
-            <div>
-                <label class="inline-block">Stars:</label>
+            <div class="mb-4">
+                <label class="inline-block text-[#031e49]">Stars:</label>
                 <input 
                     type="text" 
-                    class="dark:text-neutral-600 w-64" 
+                    class="text-slate-200 w-4/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                     id="cast{{ value.id }}" 
-                    name="cast" 
+                    name="cast"
+                    maxlength="255" 
                     value="{{ value.stars }}">
             </div>
 
             <!--IMAGE INPUT-->
-            <div class="relative">
-                <label for="fileName" class="inline-block">Select an image</label>
+            <div class="mb-4">
+                <label for="fileName" class="inline-block text-[#031e49]">Select an image</label>
                 <input 
                     class="relative hover:cursor-pointer" 
                     type="file" 
@@ -308,16 +425,17 @@
                     name="fileName"
                     accept=".jpg, .jpeg, .png"
                     onchange="validateFileTypeForEditTitle()">
-                <div class="inline-block" id="errorMessageForEditFileType{{ value.id }}"></div>
+                <div class="inline-block text-sm font-semibold" id="errorMessageForEditFileType{{ value.id }}"></div>
             </div>
 
             <!--Plot input-->
-            <div class="relative mb-3">
-                <label class="inline-block">Plot:</label>
+            <div class="mb-4">
+                <label class="text-[#031e49]">Plot:</label>
                 <textarea
-                    class="block dark:text-neutral-600"
+                    class="text-slate-200 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 p-1.5 outline-none focus:border-slate-300"
                     id="plot{{ value.id }}"
                     name="plot"
+                    maxlength="1024"
                     rows="5"
                     cols="50">{{ value.plot }}</textarea>
             </div>
@@ -327,17 +445,15 @@
         <div class="flex justify-end">
             <button
                 type="button"
-                class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
-                data-te-modal-dismiss
-                data-te-ripple-init
-                data-te-ripple-color="light">
+                class="font-medium text-xs text-slate-300 uppercase leading-normal bg-slate-900 px-3 py-1 rounded shadow-lg shadow-slate-900/50 hover:bg-slate-800 hover:shadow-md shadow-slate-800/50"
+                data-te-modal-dismiss>
                 Close
             </button>
             <button 
                 type="submit"
-                class="block dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded border"
+                class="font-bold text-xs text-indigo-700 uppercase leading-normal ml-2 px-3 py-1 rounded border-2 border-[#031e49] shadow-lg shadow-indigo-500/50 hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600 hover:shadow-lg hover:shadow-slate-900/75"
                 onclick="return validateForm()">
-                Save!
+                Save
             </button>
         </div>       
     </form>

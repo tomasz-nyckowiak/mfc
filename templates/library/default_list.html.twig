@@ -9,192 +9,196 @@
 {% endblock %}
 
 {% block body %}
-{% for message in app.flashes('delete') %}
-    <div class="rounded-md p-2 border-green-300 bg-green-50 border dark:border-green-600 dark:bg-green-700 dark:text-white mb-4">{{ message }}</div>
-{% endfor %}
-<div>{{ include('library/_dropdown_test.html.twig') }}</div>
-<div>
-    {% if data|length > 0 %}
-    <ul>
-        {% for value in data %}
-        <li id="item{{ value.id }}" class="border-solid border-2 border-purple-600 rounded-lg p-2" style="list-style-type:circle;">
-            <div>
-                <div>                        
-                    {% if id is defined %}
-                        {% if value.id == id %} 
-                            {% for message in app.flashes('success') %}                                                       
-                                <div class="rounded-md border dark:border-green-600 dark:bg-green-700 dark:text-white">{{ message }}</div>
-                            {% endfor %}
-                            {% for message in app.flashes('fail') %}                                                       
-                                <div class="rounded-md border dark:border-green-600 dark:bg-green-700 dark:text-white">{{ message }}</div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endif %}                                              
-                </div>
-                <div class="inline-block">
-                    <div class="relative h-20 w-12">
-                        {% if value.imageUrl != null %}
-                            <img class="absolute w-full h-full inset-0 object-cover" src="{{ value.imageUrl }}" alt="Cover">
-                        {% else %}
-                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
-                        {% endif %}                        
-                    </div>
-                </div>
-                <div class="inline-block">
-                    <div>
-                        <div>{{ value.originalTitle }}</div>                        
-                        {% if value.titleType == "Movie" %}
-                            {% if value.releaseDate != null and value.runtime != null %}
-                                <div>{{ value.releaseDate }} | {{ value.runtime }}</div>
-                            {% elseif value.releaseDate != null and value.runtime == null %}
-                                <div>{{ value.releaseDate }}</div>
-                            {% elseif value.releaseDate == null and value.runtime != null %}
-                                <div>{{ value.runtime }}</div>
-                            {% else %}
-                                {# <div>Both values (releaseDate and runtime) are null</div> #}
-                            {% endif %}
-                            <div>
-                                {% if value.director != null %}
-                                    {% if ',' in value.director %}
-                                        <div>Directors: {{ value.director }}</div>
-                                    {% else %}
-                                        <div>Director: {{ value.director }}</div>
-                                    {% endif %} 
-                                {% endif %}                            
-                            </div>
-                            <div>
-                                {% if value.writer != null %}
-                                    {% if ',' in value.writer %}
-                                        <div>Writers: {{ value.writer }}</div>
-                                    {% else %}
-                                        <div>Writer: {{ value.writer }}</div>
-                                    {% endif %} 
-                                {% endif %}
-                            </div>
-                        {% else %}
-                            {% if value.releaseDate != null and value.titleType != null and value.runtime != null %}
-                                {% if value.runtime|first == '0' %}
-                                    <div>{{ value.releaseDate }} | {{ value.titleType }} | {{ value.runtime[3:] }}</div>
-                                {% else %}
-                                    <div>{{ value.releaseDate }} | {{ value.titleType }} | {{ value.runtime }}</div>
-                                {% endif %}
-                            {% elseif value.releaseDate != null and value.titleType != null and value.runtime == null %}
-                                <div>{{ value.releaseDate }} | {{ value.titleType }}</div>
-                            {% elseif value.releaseDate != null and value.titleType == null and value.runtime == null %}
-                                <div>{{ value.releaseDate }}</div>
-                            {% elseif value.releaseDate == null and value.titleType != null and value.runtime != null %}
-                                {% if value.runtime|first == '0' %}
-                                    <div>{{ value.titleType }} | {{ value.runtime[3:] }}</div>
-                                {% else %}
-                                    <div>{{ value.titleType }} | {{ value.runtime }}</div>
-                                {% endif %}
-                            {% elseif value.releaseDate != null and value.titleType == null and value.runtime != null %}
-                                {% if value.runtime|first == '0' %}
-                                    <div>{{ value.releaseDate }} | {{ value.runtime[3:] }}</div>
-                                {% else %}
-                                    <div>{{ value.releaseDate }} | {{ value.runtime }}</div>
-                                {% endif %}
-                            {% elseif value.releaseDate == null and value.titleType == null and value.runtime != null %}
-                                {% if value.runtime|first == '0' %}
-                                    <div>{{ value.runtime[3:] }}</div>
-                                {% else %}
-                                    <div>{{ value.runtime }}</div>
-                                {% endif %}
-                            {% elseif value.releaseDate == null and value.titleType != null and value.runtime == null %}
-                                <div>{{ value.titleType }}</div>
-                            {% else %}
-                                {# <div>All 3 values (releaseDate, titleType and runtime) are null</div> #}
-                            {% endif %}
-                            <div>
-                                {% if value.creator != null %}
-                                    {% if ',' in value.creator %}
-                                        <div>Creators: {{ value.creator }}</div>
-                                    {% else %}
-                                        <div>Creator: {{ value.creator }}</div>
-                                    {% endif %} 
-                                {% endif %}
-                            </div>
-                            <div>
-                                {% if value.director != null %}
-                                    {% if ',' in value.director %}
-                                        <div>Directors: {{ value.director }}</div>
-                                    {% else %}
-                                        <div>Director: {{ value.director }}</div>
-                                    {% endif %} 
-                                {% endif %}                            
-                            </div>
-                            <div>
-                                {% if value.writer != null %}
-                                    {% if ',' in value.writer %}
-                                        <div>Writers: {{ value.writer }}</div>
-                                    {% else %}
-                                        <div>Writer: {{ value.writer }}</div>
-                                    {% endif %} 
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    </div>                    
-                </div>
-                <div class="inline-block">
+    {% for message in app.flashes('delete') %}
+        <div class="rounded-md p-2 border-green-300 bg-green-50 border dark:border-green-600 dark:bg-green-700 dark:text-white mb-4">{{ message }}</div>
+    {% endfor %}
+    <div class="mb-5">{{ include('library/_dropdown_filter.html.twig') }}</div>
+    <div>
+        {% if data|length > 0 %}
+        <ul>
+            {% for value in data %}
+            <li id="item{{ value.id }}" class="border-solid border-2 border-[#708090] rounded-lg p-2 mb-5">
+                <div>
                     <div>                        
-                        <div class="inline-block">
-                            {% if value.ImdbRating != null %}
-                                <div>IMDb Rating: {{ value.ImdbRating }}</div>
-                            {% else %}
-                                <div>IMDb Rating: -</div>
+                        {% if id is defined %}
+                            {% if value.id == id %} 
+                                {% for message in app.flashes('success') %}                                                       
+                                    <div class="rounded-md border dark:border-green-600 dark:bg-green-700 dark:text-white">{{ message }}</div>
+                                {% endfor %}
+                                {% for message in app.flashes('fail') %}                                                       
+                                    <div class="rounded-md border dark:border-green-600 dark:bg-green-700 dark:text-white">{{ message }}</div>
+                                {% endfor %}
                             {% endif %}
-                        </div>                        
-                        <div class="inline-block">
-                            <a href="{{ path('app_library_update', { id: value.id }) }}">
-                                <button 
-                                    class="flex items-center whitespace-nowrap rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] motion-reduce:transition-none dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                                    >Update
-                                </button>
-                            </a>
+                        {% endif %}                                              
+                    </div>
+                    {# FIRST COLUMN #}
+                    <div class="flex justify-between">
+                        <div class="inline-flex flex-row">
+                            <div class="">
+                               <div class="relative h-20 w-12 mr-1">
+                                    {% if value.imageUrl != null %}
+                                        <img class="absolute w-full h-full inset-0 object-cover" src="{{ value.imageUrl }}" alt="Cover">
+                                    {% else %}
+                                        <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                                    {% endif %}                        
+                                </div>
+                            </div>                            
+                            <div class="flex items-center">
+                                <div class="text-sm tracking-wider">
+                                    <div class="text-base font-semibold tracking-normal">{{ value.originalTitle }}</div>                        
+                                    {% if value.titleType == "Movie" %}
+                                        {% if value.releaseDate != null and value.runtime != null %}
+                                            <div>{{ value.releaseDate }} | {{ value.runtime }}</div>
+                                        {% elseif value.releaseDate != null and value.runtime == null %}
+                                            <div>{{ value.releaseDate }}</div>
+                                        {% elseif value.releaseDate == null and value.runtime != null %}
+                                            <div>{{ value.runtime }}</div>
+                                        {% else %}
+                                            {# <div>Both values (releaseDate and runtime) are null</div> #}
+                                        {% endif %}
+                                        <div>
+                                            {% if value.director != null %}
+                                                {% if ',' in value.director %}
+                                                    <div>Directors: {{ value.director }}</div>
+                                                {% else %}
+                                                    <div>Director: {{ value.director }}</div>
+                                                {% endif %} 
+                                            {% endif %}                            
+                                        </div>
+                                        <div>
+                                            {% if value.writer != null %}
+                                                {% if ',' in value.writer %}
+                                                    <div>Writers: {{ value.writer }}</div>
+                                                {% else %}
+                                                    <div>Writer: {{ value.writer }}</div>
+                                                {% endif %} 
+                                            {% endif %}
+                                        </div>
+                                    {% else %}
+                                        {% if value.releaseDate != null and value.titleType != null and value.runtime != null %}
+                                            {% if value.runtime|first == '0' %}
+                                                <div>{{ value.releaseDate }} | {{ value.titleType }} | {{ value.runtime[3:] }}</div>
+                                            {% else %}
+                                                <div>{{ value.releaseDate }} | {{ value.titleType }} | {{ value.runtime }}</div>
+                                            {% endif %}
+                                        {% elseif value.releaseDate != null and value.titleType != null and value.runtime == null %}
+                                            <div>{{ value.releaseDate }} | {{ value.titleType }}</div>
+                                        {% elseif value.releaseDate != null and value.titleType == null and value.runtime == null %}
+                                            <div>{{ value.releaseDate }}</div>
+                                        {% elseif value.releaseDate == null and value.titleType != null and value.runtime != null %}
+                                            {% if value.runtime|first == '0' %}
+                                                <div>{{ value.titleType }} | {{ value.runtime[3:] }}</div>
+                                            {% else %}
+                                                <div>{{ value.titleType }} | {{ value.runtime }}</div>
+                                            {% endif %}
+                                        {% elseif value.releaseDate != null and value.titleType == null and value.runtime != null %}
+                                            {% if value.runtime|first == '0' %}
+                                                <div>{{ value.releaseDate }} | {{ value.runtime[3:] }}</div>
+                                            {% else %}
+                                                <div>{{ value.releaseDate }} | {{ value.runtime }}</div>
+                                            {% endif %}
+                                        {% elseif value.releaseDate == null and value.titleType == null and value.runtime != null %}
+                                            {% if value.runtime|first == '0' %}
+                                                <div>{{ value.runtime[3:] }}</div>
+                                            {% else %}
+                                                <div>{{ value.runtime }}</div>
+                                            {% endif %}
+                                        {% elseif value.releaseDate == null and value.titleType != null and value.runtime == null %}
+                                            <div>{{ value.titleType }}</div>
+                                        {% else %}
+                                            {# <div>All 3 values (releaseDate, titleType and runtime) are null</div> #}
+                                        {% endif %}
+                                        <div>
+                                            {% if value.creator != null %}
+                                                {% if ',' in value.creator %}
+                                                    <div>Creators: {{ value.creator }}</div>
+                                                {% else %}
+                                                    <div>Creator: {{ value.creator }}</div>
+                                                {% endif %} 
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            {% if value.director != null %}
+                                                {% if ',' in value.director %}
+                                                    <div>Directors: {{ value.director }}</div>
+                                                {% else %}
+                                                    <div>Director: {{ value.director }}</div>
+                                                {% endif %} 
+                                            {% endif %}                            
+                                        </div>
+                                        <div>
+                                            {% if value.writer != null %}
+                                                {% if ',' in value.writer %}
+                                                    <div>Writers: {{ value.writer }}</div>
+                                                {% else %}
+                                                    <div>Writer: {{ value.writer }}</div>
+                                                {% endif %} 
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>                    
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        {% if value.rating != null %}
-                            <div>My Rating: {{ value.rating }}</div>
-                        {% else %}
-                            <div>My Rating: -</div>
-                        {% endif %}
-                    </div>
-                    <div>
-                        {% if value.toWatch != null %}
-                            <div>Watchlist: Want to see!</div>
-                        {% else %}
-                            <div>Watchlist: -</div>
-                        {% endif %}
-                    </div>                   
-                </div>
-                <div class="inline-block">
-                    <div class="inline-block">
-                        <div>{{ include('library/_edit_modal.html.twig') }}</div>
-                    </div>                    
-                    <div class="inline-block">
-                        <div>{{ include('library/_delete_modal.html.twig') }}</div>
-                    </div>
-                </div>
-                <div>
-                    <div>Genres: {{ value.genres }}</div>
-                    <div>Stars: {{ value.stars }}</div>
-                    <div>{{ value.plot }}</div>
-                </div>
-                <div>
-                    {% if value.review != null %}
-                        <div>{{ include('library/_review.html.twig') }}</div>
-                    {% else %}
-                        <div>No review</div>
-                    {% endif %}
-                </div>               
-            </div>                              
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-        Library is empty!
-    {% endif %}
-</div>
 
+                        {# SECOND COLUMN #}
+                        <div class="flex items-center">
+                            <div class="inline-block text-sm tracking-wider">
+                                <div class="mb-1.5">
+                                    {% if value.ImdbRating != null %}
+                                        <div>IMDb Rating: {{ value.ImdbRating }}</div>
+                                    {% else %}
+                                        <div>IMDb Rating: -</div>
+                                    {% endif %}
+                                </div>
+                                <div class="mb-1.5">
+                                    {% if value.rating != null %}
+                                        <div>My Rating: {{ value.rating }}</div>
+                                    {% else %}
+                                        <div>My Rating: -</div>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {% if value.toWatch != null %}
+                                        <div>Watchlist: Want to see!</div>
+                                    {% else %}
+                                        <div>Watchlist: -</div>
+                                    {% endif %}
+                                </div>                   
+                            </div>
+                        </div>
+                    
+                        {# THIRD COLUMN #}
+                        <div class="flex items-center">
+                            <div class="flex-col">
+                                <div class="mb-3">{{ include('library/_edit_modal.html.twig') }}</div>                    
+                                <div class="">{{ include('library/_delete_modal.html.twig') }}</div>
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div class="my-4">
+                        <div class="">
+                            {% set genres = value.genres|split(',') %}
+                            {% for genre in genres %}
+                                <span class="text-sm border-solid border-2 border-indigo-500 rounded-full p-1.5">{{ genre }}</span>
+                            {% endfor %}
+                        </div>                       
+                        <div class="mt-4">Stars: {{ value.stars }}</div>
+                        <div class="italic my-3">{{ value.plot }}</div>
+                    </div>
+                    <div>
+                        {% if value.review != null %}
+                            <div>{{ include('library/_review.html.twig') }}</div>
+                        {% else %}
+                            <div>No review</div>
+                        {% endif %}
+                    </div>               
+                </div>                              
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            Library is empty!
+        {% endif %}
+    </div>
 {% endblock %}

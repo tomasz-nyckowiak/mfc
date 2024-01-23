@@ -70,7 +70,7 @@ function clearOtherMessagesEdit(failedInput) {
     if (failedInput == "rating") {
         if (titleElement.innerHTML == errorMessageForNoTitle) {
             titleElement.innerHTML = "";
-            titleUserInput.classList.remove("border-2", "border-red-500");
+            titleUserInput.classList.remove("border-2", "border-[#af1e1e]");
         }
         
         if (releaseDateElement.innerHTML == errorMessageForReleaseDate) {
@@ -187,41 +187,57 @@ function selectTitleTypeEdit(event) {
         event.target.value === "Video" || event.target.value === "Video Game") {
         
         creatorInput.setAttribute("disabled", true);
+        creatorInput.classList.add("opacity-25");
         directorInput.removeAttribute("disabled");
-        writerInput.removeAttribute("disabled");       
+        directorInput.classList.remove("opacity-25");
+        writerInput.removeAttribute("disabled");
+        writerInput.classList.remove("opacity-25");       
         
         if (releaseDateInput != null) {
             releaseDateInput.setAttribute("disabled", true);
+            releaseDateInput.classList.add("opacity-25");
         }        
     }
 
-    if (event.target.value === "Tv Series" || event.target.value === "Tv MiniSeries") {
-        directorInput.setAttribute("disabled", true);       
+    if (event.target.value === "Tv Series" || event.target.value === "Tv Mini Series") {
+        directorInput.setAttribute("disabled", true);
+        directorInput.classList.add("opacity-25");       
         writerInput.setAttribute("disabled", true);
+        writerInput.classList.add("opacity-25");
         creatorInput.removeAttribute("disabled");
+        creatorInput.classList.remove("opacity-25");
         
         if (releaseDateInput != null) {
             releaseDateInput.removeAttribute("disabled");
+            releaseDateInput.classList.remove("opacity-25");
         }        
     }
 
     if (event.target.value === "Podcast Episode" || event.target.value === "Podcast Series") {
         directorInput.setAttribute("disabled", true);
-        writerInput.setAttribute("disabled", true);       
+        directorInput.classList.add("opacity-25");
+        writerInput.setAttribute("disabled", true);
+        writerInput.classList.add("opacity-25");       
         creatorInput.setAttribute("disabled", true);
+        creatorInput.classList.add("opacity-25");
         
         if (releaseDateInput != null) {
             releaseDateInput.removeAttribute("disabled");
+            releaseDateInput.classList.remove("opacity-25");
         }
     }
 
     if (event.target.value === "Music Video") {
-        creatorInput.setAttribute("disabled", true);       
+        creatorInput.setAttribute("disabled", true);
+        creatorInput.classList.add("opacity-25");       
         writerInput.setAttribute("disabled", true);
+        writerInput.classList.add("opacity-25");
         directorInput.removeAttribute("disabled");
+        directorInput.classList.remove("opacity-25");
         
         if (releaseDateInput != null) {
             releaseDateInput.setAttribute("disabled", true);
+            releaseDateInput.classList.add("opacity-25");
         }        
     }    
 }
@@ -243,7 +259,8 @@ function validateForm() {
             let manipulatedDiv = document.getElementById(divId);
             manipulatedDiv.innerHTML = errorMessageForRatings;
             manipulatedDiv.style.color = colorForErrorMessages;
-    
+            manipulatedDiv.focus();
+                
             whichInputFailed = "rating";            
             clearOtherMessagesEdit(whichInputFailed);            
             return false;
@@ -257,7 +274,7 @@ function validateForm() {
             manipulatedDiv.style.color = colorForErrorMessages;
             let idTitleInput = "originalTitle" + IdToRemember;
             let titleUserInput = document.getElementById(idTitleInput);
-            titleUserInput.classList.add("border-2", "border-red-500");
+            titleUserInput.classList.add("border-2", "border-[#af1e1e]");
     
             whichInputFailed = "title";
             clearOtherMessagesEdit(whichInputFailed);            

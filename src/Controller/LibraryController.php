@@ -155,8 +155,16 @@ class LibraryController extends AbstractController
     {
         return $this->render('library/add_title_manually.html.twig');
     }
+
+    //ADD TITLE MANUALLY FAIL
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[Route('/library/addtitle/fail', name: 'app_add_title_manually_fail')]
+    public function addTitleManuallyFail(): Response
+    {
+        return $this->render('library/add_title_manually.html.twig');
+    }
     
-    //ADD TITLE MANUALLY
+    //ADD TITLE MANUALLY SUCCESS
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/library/addtitle/success', name: 'app_add_title_manually_success')]
     public function addTitleManuallySuccess(TitleInformationRepository $titles): Response
@@ -168,7 +176,7 @@ class LibraryController extends AbstractController
         $newTitle = new AddTitle();
         $allData = $newTitle->addTitleManually();
         
-        dd($allData);
+        //dd($allData);
         
         $title = new TitleInformation();
         $title->setUser($currentUser);
@@ -201,19 +209,17 @@ class LibraryController extends AbstractController
         $result = $titles->checkIfTitleAlreadyExistInLibraryForCurrentUser($userId, $allData['title'], $allData['titleType']);
 
         if (!$result) {
-            //$isTitleAlreadyInLibrary = false;
-            $message = "Title " . $allData['title'] . " has been successfully added to your library!";
+            $message = $allData['title'];
             $this->addFlash('success', $message);
             $titles->add($title, true);
-        } else {
-            //$isTitleAlreadyInLibrary = true;
-            $message = "Title " . $allData['title'] . " is already in your library!";
-            $this->addFlash('fail', $message);
-        }
 
-                
-        
-        return $this->render('library/add_title_manually.html.twig');
+            return $this->render('library/add_title_manually.html.twig');
+        } else {
+            $message = $allData['title'];
+            $this->addFlash('fail', $message);
+            
+            return $this->redirectToRoute('app_add_title_manually_fail');
+        }        
     }
 
     //ADD/EDIT STUFF

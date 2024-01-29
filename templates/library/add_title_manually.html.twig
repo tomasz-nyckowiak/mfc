@@ -9,347 +9,417 @@
 {% endblock %}
 
 {% block body %}
-{% for message in app.flashes('success') %}                                                       
-    <div class="rounded-md border dark:border-green-600 dark:bg-green-700 dark:text-white">{{ message }}</div>
-{% endfor %}
-{% for message in app.flashes('fail') %}                                                       
-    <div 
-        class="rounded-md border dark:border-green-600 dark:bg-warning-100 dark:text-warning-800"
-        role="alert">
-        <span class="mr-2">
-            <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            class="h-5 w-5">
-            <path
-                fill-rule="evenodd"
-                d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                clip-rule="evenodd" />
-            </svg>
-        </span>
-        {{ message }}
-    </div>
-{% endfor %}
-<div>
-    <form id="formAddManually" action="{{ path('app_add_title_manually_success') }}" method="POST" novalidate>
-        <!--TITLE INPUT-->
-        <div class="relative">
-            <label 
-                for="originalTitle" 
-                class="block"
-                >Title (required)
-            </label>            
-            <input 
-            type="text" 
-            class="inline-block dark:text-neutral-600 w-64" 
-            id="originalTitle" 
-            name="originalTitle">
-            <div class="inline-block" id="errorMessageForTitle"></div>                        
-        </div>
-
-        <!--TITLE TYPE INPUT-->
-        <div class="relative">
-            <div class="inline-block border-2 border-sky-500 w-64">
-                <select onchange="selectTitleType(event)" name="titleType" id="titleType" data-te-select-init data-te-select-placeholder="Title type">
-                    <option value="Movie">Movie</option>
-                    <option value="Music Video">Music Video</option>
-                    <option value="Podcast Episode">Podcast Episode</option>
-                    <option value="Podcast Series">Podcast Series</option>
-                    <option value="Short">Short</option>
-                    <option value="Tv Episode">Tv Episode</option>
-                    <option value="Tv Mini Series">Tv Mini Series</option>
-                    <option value="Tv Movie">Tv Movie</option>
-                    <option value="Tv Series">Tv Series</option>
-                    <option value="Tv Short">Tv Short</option>
-                    <option value="Tv Special">Tv Special</option>
-                    <option value="Video">Video</option>
-                    <option value="Video Game">Video Game</option>
-                </select>
+    {% for message in app.flashes('success') %}                                                       
+        <div
+            class="mb-3 inline-flex w-full items-center rounded-lg bg-green-700 px-6 py-5 text-base text-white"
+            role="alert"
+            data-te-alert-init
+            data-te-alert-show>
+            <span class="mr-2">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="h-6 w-6">
+                <path
+                    fill-rule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                    clip-rule="evenodd" />
+                </svg>
+            </span>
+            <div>
+                Title <span class="font-bold">{{ message }}</span> has been successfully added to your library!
             </div>
-        </div>
-
-        <!--GENRES INPUT-->
-        <div>Genres (you can select multiple options)</div>
-        <div class="inline-block">
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres1" name="genres[]" value="Action">
-                <label class="inline-block hover:cursor-pointer" for="genres1">Action</label>
-            </div>
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres2" name="genres[]" value="Adult">
-                <label class="inline-block hover:cursor-pointer" for="genres2">Adult</label>
-            </div>
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres3" name="genres[]" value="Adventure">
-                <label class="inline-block hover:cursor-pointer" for="genres3">Adventure</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres4" name="genres[]" value="Animation">
-                <label class="inline-block hover:cursor-pointer" for="genres4">Animation</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres5" name="genres[]" value="Biography">
-                <label class="inline-block hover:cursor-pointer" for="genres5">Biography</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres6" name="genres[]" value="Comedy">
-                <label class="inline-block hover:cursor-pointer" for="genres6">Comedy</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres7" name="genres[]" value="Crime">
-                <label class="inline-block hover:cursor-pointer" for="genres7">Crime</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres8" name="genres[]" value="Documentary">
-                <label class="inline-block hover:cursor-pointer" for="genres8">Documentary</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres9" name="genres[]" value="Drama">
-                <label class="inline-block hover:cursor-pointer" for="genres9">Drama</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres10" name="genres[]" value="Family">
-                <label class="inline-block hover:cursor-pointer" for="genres10">Family</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres11" name="genres[]" value="Fantasy">
-                <label class="inline-block hover:cursor-pointer" for="genres11">Fantasy</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres12" name="genres[]" value="Film-Noir">
-                <label class="inline-block hover:cursor-pointer" for="genres12">Film-Noir</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres13" name="genres[]" value="Game-Show">
-                <label class="inline-block hover:cursor-pointer" for="genres13">Game-Show</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres14" name="genres[]" value="History">
-                <label class="inline-block hover:cursor-pointer" for="genres14">History</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres15" name="genres[]" value="Horror">
-                <label class="inline-block hover:cursor-pointer" for="genres15">Horror</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres16" name="genres[]" value="Music">
-                <label class="inline-block hover:cursor-pointer" for="genres16">Music</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres17" name="genres[]" value="Musical">
-                <label class="inline-block hover:cursor-pointer" for="genres17">Musical</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres18" name="genres[]" value="Mystery">
-                <label class="inline-block hover:cursor-pointer" for="genres18">Mystery</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres19" name="genres[]" value="News">
-                <label class="inline-block hover:cursor-pointer" for="genres19">News</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres20" name="genres[]" value="Reality-TV">
-                <label class="inline-block hover:cursor-pointer" for="genres20">Reality-TV</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres21" name="genres[]" value="Romance">
-                <label class="inline-block hover:cursor-pointer" for="genres21">Romance</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres22" name="genres[]" value="Sci-Fi">
-                <label class="inline-block hover:cursor-pointer" for="genres22">Sci-Fi</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres23" name="genres[]" value="Short">
-                <label class="inline-block hover:cursor-pointer" for="genres23">Short</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres24" name="genres[]" value="Sport">
-                <label class="inline-block hover:cursor-pointer" for="genres24">Sport</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres25" name="genres[]" value="Talk-Show">
-                <label class="inline-block hover:cursor-pointer" for="genres25">Talk-Show</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres26" name="genres[]" value="Thriller">
-                <label class="inline-block hover:cursor-pointer" for="genres26">Thriller</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres27" name="genres[]" value="War">
-                <label class="inline-block hover:cursor-pointer" for="genres27">War</label>
-            </div>            
-            <div class="inline-flex">
-                <input class="relative float-left hover:cursor-pointer" type="checkbox" id="genres28" name="genres[]" value="Western">
-                <label class="inline-block hover:cursor-pointer" for="genres28">Western</label>
-            </div>            
-        </div>
-
-        <!--DIRECTOR INPUT-->
-        <div class="relative">
-            <label class="block">Director(s)</label>
-            <input 
-                type="text" 
-                class="dark:text-neutral-600" 
-                id="director" 
-                name="director">
-        </div>
-
-        <!--WRITER INPUT-->
-        <div class="relative">
-            <label class="block">Writer(s)</label>
-            <input 
-                type="text" 
-                class="dark:text-neutral-600 w-64" 
-                id="writer" 
-                name="writer">
-        </div>
-
-        <!--CREATOR INPUT-->
-        <div class="relative">
-            <label class="block">Creator(s)</label>
-            <input 
-                type="text" 
-                class="dark:text-neutral-600" 
-                id="creator" 
-                name="creator">
-        </div>
-
-        <!--CAST INPUT-->
-        <div class="relative">
-            <label class="block">Cast</label>
-            <input 
-                type="text" 
-                class="dark:text-neutral-600 w-64" 
-                id="cast" 
-                name="cast">
-        </div>
-
-        <!--RUNTIME INPUT-->
-        <div class="relative">
-            <label class="block">Runtime</label>
-            <input 
-                type="text" 
-                class="dark:text-neutral-600 w-64" 
-                id="runtime" 
-                name="runtime">
-        </div>
-
-        <!--RELEASE DATE INPUT-->
-        <div class="relative">
-            <label class="block">Release date</label>
-            <input 
-                type="text" 
-                class="dark:text-neutral-600 w-12" 
-                id="releaseDate" 
-                name="releaseDate"
-                maxlength="4">
-            <div class="inline-block">-</div>
-            <input 
-                type="text" 
-                class="inline-block dark:text-neutral-600 w-12" 
-                id="releaseDateEndYear" 
-                name="releaseDateEndYear"
-                maxlength="4">            
-            <div class="inline-block" id="errorMessageForReleaseDate"></div>
-        </div>
-
-        <!--RATING INPUT-->
-        <div class="relative">
-            <label for="rating" class="block">Rating</label>
-            <input 
-                type="text" 
-                class="dark:text-neutral-600 w-12" 
-                id="rating" 
-                name="rating" 
-                minlength="1" 
-                maxlength="3">
-            <div class="inline-block" id="errorMessageForRating"></div>
-        </div>
-        
-        <!--IMDB RATING INPUT-->
-        <div class="relative">
-            <label for="imdbRating" class="block">IMDb rating</label>            
-            <input 
-                type="text" 
-                class="dark:text-neutral-600 w-12" 
-                id="imdbRating" 
-                name="imdbRating" 
-                minlength="1" 
-                maxlength="3">
-            <div class="inline-block" id="errorMessageForIMDbRating"></div>
-        </div>
-
-        <!--PLOT INPUT-->
-        <div class="relative mb-3">
-            <label for="plot" class="block">Plot</label>
-            <textarea
-                class="block w-1/2 dark:text-neutral-600"
-                id="plot"
-                name="plot"
-                rows="5"
-                cols="50"
-                maxlength="1000"
-                oninput="countCharacters(this.id)"></textarea>
-                <div><span id="charactersForPlot">0</span>/1000</div>
-        </div>
-
-        <!--IMAGE INPUT-->
-        <div class="relative">
-            <label for="fileName" class="block">Select an image</label>
-            <input 
-                class="relative hover:cursor-pointer" 
-                type="file" 
-                id="fileName" 
-                name="fileName"
-                accept=".jpg, .jpeg, .png"
-                onchange="validateFileType()">
-            <div class="inline-block" id="errorMessageForFileType"></div>
-        </div>
-
-        <!--TO WATCH INPUT-->
-        <div class="relative">
-            <div class="inline-flex mb-4">
-                <input 
-                    class="relative float-left hover:cursor-pointer" 
-                    type="checkbox" 
-                    id="checkboxToWatch" 
-                    name="toWatchManually">
-                <label 
-                    class="inline-block hover:cursor-pointer" 
-                    for="checkboxToWatch">
-                    to Watch
-                </label>
-            </div>
-        </div>
-
-        <!--REVIEW INPUT-->
-        <div class="relative">
-            <label for="review" class="block">Review</label>
-            <textarea 
-                class="dark:text-neutral-600"
-                id="review"
-                name="review" 
-                rows="5" 
-                cols="50"></textarea>
-        </div>
-
-        <!--RESET AND SUBMIT BUTTONS-->
-        <div class="flex justify-end">
             <button
                 type="button"
-                class="inline-block dark:bg-grey-500 dark:hover:bg-grey-400 text-white rounded border"
-                onclick="resetForm()">
-                Clear
+                class="ml-auto box-content rounded-none border-none p-1 text-white opacity-100 hover:text-white hover:no-underline hover:opacity-50 focus:opacity-100 focus:shadow-none focus:outline-none"
+                data-te-alert-dismiss
+                aria-label="Close">
+                <span
+                    class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="h-6 w-6">
+                        <path
+                            fill-rule="evenodd"
+                            d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                            clip-rule="evenodd">
+                    </svg>
+                </span>
             </button>
-            <button 
-                type="submit"
-                class="inline-block dark:bg-indigo-500 dark:hover:bg-indigo-400 text-white rounded border"
-                onclick="return validateFormForAddingTitleManually()">
-                Add!
-            </button>
-        </div>         
-    </form>
-</div>
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('fail') %}                                                       
+        <div 
+            class="mb-3 inline-flex w-full items-center rounded-lg bg-[#f9edd2] px-6 py-5 text-base text-[#825c0f]"
+            role="alert"
+            data-te-alert-init
+            data-te-alert-show>            
+            <span class="mr-2">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="h-6 w-6">
+                <path
+                    fill-rule="evenodd"
+                    d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
+                    clip-rule="evenodd">
+                </svg>
+            </span>            
+            <div>
+                Title <span class="font-bold">{{ message }}</span> is already in your library!
+            </div>
+            <button
+                type="button"
+                class="ml-auto box-content rounded-none border-none p-1 text-[#825c0f] opacity-50 hover:text-[#825c0f] hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+                data-te-alert-dismiss
+                aria-label="Close">
+                <span
+                    class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="h-6 w-6">
+                        <path
+                            fill-rule="evenodd"
+                            d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                            clip-rule="evenodd">
+                    </svg>
+                </span>
+            </button>            
+        </div>
+    {% endfor %}
+    <div>
+        <form id="formAddManually" action="{{ path('app_add_title_manually_success') }}" method="POST" novalidate>
+            <!--TITLE INPUT-->
+            <div class="relative mb-4">
+                <label 
+                    for="originalTitle" 
+                    class="block font-medium text-[#708090] tracking-wide mb-0.5"
+                    >Title (*required)
+                </label>            
+                <input 
+                    type="text" 
+                    class="inline-block text-slate-200 w-80 rounded-sm border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 py-0.5 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    id="originalTitle" 
+                    name="originalTitle"
+                    maxlength="100">
+                <div class="inline-block text-sm font-semibold ml-2" id="errorMessageForTitle"></div>                        
+            </div>
+
+            <!--TITLE TYPE INPUT-->
+            <div class="relative text-[#708090] mb-4">
+                <div class="inline-block font-light border-2 border-[#708090] w-80 hover:shadow-[4px_4px_8px_1px_#94a3b8]">
+                    <select onchange="selectTitleType(event)" name="titleType" id="titleType" data-te-select-init data-te-select-placeholder="Title type">
+                        <option value="Movie">Movie</option>
+                        <option value="Music Video">Music Video</option>
+                        <option value="Podcast Episode">Podcast Episode</option>
+                        <option value="Podcast Series">Podcast Series</option>
+                        <option value="Short">Short</option>
+                        <option value="Tv Episode">Tv Episode</option>
+                        <option value="Tv Mini Series">Tv Mini Series</option>
+                        <option value="Tv Movie">Tv Movie</option>
+                        <option value="Tv Series">Tv Series</option>
+                        <option value="Tv Short">Tv Short</option>
+                        <option value="Tv Special">Tv Special</option>
+                        <option value="Video">Video</option>
+                        <option value="Video Game">Video Game</option>
+                    </select>
+                </div>
+            </div>
+
+            <!--GENRES INPUT-->
+            <div class="mb-4">
+                <div class="font-medium text-[#708090] tracking-wide mb-0.5">Genres (*can select multiple options)</div>
+                <div class="inline-block font-light">
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres1" name="genres[]" value="Action">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres1">Action</label>
+                    </div>
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres2" name="genres[]" value="Adult">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres2">Adult</label>
+                    </div>
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres3" name="genres[]" value="Adventure">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres3">Adventure</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres4" name="genres[]" value="Animation">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres4">Animation</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres5" name="genres[]" value="Biography">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres5">Biography</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres6" name="genres[]" value="Comedy">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres6">Comedy</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres7" name="genres[]" value="Crime">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres7">Crime</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres8" name="genres[]" value="Documentary">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres8">Documentary</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres9" name="genres[]" value="Drama">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres9">Drama</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres10" name="genres[]" value="Family">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres10">Family</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres11" name="genres[]" value="Fantasy">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres11">Fantasy</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres12" name="genres[]" value="Film-Noir">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres12">Film-Noir</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres13" name="genres[]" value="Game-Show">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres13">Game-Show</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres14" name="genres[]" value="History">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres14">History</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres15" name="genres[]" value="Horror">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres15">Horror</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres16" name="genres[]" value="Music">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres16">Music</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres17" name="genres[]" value="Musical">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres17">Musical</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres18" name="genres[]" value="Mystery">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres18">Mystery</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres19" name="genres[]" value="News">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres19">News</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres20" name="genres[]" value="Reality-Tv">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres20">Reality-Tv</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres21" name="genres[]" value="Romance">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres21">Romance</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres22" name="genres[]" value="Sci-Fi">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres22">Sci-Fi</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres23" name="genres[]" value="Short">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres23">Short</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres24" name="genres[]" value="Sport">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres24">Sport</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres25" name="genres[]" value="Talk-Show">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres25">Talk-Show</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres26" name="genres[]" value="Thriller">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres26">Thriller</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres27" name="genres[]" value="War">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres27">War</label>
+                    </div>            
+                    <div class="inline-flex">
+                        <input class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" type="checkbox" id="genres28" name="genres[]" value="Western">
+                        <label class="inline-block text-slate-200 ml-1 hover:underline hover:cursor-pointer" for="genres28">Western</label>
+                    </div>            
+                </div>
+            </div>
+
+            <!--DIRECTOR INPUT-->
+            <div class="relative mb-4">
+                <label class="block font-medium text-[#708090] tracking-wide mb-0.5">Director(s)</label>
+                <input 
+                    type="text" 
+                    class="text-slate-200 w-1/2 rounded-sm border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 py-0.5 outline-none shadow-[4px_4px_8px_1px_#708090] enabled:focus:border-slate-300 enabled:focus:shadow-[4px_4px_8px_1px_#cbd5e1] enabled:hover:border-slate-400 enabled:hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    id="director" 
+                    name="director"
+                    maxlength="100">
+            </div>
+
+            <!--WRITER INPUT-->
+            <div class="relative mb-4">
+                <label class="block font-medium text-[#708090] tracking-wide mb-0.5">Writer(s)</label>
+                <input 
+                    type="text" 
+                    class="text-slate-200 w-1/2 rounded-sm border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 py-0.5 outline-none shadow-[4px_4px_8px_1px_#708090] enabled:focus:border-slate-300 enabled:focus:shadow-[4px_4px_8px_1px_#cbd5e1] enabled:hover:border-slate-400 enabled:hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    id="writer" 
+                    name="writer"
+                    maxlength="100">
+            </div>
+
+            <!--CREATOR INPUT-->
+            <div class="relative mb-4">
+                <label class="block font-medium text-[#708090] tracking-wide mb-0.5">Creator(s)</label>
+                <input 
+                    type="text" 
+                    class="text-slate-200 w-1/2 rounded-sm border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 py-0.5 outline-none shadow-[4px_4px_8px_1px_#708090] enabled:focus:border-slate-300 enabled:focus:shadow-[4px_4px_8px_1px_#cbd5e1] enabled:hover:border-slate-400 enabled:hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    id="creator" 
+                    name="creator"
+                    maxlength="100">
+            </div>
+
+            <!--CAST INPUT-->
+            <div class="relative mb-4">
+                <label class="block font-medium text-[#708090] tracking-wide mb-0.5">Stars (*e.g. Margot Robbie, Ryan Gosling)</label>
+                <input 
+                    type="text" 
+                    class="text-slate-200 w-full rounded-sm border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 py-0.5 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    id="cast" 
+                    name="cast"
+                    maxlength="255">
+            </div>
+
+            <!--RUNTIME INPUT-->
+            <div class="mb-4">
+                <label class="block font-medium text-[#708090] tracking-wide mb-0.5">Runtime (*e.g. 2h 35m)</label>
+                <input 
+                    type="text" 
+                    class="text-slate-200 w-1/12 rounded-sm border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 py-0.5 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    id="runtime" 
+                    name="runtime"
+                    maxlength="8">
+            </div>
+
+            <!--RELEASE DATE INPUT-->
+            <div class="relative mb-4">
+                <label class="block font-medium text-[#708090] tracking-wide mb-0.5">Release date (*only years)</label>
+                <input 
+                    type="text" 
+                    class="text-slate-200 w-12 rounded-sm border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 py-0.5 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    id="releaseDate" 
+                    name="releaseDate"
+                    maxlength="4">
+                <div class="inline-block text-[#708090] mx-2.5">-</div>
+                <input 
+                    type="text" 
+                    class="inline-block text-slate-200 w-12 rounded-sm border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 py-0.5 outline-none shadow-[4px_4px_8px_1px_#708090] enabled:focus:border-slate-300 enabled:focus:shadow-[4px_4px_8px_1px_#cbd5e1] enabled:hover:border-slate-400 enabled:hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    id="releaseDateEndYear" 
+                    name="releaseDateEndYear"
+                    maxlength="4">            
+                <div class="inline-block text-sm font-semibold ml-2" id="errorMessageForReleaseDate"></div>
+            </div>
+
+            <!--RATING INPUT-->
+            <div class="relative mb-4">
+                <label for="rating" class="block font-medium text-[#708090] tracking-wide mb-0.5">My Rating (*proper values for both rankings, e.g.: 7; 5.5; 6,2)</label>
+                <input 
+                    type="text" 
+                    class="text-slate-200 w-12 rounded-sm border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 py-0.5 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    id="rating" 
+                    name="rating" 
+                    minlength="1" 
+                    maxlength="3">
+                <div class="inline-block text-sm font-semibold ml-2" id="errorMessageForRating"></div>
+            </div>
+            
+            <!--IMDB RATING INPUT-->
+            <div class="relative mb-4">
+                <label for="imdbRating" class="block font-medium text-[#708090] tracking-wide mb-0.5">IMDb rating</label>            
+                <input 
+                    type="text" 
+                    class="text-slate-200 w-12 rounded-sm border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 py-0.5 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    id="imdbRating" 
+                    name="imdbRating" 
+                    minlength="1" 
+                    maxlength="3">
+                <div class="inline-block text-sm font-semibold ml-2" id="errorMessageForIMDbRating"></div>
+            </div>
+
+            <!--PLOT INPUT-->
+            <div class="relative mb-4">
+                <label for="plot" class="block font-medium text-[#708090] tracking-wide mb-0.5">Plot</label>
+                <textarea
+                    class="block text-slate-200 w-1/2 rounded-sm border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 py-0.5 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8]"
+                    id="plot"
+                    name="plot"
+                    rows="5"
+                    cols="50"
+                    maxlength="1000"
+                    oninput="countCharacters(this.id)"></textarea>
+                    <div class="font-medium text-[#708090] tracking-wide"><span id="charactersForPlot">0</span>/1000</div>
+            </div>
+
+            <!--IMAGE INPUT-->
+            <div class="relative mb-4">
+                <label for="fileName" class="block font-medium text-[#708090] tracking-wide mb-0.5">Upload image (*jpg, jpeg or png)</label>
+                <input 
+                    class="relative font-light text-slate-100 w-1/2 rounded-sm bg-gradient-to-r from-indigo-700 to-indigo-400 shadow-[4px_4px_8px_1px_#708090] hover:cursor-pointer hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    type="file" 
+                    id="fileName" 
+                    name="fileName"
+                    accept=".jpg, .jpeg, .png"
+                    onchange="validateFileType()">
+                <div class="inline-block text-sm font-semibold ml-2" id="errorMessageForFileType"></div>
+            </div>
+
+            <!--TO WATCH INPUT-->
+            <div class="relative mb-4">
+                <div class="inline-flex">
+                    <input 
+                        class="relative float-left accent-indigo-500 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                        type="checkbox" 
+                        id="checkboxToWatch" 
+                        name="toWatchManually">
+                    <label 
+                        class="inline-block font-light text-slate-200 ml-1 hover:underline hover:cursor-pointer" 
+                        for="checkboxToWatch">
+                        Add to Watchlist
+                    </label>
+                </div>
+            </div>
+
+            <!--REVIEW INPUT-->
+            <div class="relative mb-4">
+                <label for="review" class="block font-medium text-[#708090] tracking-wide mb-0.5">My Review</label>
+                <textarea 
+                    class="text-slate-200 w-1/2 rounded-sm border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 py-0.5 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8]"
+                    id="review"
+                    name="review" 
+                    rows="5" 
+                    cols="50"></textarea>
+            </div>
+
+            <!--RESET AND SUBMIT BUTTONS-->
+            <div class="flex justify-end">
+                <button
+                    type="button"
+                    class="font-medium text-xs text-slate-300 uppercase leading-normal bg-slate-900 px-3 py-1 rounded hover:text-slate-50 hover:shadow-[3px_3px_30px_5px_#6366F1]"
+                    onclick="resetForm()">
+                    Clear
+                </button>
+                <button 
+                    type="submit"
+                    class="font-bold text-xs text-slate-300 uppercase leading-normal bg-gradient-to-r from-indigo-600 ml-2 px-3 py-1 rounded border-2 border-indigo-500 hover:text-indigo-700 hover:bg-[#708090] hover:border-indigo-700 hover:shadow-[3px_3px_30px_5px_#708090]"
+                    onclick="return validateFormForAddingTitleManually()">
+                    Add
+                </button>
+            </div>         
+        </form>
+    </div>
 {% endblock %}

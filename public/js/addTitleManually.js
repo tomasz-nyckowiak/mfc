@@ -44,8 +44,12 @@ function clearOtherMessages(failedInput) {
         if (divForReleaseDateErrorMessage.innerHTML == errorMessageForReleaseDate) {
             divForReleaseDateErrorMessage.innerHTML = "";
         }
+
+        if (divForRatingErrorMessage.innerHTML == errorMessageForRatings) {
+            divForRatingErrorMessage.innerHTML = "";
+        }
         
-        if (divForIMDbRatingErrorMessage.innerHTML == errorMessageForIMDbRating) {
+        if (divForIMDbRatingErrorMessage.innerHTML == errorMessageForRatings) {
             divForIMDbRatingErrorMessage.innerHTML = "";
         }
 
@@ -57,10 +61,14 @@ function clearOtherMessages(failedInput) {
     if (failedInput == "releaseDate") {
         if (divForNoTitleErrorMessage.innerHTML == errorMessageForNoTitle) {
             divForNoTitleErrorMessage.innerHTML = "";
-            titleUserInput.classList.remove("border-2", "border-red-500");
+            titleUserInput.classList.remove("border-[#af1e1e]");
         }
         
-        if (divForIMDbRatingErrorMessage.innerHTML == errorMessageForIMDbRating) {
+        if (divForRatingErrorMessage.innerHTML == errorMessageForRatings) {
+            divForRatingErrorMessage.innerHTML = "";
+        }
+        
+        if (divForIMDbRatingErrorMessage.innerHTML == errorMessageForRatings) {
             divForIMDbRatingErrorMessage.innerHTML = "";
         }
 
@@ -69,14 +77,37 @@ function clearOtherMessages(failedInput) {
         }
     }
 
-    if (failedInput == "imdbRating") {
+    if (failedInput == "myRating") {
         if (divForNoTitleErrorMessage.innerHTML == errorMessageForNoTitle) {
             divForNoTitleErrorMessage.innerHTML = "";
-            titleUserInput.classList.remove("border-2", "border-red-500");
+            titleUserInput.classList.remove("border-[#af1e1e]");
         }
 
         if (divForReleaseDateErrorMessage.innerHTML == errorMessageForReleaseDate) {
             divForReleaseDateErrorMessage.innerHTML = "";
+        }
+
+        if (divForIMDbRatingErrorMessage.innerHTML == errorMessageForRatings) {
+            divForIMDbRatingErrorMessage.innerHTML = "";
+        }
+
+        if (divForFileTypeErrorMessage.innerHTML == errorMessageForFileType) {
+            divForFileTypeErrorMessage.innerHTML = "";
+        }
+    }
+    
+    if (failedInput == "imdbRating") {
+        if (divForNoTitleErrorMessage.innerHTML == errorMessageForNoTitle) {
+            divForNoTitleErrorMessage.innerHTML = "";
+            titleUserInput.classList.remove("border-[#af1e1e]");
+        }
+
+        if (divForReleaseDateErrorMessage.innerHTML == errorMessageForReleaseDate) {
+            divForReleaseDateErrorMessage.innerHTML = "";
+        }
+
+        if (divForRatingErrorMessage.innerHTML == errorMessageForRatings) {
+            divForRatingErrorMessage.innerHTML = "";
         }
 
         if (divForFileTypeErrorMessage.innerHTML == errorMessageForFileType) {
@@ -87,14 +118,18 @@ function clearOtherMessages(failedInput) {
     if (failedInput == "fileType") {
         if (divForNoTitleErrorMessage.innerHTML == errorMessageForNoTitle) {
             divForNoTitleErrorMessage.innerHTML = "";
-            titleUserInput.classList.remove("border-2", "border-red-500");
+            titleUserInput.classList.remove("border-[#af1e1e]");
         }
 
         if (divForReleaseDateErrorMessage.innerHTML == errorMessageForReleaseDate) {
             divForReleaseDateErrorMessage.innerHTML = "";
         }
 
-        if (divForIMDbRatingErrorMessage.innerHTML == errorMessageForIMDbRating) {
+        if (divForRatingErrorMessage.innerHTML == errorMessageForRatings) {
+            divForRatingErrorMessage.innerHTML = "";
+        }
+        
+        if (divForIMDbRatingErrorMessage.innerHTML == errorMessageForRatings) {
             divForIMDbRatingErrorMessage.innerHTML = "";
         }
     }
@@ -113,7 +148,8 @@ function validateFormForAddingTitleManually() {
     if (!validateTitle(inputTitleValue)) {
         divForNoTitleErrorMessage.innerHTML = errorMessageForNoTitle;
         divForNoTitleErrorMessage.style.color = colorForErrorMessages;
-        titleUserInput.classList.add("border-2", "border-red-500");
+        titleUserInput.classList.add("border-[#af1e1e]");
+        titleUserInput.focus();
 
         whichInputFailed = "title";
         clearOtherMessages(whichInputFailed);
@@ -133,7 +169,7 @@ function validateFormForAddingTitleManually() {
         divForRatingErrorMessage.innerHTML = errorMessageForRatings;
         divForRatingErrorMessage.style.color = colorForErrorMessages;
 
-        whichInputFailed = "imdbRating";
+        whichInputFailed = "myRating";
         clearOtherMessages(whichInputFailed);
         return false;
     }
@@ -171,30 +207,46 @@ function selectTitleType(event) {
         event.target.value === "Video" || event.target.value === "Video Game") {        
         
         creatorInput.setAttribute("disabled", true);
+        creatorInput.classList.add("opacity-25");
         directorInput.removeAttribute("disabled");
+        directorInput.classList.remove("opacity-25");
         writerInput.removeAttribute("disabled");
+        writerInput.classList.remove("opacity-25");
         releaseDateInput.setAttribute("disabled", true);
+        releaseDateInput.classList.add("opacity-25");
     }
 
     if (event.target.value === "Tv Series" || event.target.value === "Tv MiniSeries") {
         directorInput.setAttribute("disabled", true);
+        directorInput.classList.add("opacity-25");
         writerInput.setAttribute("disabled", true);
+        writerInput.classList.add("opacity-25");
         creatorInput.removeAttribute("disabled");
+        creatorInput.classList.remove("opacity-25");
         releaseDateInput.removeAttribute("disabled");
+        releaseDateInput.classList.remove("opacity-25");
     }
 
     if (event.target.value === "Podcast Episode" || event.target.value === "Podcast Series") {
         directorInput.setAttribute("disabled", true);
+        directorInput.classList.add("opacity-25");
         writerInput.setAttribute("disabled", true);
+        writerInput.classList.add("opacity-25");
         creatorInput.setAttribute("disabled", true);
+        creatorInput.classList.add("opacity-25");
         releaseDateInput.removeAttribute("disabled");
+        releaseDateInput.classList.remove("opacity-25");
     }
 
     if (event.target.value === "Music Video") {
         creatorInput.setAttribute("disabled", true);
+        creatorInput.classList.add("opacity-25");
         writerInput.setAttribute("disabled", true);
+        writerInput.classList.add("opacity-25");
         directorInput.removeAttribute("disabled");
+        directorInput.classList.remove("opacity-25");
         releaseDateInput.setAttribute("disabled", true);
+        releaseDateInput.classList.add("opacity-25");
     }    
 }
 //  ...  //
@@ -209,7 +261,8 @@ function resetForm() {
     form.reset();
     
     spanElementForPlotCharactersCount.innerText = "0";    
-    titleUserInput.classList.remove("border-2", "border-red-500");
+    titleUserInput.classList.remove("border-[#af1e1e]");
+    titleUserInput.classList.add("border-[#708090]");
     divForNoTitleErrorMessage.innerHTML = "";
     divForReleaseDateErrorMessage.innerHTML = "";
     divForRatingErrorMessage.innerHTML = "";
@@ -221,7 +274,11 @@ function resetForm() {
     let creatorInput = document.getElementById("creator");
     let releaseDateEndYearInput = document.getElementById("releaseDateEndYear");
     directorInput.removeAttribute("disabled");
+    directorInput.classList.remove("opacity-25");
     writerInput.removeAttribute("disabled");
+    writerInput.classList.remove("opacity-25");
     creatorInput.removeAttribute("disabled");
+    creatorInput.classList.remove("opacity-25");
     releaseDateEndYearInput.removeAttribute("disabled");
+    releaseDateEndYearInput.classList.remove("opacity-25");
 }

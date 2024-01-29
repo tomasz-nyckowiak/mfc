@@ -178,10 +178,12 @@
 
                     <div class="my-4">
                         <div class="">
-                            {% set genres = value.genres|split(',') %}
-                            {% for genre in genres %}
-                                <span class="text-sm border-solid border-2 border-indigo-500 rounded-full p-1.5">{{ genre }}</span>
-                            {% endfor %}
+                            {% if value.genres != null %}
+                                {% set genres = value.genres|split(',') %}
+                                {% for genre in genres %}
+                                    <span class="text-sm border-solid border-2 border-indigo-500 rounded-full p-1.5">{{ genre }}</span>
+                                {% endfor %}
+                            {% endif %}
                         </div>                       
                         <div class="mt-4">Stars: {{ value.stars }}</div>
                         <div class="italic my-3">{{ value.plot }}</div>

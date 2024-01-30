@@ -14,17 +14,7 @@ class UserProfileType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('bio')
-            ->add('websiteUrl')
-            ->add('twitterXUsername')
-            ->add(
-                'dateOfBirth',
-                DateType::class,
-                [
-                    'widget' => 'single_text',
-                    'required' => false
-                ]
-            );
+        
         ;
     }
 

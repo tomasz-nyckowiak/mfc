@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Top 10 Movies!{% endblock %}
+
+{% block footer %}
+    <script src="/js/favouritesMovies.js"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="flex justify-center">
+        <div class="text-xl mb-2">TOP 10 MOVIES</div>
+    </div>    
+    
+    <div class="flex justify-center mt-4 mb-1">
+        {{ include('favourites/_movies_nav_btns.html.twig') }}
+    </div>
+    
+    {% for message in app.flashes('success') %}                                                       
+        <div
+            class="my-3 inline-flex w-full items-center rounded-lg bg-green-700 px-6 py-5 text-base text-white"
+            role="alert"
+            data-te-alert-init
+            data-te-alert-show>
+            <span class="mr-2">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="h-6 w-6">
+                <path
+                    fill-rule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                    clip-rule="evenodd" />
+                </svg>
+            </span>
+            <div>{{ message }}</div>
+            <button
+                type="button"
+                class="ml-auto box-content rounded-none border-none p-1 text-white opacity-100 hover:text-white hover:no-underline hover:opacity-50 focus:opacity-100 focus:shadow-none focus:outline-none"
+                data-te-alert-dismiss
+                aria-label="Close">
+                <span
+                    class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="h-6 w-6">
+                        <path
+                            fill-rule="evenodd"
+                            d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                            clip-rule="evenodd">
+                    </svg>
+                </span>
+            </button>
+        </div>
+    {% endfor %}
+
+    <form class="my-4" action="{{ path('app_create_top_ten_success') }}" method="POST" novalidate>
+        <!--CHECKBOX (TYPE OF LIST)-->
+        <div class="flex justify-center mt-5 mb-1">
+            <div class="inline-flex">            
+                <input 
+                    class="peer/ordered relative float-left accent-indigo-500 enabled:hover:cursor-pointer enabled:hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    type="checkbox" 
+                    id="orderedListCheckbox" 
+                    name="orderedTop10"
+                    checked
+                    disabled>
+                <label 
+                    class="inline-block font-light text-slate-200 ml-1 peer-enabled/ordered:hover:underline peer-enabled/ordered:hover:cursor-pointer" 
+                    for="orderedListCheckbox">
+                    Numbered list
+                </label>
+            </div>
+            <div class="inline-flex ml-4">            
+                <input 
+                    class="peer/unordered relative float-left accent-indigo-500 enabled:hover:cursor-pointer enabled:hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    type="checkbox" 
+                    id="unorderedListCheckbox" 
+                    name="unorderedTop10">
+                <label 
+                    class="inline-block font-light text-slate-200 ml-1 hover:underline hover:cursor-pointer peer-disabled/unordered:hover:no-underline peer-disabled/unordered:hover:cursor-default" 
+                    for="unorderedListCheckbox">
+                    In no particular order
+                </label>
+            </div>           
+        </div>
+
+        <!--HIDDEN INPUT-->
+        <div>
+            <input type="hidden" id="typeOfList" name="typeOfList" value="ordered">
+        </div>
+
+        <div>        
+            {% if data|length > 0 %}
+                <ul id="top10MoviesList" class="list-decimal">
+                    {% for i in 1..10 %} 
+                        <li id="position{{ i }}" class="border border-emerald-500 mb-4">
+                            <select 
+                                data-te-select-init 
+                                data-te-select-placeholder="Choose movie from your library"
+                                data-te-select-clear-button="true"
+                                name="movieSelection{{ i }}"
+                                id="movieSelection{{ i }}"
+                                onchange="checkingIfSelectedTitleIsDuplicated(event)">                           
+                                {% for value in data %}
+                                    <option value="{{ value.originalTitle }}">{{ value.originalTitle }}</option>
+                                {% endfor %}
+                            </select>
+                        </li>                
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <!--SUBMIT BUTTON-->
+        <div class="flex justify-center mt-4">       
+            <button 
+                type="submit"
+                class="font-bold text-xs text-slate-300 uppercase leading-normal bg-gradient-to-r from-indigo-600 ml-2 px-3 py-1 rounded border-2 border-indigo-500 hover:text-indigo-700 hover:bg-[#708090] hover:border-indigo-700 hover:shadow-[3px_3px_30px_5px_#708090]"
+                id="top10Movies">
+                Save
+            </button>        
+        </div>
+    </form>
+{% endblock %}

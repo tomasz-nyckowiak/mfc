@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Top 10 Movies!{% endblock %}
+
+{% block footer %}
+    <script src="/js/favouritesMoviesEdit.js"></script>
+    <script type="text/javascript">
+        let first = '{{ top10.first }}';
+        let second = '{{ top10.second }}';
+        let third = '{{ top10.third }}';
+        let fourth = '{{ top10.fourth }}';
+        let fifth = '{{ top10.fifth }}';
+        let sixth = '{{ top10.sixth }}';
+        let seventh = '{{ top10.seventh }}';
+        let eighth = '{{ top10.eighth }}';
+        let ninth = '{{ top10.ninth }}';
+        let tenth = '{{ top10.tenth }}';
+        let typeOfList = '{{ top10.typeOfList }}';
+        
+        const firstList = document.querySelector("#editMovieSelection1");    
+        const firstItem = te.Select.getInstance(firstList);
+        firstItem.setValue(first);
+        const secondList = document.querySelector("#editMovieSelection2");    
+        const secondItem = te.Select.getInstance(secondList);
+        secondItem.setValue(second);
+        const thirdList = document.querySelector("#editMovieSelection3");    
+        const thirdItem = te.Select.getInstance(thirdList);
+        thirdItem.setValue(third);
+        const fourthList = document.querySelector("#editMovieSelection4");    
+        const fourthItem = te.Select.getInstance(fourthList);
+        fourthItem.setValue(fourth);
+        const fifthList = document.querySelector("#editMovieSelection5");    
+        const fifthItem = te.Select.getInstance(fifthList);
+        fifthItem.setValue(fifth);
+        const sixthList = document.querySelector("#editMovieSelection6");    
+        const sixthItem = te.Select.getInstance(sixthList);
+        sixthItem.setValue(sixth);
+        const seventhList = document.querySelector("#editMovieSelection7");    
+        const seventhItem = te.Select.getInstance(seventhList);
+        seventhItem.setValue(seventh);
+        const eighthList = document.querySelector("#editMovieSelection8");    
+        const eighthItem = te.Select.getInstance(eighthList);
+        eighthItem.setValue(eighth);
+        const ninthList = document.querySelector("#editMovieSelection9");    
+        const ninthItem = te.Select.getInstance(ninthList);
+        ninthItem.setValue(ninth);
+        const tenthList = document.querySelector("#editMovieSelection10");    
+        const tenthItem = te.Select.getInstance(tenthList);
+        tenthItem.setValue(tenth);
+
+        if (typeOfList == "ordered") {
+            editOrderedListCheckBox.setAttribute("disabled", true);
+            editOrderedListCheckBox.checked = true;
+            editUnorderedListCheckBox.removeAttribute("disabled", true);
+            
+            editTop10MoviesList.classList.remove("list-none");
+            editTop10MoviesList.classList.add("list-decimal");
+            editHiddenInput.value = "ordered";
+        } else {
+            editUnorderedListCheckBox.setAttribute("disabled", true);
+            editUnorderedListCheckBox.checked = true;
+            editOrderedListCheckBox.removeAttribute("disabled", true);
+            
+            editTop10MoviesList.classList.remove("list-decimal");
+            editTop10MoviesList.classList.add("list-none");
+            editHiddenInput.value = "unordered";
+        }
+    </script>
+{% endblock %}
+
+{% block body %}    
+    <div class="flex justify-center mt-5">
+        <div class="text-xl mb-2">TOP 10 MOVIES</div>
+    </div>    
+    
+    <div class="flex justify-center mt-2">
+        {{ include('favourites/_movies_nav_btns.html.twig') }}
+    </div>
+    
+    <form class="my-4" action="{{ path('app_edit_top_ten_success') }}" method="POST" novalidate>
+        <!--CHECKBOX (TYPE OF LIST)-->
+        <div class="flex justify-center mt-5 mb-1">
+            <div class="inline-flex">            
+                <input 
+                    class="peer/ordered relative float-left accent-indigo-500 enabled:hover:cursor-pointer enabled:hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    type="checkbox" 
+                    id="editOrderedListCheckbox" 
+                    name="editOrderedTop10">
+                <label 
+                    class="inline-block font-light text-slate-200 ml-1 peer-enabled/ordered:hover:underline peer-enabled/ordered:hover:cursor-pointer" 
+                    for="editOrderedListCheckbox">
+                    Numbered list
+                </label>
+            </div>
+            <div class="inline-flex ml-4">            
+                <input 
+                    class="peer/unordered relative float-left accent-indigo-500 enabled:hover:cursor-pointer enabled:hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
+                    type="checkbox" 
+                    id="editUnorderedListCheckbox" 
+                    name="editUnorderedTop10">
+                <label 
+                    class="inline-block font-light text-slate-200 ml-1 hover:underline hover:cursor-pointer peer-disabled/unordered:hover:no-underline peer-disabled/unordered:hover:cursor-default" 
+                    for="editUnorderedListCheckbox">
+                    In no particular order
+                </label>
+            </div>           
+        </div>
+    
+        <!--HIDDEN INPUT-->
+        <div>
+            <input type="hidden" id="editTypeOfList" name="editTypeOfList" value="">
+        </div>
+    
+        <div>
+            {% if data|length > 0 %}
+                <ul id="editTop10MoviesList" class="list-decimal">
+                    {% for i in 1..10 %} 
+                        <li id="editPosition{{ i }}" class="border border-emerald-500 mb-4">
+                            <select 
+                                data-te-select-init 
+                                data-te-select-placeholder="Choose movie from your library"
+                                data-te-select-clear-button="true"
+                                name="editMovieSelection{{ i }}"
+                                id="editMovieSelection{{ i }}"
+                                onchange="editCheckingIfSelectedTitleIsDuplicated(event)">                           
+                                {% for value in data %}
+                                    <option value="{{ value.originalTitle }}">{{ value.originalTitle }}</option>
+                                {% endfor %}
+                            </select>
+                        </li>                
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    
+        <!--SUBMIT BUTTON-->
+        <div class="flex justify-center mt-4">       
+            <button 
+                type="submit"
+                class="font-bold text-xs text-slate-300 uppercase leading-normal bg-gradient-to-r from-indigo-600 ml-2 px-3 py-1 rounded border-2 border-indigo-500 hover:text-indigo-700 hover:bg-[#708090] hover:border-indigo-700 hover:shadow-[3px_3px_30px_5px_#708090]"
+                id="editTop10Movies">
+                Save
+            </button>        
+        </div>
+    </form>
+{% endblock %}

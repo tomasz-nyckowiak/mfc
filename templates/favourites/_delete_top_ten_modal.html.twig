@@ -1,17 +1,8 @@
-<!-- Button trigger vertically centered modal-->
-<button
-    type="button"
-    class="inline-block text-xs uppercase leading-normal text-indigo-400 tracking-wide w-40 px-1 py-1 border-2 border-[#778899] rounded transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600"
-    data-te-toggle="modal"
-    data-te-target="#deleteModal{{ value.id }}">
-    Delete
-</button>
-
 <!--Vertically centered modal-->
 <div
   data-te-modal-init
   class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-  id="deleteModal{{ value.id }}"
+  id="deleteTop10Modal"
   tabindex="-1"
   aria-labelledby="deleteModalTitle"
   aria-modal="true"
@@ -24,7 +15,7 @@
 
       <!--Modal body-->
       <div class="relative p-4">
-        <div class="text-[#031e49] mb-2">Are you sure you want to remove this title from the library?</div>
+        <div class="text-[#031e49] mb-2">Are you sure you want to delete your TOP 10 list?</div>
         <div class="flex justify-end">
             <button
                 type="button"
@@ -32,7 +23,7 @@
                 data-te-modal-dismiss>
                 No
             </button>
-            <a href="{{ path('app_library_remove_title', { id: value.id }) }}">
+            <a href="{{ path('app_delete_top_ten') }}">
                 <button
                     type="button"
                     class="font-bold text-xs text-indigo-700 uppercase leading-normal ml-2 px-3 py-1 rounded border-2 border-[#031e49] shadow-lg shadow-indigo-500/50 hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600 hover:shadow-lg hover:shadow-slate-900/75">

@@ -9,6 +9,7 @@ let reviewsBtnsId = "";
 let editBtns = document.getElementsByClassName("edit");
 let revBtns = document.getElementsByClassName("revBtn");
 let allInfoCheckB = document.getElementsByClassName("allInfo");
+let favBtns = document.getElementsByClassName("favBtn");
 
 function thatCollapse(id) {    
     const arrayOfGenres = ["Action", "Adult", "Adventure", "Animation", "Biography", "Comedy", "Crime",
@@ -110,8 +111,44 @@ for (let i = 0; i < allInfoCheckB.length; i++) {
     });
 }
 
+//FAVOURITES
+let idFromFavouriteButtonsToRemember = "";
 
+function getIdFromFavouriteButtons(btnId) {
+    let result = btnId.slice(3);
 
+    return result;
+}
 
+for (let i = 0; i < favBtns.length; i++) {
+    favBtns[i].addEventListener("click", function(e) {
+        let clickedButtonId = e.target.id;
+        let idNumber = getIdFromFavouriteButtons(clickedButtonId);
+        idFromFavouriteButtonsToRemember = idNumber;
+    });
+}
 
+function test33() {
+    //console.log(idFromFavouriteButtonsToRemember);
+    let x = "tytuł filmu";
+    let y = 2024;
+
+    let data = {};
+    data.title = x;
+    data.year = y;
+    data.id = idFromFavouriteButtonsToRemember;
+
+    fetch('/library/favourites', {
+		
+		method: 'post',
+		body: JSON.stringify({data})
+			
+	}).then (function(response) {
+        return response.text();
+	}).then (function(text) {				
+		renderEditingIncome(text);				
+	}).catch (function(error) {
+        console.error(error);
+	})
+}
 

@@ -5,14 +5,29 @@
 {% block footer %}
     <script src="/js/main.js"></script>
     <script src="/js/formsTitleValidation.js"></script>
-    <script src="/js/editTitle.js"></script>  
+    <script src="/js/editTitle.js"></script>
+    <script 
+        type="module"
+        src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js">
+    </script>  
 {% endblock %}
 
 {% block body %}
     {% for message in app.flashes('delete') %}
         <div class="rounded-md p-2 border-green-300 bg-green-50 border dark:border-green-600 dark:bg-green-700 dark:text-white mb-4">{{ message }}</div>
     {% endfor %}
-    <div class="mb-5">{{ include('library/_dropdown_filter.html.twig') }}</div>
+    <div class="flex flex-row">
+        <div class="mb-5">{{ include('library/_dropdown_filter.html.twig') }}</div>
+        <div>
+            <a href="{{ path('app_favourites') }}">
+                <button
+                    type="button"
+                    class="favBtn text-xs uppercase leading-normal text-indigo-400 tracking-wide w-40 px-1 py-1 border-2 border-[#778899] rounded transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600">
+                    Favourites
+                </button>
+            </a>
+        </div>
+    </div>    
     <div>
         {% if data|length > 0 %}
         <ul>
@@ -170,7 +185,19 @@
                         {# THIRD COLUMN #}
                         <div class="flex items-center">
                             <div class="flex-col">
-                                <div class="mb-3">{{ include('library/_edit_modal.html.twig') }}</div>                    
+                                <div class="mb-1">{{ include('library/_edit_modal.html.twig') }}</div>
+                                {% if value.titleType == "Movie" %}
+                                    <div class="mb-1">
+                                        <a href="#">
+                                            <button 
+                                                type="button"
+                                                id="fav{{ value.id }}"
+                                                class="favBtn text-xs uppercase leading-normal text-indigo-400 tracking-wide w-40 px-1 py-1 border-2 border-[#778899] rounded transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600">
+                                                Favourites
+                                            </button>
+                                        </a>
+                                    </div>
+                                {% endif %}                    
                                 <div class="">{{ include('library/_delete_modal.html.twig') }}</div>
                             </div>
                         </div>                        

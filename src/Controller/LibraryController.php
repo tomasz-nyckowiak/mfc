@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\FavouriteMovies;
 use App\Entity\User;
 use App\Model\Model;
 use App\Service\Service;
@@ -10,6 +11,8 @@ use App\Form\TitleInformationType;
 use App\Model\Add;
 use App\Model\AddTitle;
 use App\Model\EditTitle;
+use App\Model\Favourites;
+use App\Repository\FavouriteMoviesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\TitleInformationRepository;
@@ -280,12 +283,35 @@ class LibraryController extends AbstractController
     //DELETE TITLE
     #[Route('/library/delete/{id}', name: 'app_library_remove_title')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function deleteTitle($id, TitleInformationRepository $titles): Response
+    public function deleteTitle($id, TitleInformationRepository $titles, FavouriteMoviesRepository $favourites): Response
     {        
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $userId = $currentUser->getId();
+        
         $result = $titles->findOneBy(['id' => $id]);
         $titleToRemove = $result->getOriginalTitle();
         $message = "Title " . $titleToRemove . " has been successfully removed from your library!";
 
+        //Title to remove could also be in TOP list, if is then we remove it from there too.
+        if ($favourites->checkIfRecordAlreadyExists($userId)) {
+            $data = $favourites->gettingTop10($userId);
+            $whichColumn = "";
+
+            foreach ($data as $key => $value) {
+                if ($value == $titleToRemove) {
+                    $titleIsInList = true;
+                    $whichColumn = $key;
+                    break;
+                } else $titleIsInList = false;
+            }
+
+            if ($titleIsInList) {
+                $listId = $favourites->getTop10MoviesListId($userId);
+                $favourites->updateMovieListAfterRemovingTitleFromTheLibrary($listId, $whichColumn);
+            } 
+        }
+        
         $titles->remove($result, true);
 
         $this->addFlash('delete', $message);
@@ -444,5 +470,5 @@ class LibraryController extends AbstractController
             'data' => $data,
             'toWatch' => 'To Watch'
         ]);      
-    }
+    }    
 }

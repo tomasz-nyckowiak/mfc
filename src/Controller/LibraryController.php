@@ -2,29 +2,30 @@
 
 namespace App\Controller;
 
-use App\Entity\FavouriteMovies;
+use App\Model\Add;
 use App\Entity\User;
 use App\Model\Model;
-use App\Service\Service;
-use App\Entity\TitleInformation;
-use App\Form\TitleInformationType;
-use App\Model\Add;
 use App\Model\AddTitle;
 use App\Model\EditTitle;
+use App\Service\Service;
 use App\Model\Favourites;
-use App\Repository\FavouriteMoviesRepository;
+use App\Entity\FavouriteMovies;
+use App\Entity\TitleInformation;
+use App\Form\TitleInformationType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\FavouriteMoviesRepository;
+use App\Repository\FavouriteSeriesRepository;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\TitleInformationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotEqualTo;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotEqualTo;
 
 class LibraryController extends AbstractController
 {  
@@ -283,7 +284,7 @@ class LibraryController extends AbstractController
     //DELETE TITLE
     #[Route('/library/delete/{id}', name: 'app_library_remove_title')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function deleteTitle($id, TitleInformationRepository $titles, FavouriteMoviesRepository $favourites): Response
+    public function deleteTitle($id, TitleInformationRepository $titles, FavouriteMoviesRepository $favouriteMovies, FavouriteSeriesRepository $favouriteSeries): Response
     {        
         /** @var User $currentUser */
         $currentUser = $this->getUser();
@@ -294,8 +295,8 @@ class LibraryController extends AbstractController
         $message = "Title " . $titleToRemove . " has been successfully removed from your library!";
 
         //Title to remove could also be in TOP list, if is then we remove it from there too.
-        if ($favourites->checkIfRecordAlreadyExists($userId)) {
-            $data = $favourites->gettingTop10($userId);
+        if ($favouriteMovies->checkIfRecordAlreadyExists($userId)) {
+            $data = $favouriteMovies->gettingTop10($userId);
             $whichColumn = "";
 
             foreach ($data as $key => $value) {
@@ -307,8 +308,26 @@ class LibraryController extends AbstractController
             }
 
             if ($titleIsInList) {
-                $listId = $favourites->getTop10MoviesListId($userId);
-                $favourites->updateMovieListAfterRemovingTitleFromTheLibrary($listId, $whichColumn);
+                $listId = $favouriteMovies->getTop10MoviesListId($userId);
+                $favouriteMovies->updateMovieListAfterRemovingTitleFromTheLibrary($listId, $whichColumn);
+            } 
+        }
+
+        if ($favouriteSeries->checkIfRecordAlreadyExists($userId)) {
+            $data = $favouriteSeries->gettingTop5($userId);
+            $whichColumn = "";
+
+            foreach ($data as $key => $value) {
+                if ($value == $titleToRemove) {
+                    $titleIsInList = true;
+                    $whichColumn = $key;
+                    break;
+                } else $titleIsInList = false;
+            }
+
+            if ($titleIsInList) {
+                $listId = $favouriteSeries->getTop5SeriesListId($userId);
+                $favouriteSeries->updateTvSeriesListAfterRemovingTitleFromTheLibrary($listId, $whichColumn);
             } 
         }
         

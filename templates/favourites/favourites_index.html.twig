@@ -1,17 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Top 10 Movies!{% endblock %}
+{% block title %}Favourites!{% endblock %}
 
 {% block bread %}
 → <a href="{{ path('app_favourites') }}">Favourites</a>
 {% endblock %}
 
-{% block body %}    
-    <div class="mt-8">
-        {{ include('favourites/_movies_nav.html.twig') }}
+{% block body %}
+    <div>
+        <div class="text-slate-200">Here you can manage your TOP 10 (for movies) and TOP 5 (for tv series) lists!</div>
+        <div class="block font-medium text-[#708090] text-sm tracking-wide">(*you can choose only movies and tv series that are <span class="underline">already</span> in your library!)</div>
     </div>
     
-    {% for message in app.flashes('success') %}                                                       
+    {% for message in app.flashes('delete') %}                                                       
         <div
             class="my-3 inline-flex w-full items-center rounded-lg bg-green-700 px-6 py-5 text-base text-white"
             role="alert"
@@ -51,38 +52,12 @@
             </button>
         </div>
     {% endfor %}
+
+    <div class="mt-8">
+        {{ include('favourites/_movies_nav.html.twig') }}
+    </div>
     
-    <div class="flex justify-center mt-10">
-        {% if data|length > 0 %}
-            <div>
-                {% if data[0].typeOfList == "ordered" %}
-                    <ul class="list-decimal font-light text-lg text-slate-200">
-                        <li class="font-bold mb-2">{{ data[0].first }}</li>
-                        <li class="font-semibold mb-2">{{ data[0].second }}</li>
-                        <li class="font-medium mb-2">{{ data[0].third }}</li>
-                        <li class="font-normal mb-2">{{ data[0].fourth }}</li>
-                        <li class="font-normal mb-2">{{ data[0].fifth }}</li>
-                        <li class="mb-2">{{ data[0].sixth }}</li>
-                        <li class="mb-2">{{ data[0].seventh }}</li>
-                        <li class="mb-2">{{ data[0].eighth }}</li>
-                        <li class="mb-2">{{ data[0].ninth }}</li>
-                        <li class="mb-2">{{ data[0].tenth }}</li>
-                    </ul>
-                {% else %}
-                    <ul class="list-none font-light text-lg text-slate-200">
-                        <li class="mb-2">{{ data[0].first }}</li>
-                        <li class="mb-2">{{ data[0].second }}</li>
-                        <li class="mb-2">{{ data[0].third }}</li>
-                        <li class="mb-2">{{ data[0].fourth }}</li>
-                        <li class="mb-2">{{ data[0].fifth }}</li>
-                        <li class="mb-2">{{ data[0].sixth }}</li>
-                        <li class="mb-2">{{ data[0].seventh }}</li>
-                        <li class="mb-2">{{ data[0].eighth }}</li>
-                        <li class="mb-2">{{ data[0].ninth }}</li>
-                        <li class="mb-2">{{ data[0].tenth }}</li>
-                    </ul>
-                {% endif %}
-            </div>
-        {% endif %}
+    <div class="mt-8">
+        {{ include('favourites/_series_nav.html.twig') }}
     </div>
 {% endblock %}

@@ -21,6 +21,76 @@ class FavouriteSeriesRepository extends ServiceEntityRepository
         parent::__construct($registry, FavouriteSeries::class);
     }
 
+    public function createList(FavouriteSeries $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(FavouriteSeries $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function checkIfRecordAlreadyExists(int $userId)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            SELECT EXISTS(SELECT * FROM favourite_series
+            WHERE favourite_series.user_id = '$userId')
+        ";
+        
+        $resultSet = $conn->executeQuery($sql);
+        
+        return $resultSet->fetchOne();
+    }
+
+    public function gettingTop5(int $userId): array
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s.first', 's.second', 's.third', 's.fourth', 's.fifth', 's.typeOfList')
+            ->andWhere('s.user = :userId')            
+            ->setParameter('userId', $userId)            
+            ->getQuery()
+            ->getSingleResult()
+        ;
+    }
+
+    public function getTop5SeriesListId(int $userId)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            SELECT id FROM favourite_series
+            WHERE favourite_series.user_id = '$userId'
+        ";
+        
+        $resultSet = $conn->executeQuery($sql);
+        
+        return $resultSet->fetchOne();
+    }
+
+    public function updateTvSeriesListAfterRemovingTitleFromTheLibrary(int $listId, string $column): void
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            UPDATE favourite_series
+            SET $column = ''
+            WHERE id = '$listId'
+        ";
+        
+        $conn->executeQuery($sql);
+    }
+
 //    /**
 //     * @return FavouriteSeries[] Returns an array of FavouriteSeries objects
 //     */

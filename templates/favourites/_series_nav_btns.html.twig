@@ -1,0 +1,154 @@
+<div class="flex flex-row">
+    {% if isTop5exists == true %}
+        <div>
+            {% if app.request.get('_route') == "app_show_top_five" or app.request.get('_route') == "app_edit_top_five_success" %}
+                <a href="{{ path('app_show_top_five') }}">
+                    <button
+                        type="button"
+                        class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded shadow-[2px_2px_20px_3px_#708090] transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600">
+                        Show
+                    </button>
+                </a>
+            {% else %}
+                <a href="{{ path('app_show_top_five') }}">
+                    <button
+                        type="button"
+                        class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600">
+                        Show
+                    </button>
+                </a>
+            {% endif %}
+        </div>
+        <div>                
+            <a href="{{ path('app_create_top_five') }}">
+                <button
+                    type="button"
+                    class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded transition-all opacity-25 hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                    disabled>
+                    Create
+                </button>
+            </a>
+        </div>
+        <div>
+            {% if app.request.get('_route') == "app_edit_top_five" %}
+                <a href="{{ path('app_edit_top_five') }}">
+                    <button
+                        type="button"
+                        class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded shadow-[2px_2px_20px_3px_#708090] transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600">
+                        Edit
+                    </button>
+                </a>
+            {% else %}
+                <a href="{{ path('app_edit_top_five') }}">
+                    <button
+                        type="button"
+                        class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600">
+                        Edit
+                    </button>
+                </a>
+            {% endif %}
+        </div>
+        <div>
+            <button
+                type="button"
+                class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                data-te-toggle="modal"
+                data-te-target="#deleteTop5Modal">
+                Delete
+            </button>
+            {{ include('favourites/_delete_top_five_modal.html.twig') }}
+        </div>
+    {% else %}
+        {% if app.request.get('_route') == "app_create_top_five_success" %}
+            <div>
+                <a href="{{ path('app_show_top_five') }}">
+                    <button
+                        type="button"
+                        class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded shadow-[2px_2px_20px_3px_#708090] transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600">
+                        Show
+                    </button>
+                </a>
+            </div>
+            <div>                
+                <a href="{{ path('app_create_top_five') }}">
+                    <button
+                        type="button"
+                        class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded transition-all opacity-25 hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                        disabled>
+                        Create
+                    </button>
+                </a>
+            </div>
+            <div>
+                <a href="{{ path('app_edit_top_five') }}">
+                    <button
+                        type="button"
+                        class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600">
+                        Edit
+                    </button>
+                </a>
+            </div>
+            <div>
+                <button
+                    type="button"
+                    class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                    data-te-toggle="modal"
+                    data-te-target="#deleteTop5Modal">
+                    Delete
+                </button>
+                {{ include('favourites/_delete_top_five_modal.html.twig') }}
+            </div>
+        {% else %}
+            <div>
+                <a href="{{ path('app_show_top_five') }}">
+                    <button
+                        type="button"
+                        class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded transition-all opacity-25 hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                        disabled>
+                        Show
+                    </button>
+                </a>
+            </div>
+            <div>
+                {% if app.request.get('_route') == "app_create_top_five" %}
+                    <a href="{{ path('app_create_top_five') }}">
+                        <button
+                            type="button"
+                            class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded shadow-[2px_2px_20px_3px_#708090] transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600">
+                            Create
+                        </button>
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_create_top_five') }}">
+                        <button
+                            type="button"
+                            class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600">
+                            Create
+                        </button>
+                    </a>
+                {% endif %}            
+            </div>
+            <div>
+                <a href="{{ path('app_edit_top_five') }}">
+                    <button
+                        type="button"
+                        class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded transition-all opacity-25 hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                        disabled>
+                        Edit
+                    </button>
+                </a>
+            </div>
+            <div>
+                <button
+                    type="button"
+                    class="text-xs uppercase leading-normal text-indigo-400 tracking-wide w-20 px-1 py-1 mx-2 border-2 border-[#778899] rounded transition-all opacity-25 hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                    data-te-toggle="modal"
+                    data-te-target="#deleteTop5Modal"
+                    disabled>
+                    Delete
+                </button>
+                {{ include('favourites/_delete_top_five_modal.html.twig') }}
+            </div>
+        {% endif %}
+    {% endif %}            
+</div>

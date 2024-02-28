@@ -1,15 +1,13 @@
 //CONSTANTS
-const arrayMovieItems = [
-    "pickMoviesSelection1", "pickMoviesSelection2", "pickMoviesSelection3", "pickMoviesSelection4",
-    "pickMoviesSelection5", "pickMoviesSelection6", "pickMoviesSelection7", "pickMoviesSelection8", 
-    "pickMoviesSelection9", "pickMoviesSelection10"
+const arraySeriesItems = ["pickSeriesSelection1", "pickSeriesSelection2", "pickSeriesSelection3", "pickSeriesSelection4",
+    "pickSeriesSelection5"
 ];
-const listMovieItemNameWithoutNumber = "movieItem";
+const listSeriesItemNameWithoutNumber = "seriesItem";
 const orderedListCheckBox = document.getElementById("orderedListCheckbox");
 const unorderedListCheckBox = document.getElementById("unorderedListCheckbox");
-const top10MoviesList = document.getElementById("top10MoviesList");
+const top5TvSeriesList = document.getElementById("top5TvSeriesList");
 const hiddenInput = document.getElementById("typeOfList");
-const top10MoviesSaveButton = document.getElementById("top10MoviesBtn");
+const top5TvSeriesSaveButton = document.getElementById("top5TvSeriesBtn");
 //  ...  //
 
 //MANAGING TYPE OF LIST
@@ -18,8 +16,8 @@ unorderedListCheckBox.addEventListener("click", function(){
     orderedListCheckBox.checked = false;
     orderedListCheckBox.removeAttribute("disabled", true);
     
-    top10MoviesList.classList.remove("list-decimal");
-    top10MoviesList.classList.add("list-none");
+    top5TvSeriesList.classList.remove("list-decimal");
+    top5TvSeriesList.classList.add("list-none");
     hiddenInput.value = "unordered";
 })
 
@@ -28,7 +26,7 @@ orderedListCheckBox.addEventListener("click", function(){
     unorderedListCheckBox.checked = false;
     unorderedListCheckBox.removeAttribute("disabled", true);
     
-    top10MoviesList.classList.remove("list-none");
-    top10MoviesList.classList.add("list-decimal");
+    top5TvSeriesList.classList.remove("list-none");
+    top5TvSeriesList.classList.add("list-decimal");
     hiddenInput.value = "ordered";
 })

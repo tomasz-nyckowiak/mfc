@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Top 10 Movies!{% endblock %}
+{% block title %}Top 5 Tv Series!{% endblock %}
 
 {% block bread %}
 → <a href="{{ path('app_favourites') }}">Favourites</a>
@@ -8,8 +8,8 @@
 
 {% block body %}    
     <div class="mt-8">
-        {{ include('favourites/_movies_nav.html.twig') }}
-    </div>
+        {{ include('favourites/_series_nav.html.twig') }}
+    </div>    
     
     {% for message in app.flashes('success') %}                                                       
         <div
@@ -62,11 +62,6 @@
                         <li class="font-medium mb-2">{{ data[0].third }}</li>
                         <li class="font-normal mb-2">{{ data[0].fourth }}</li>
                         <li class="font-normal mb-2">{{ data[0].fifth }}</li>
-                        <li class="mb-2">{{ data[0].sixth }}</li>
-                        <li class="mb-2">{{ data[0].seventh }}</li>
-                        <li class="mb-2">{{ data[0].eighth }}</li>
-                        <li class="mb-2">{{ data[0].ninth }}</li>
-                        <li class="mb-2">{{ data[0].tenth }}</li>
                     </ul>
                 {% else %}
                     <ul class="list-none font-light text-lg text-slate-200">
@@ -75,11 +70,6 @@
                         <li class="mb-2">{{ data[0].third }}</li>
                         <li class="mb-2">{{ data[0].fourth }}</li>
                         <li class="mb-2">{{ data[0].fifth }}</li>
-                        <li class="mb-2">{{ data[0].sixth }}</li>
-                        <li class="mb-2">{{ data[0].seventh }}</li>
-                        <li class="mb-2">{{ data[0].eighth }}</li>
-                        <li class="mb-2">{{ data[0].ninth }}</li>
-                        <li class="mb-2">{{ data[0].tenth }}</li>
                     </ul>
                 {% endif %}
             </div>

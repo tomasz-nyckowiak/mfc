@@ -37,7 +37,7 @@
                         <a href="{{ path('app_library') }}">Library</a>
                     </div>
                     <div class="ml-2">
-                        <a href="{{ path('app_favourites') }}">Favourites</a>
+                        {{ include('hello/_dropdown_favourites.html.twig') }}
                     </div>
                     <div class="ml-2">
                         <a href="{{ path('app_settings_profile') }}">Profile Settings</a>

@@ -1,15 +1,14 @@
 //CONSTANTS
-const arrayMovieItemsEdit = [
-    "editMoviesSelection1", "editMoviesSelection2", "editMoviesSelection3", "editMoviesSelection4",
-    "editMoviesSelection5", "editMoviesSelection6", "editMoviesSelection7", "editMoviesSelection8",
-    "editMoviesSelection9", "editMoviesSelection10"
+const arraySeriesItemsEdit = [
+    "editSeriesSelection1", "editSeriesSelection2", "editSeriesSelection3", "editSeriesSelection4",
+    "editSeriesSelection5"    
 ];
-const editListMovieItemNameWithoutNumber = "editMovieItem";
+const editListSeriesItemNameWithoutNumber = "editSeriesItem";
 const editOrderedListCheckBox = document.getElementById("editOrderedListCheckbox");
 const editUnorderedListCheckBox = document.getElementById("editUnorderedListCheckbox");
-const editTop10MoviesList = document.getElementById("editTop10MoviesList");
+const editTop5TvSeriesList = document.getElementById("editTop5TvSeriesList");
 const editHiddenInput = document.getElementById("editTypeOfList");
-const editTop10MoviesSaveButton = document.getElementById("editTop10MoviesBtn");
+const editTop5TvSeriesSaveButton = document.getElementById("editTop5TvSeriesBtn");
 //  ...  //
 
 //MANAGING TYPE OF LIST
@@ -18,8 +17,8 @@ editUnorderedListCheckBox.addEventListener("click", function(){
     editOrderedListCheckBox.checked = false;
     editOrderedListCheckBox.removeAttribute("disabled", true);
     
-    editTop10MoviesList.classList.remove("list-decimal");
-    editTop10MoviesList.classList.add("list-none");
+    editTop5TvSeriesList.classList.remove("list-decimal");
+    editTop5TvSeriesList.classList.add("list-none");
     editHiddenInput.value = "unordered";
 })
 
@@ -28,7 +27,7 @@ editOrderedListCheckBox.addEventListener("click", function(){
     editUnorderedListCheckBox.checked = false;
     editUnorderedListCheckBox.removeAttribute("disabled", true);
     
-    editTop10MoviesList.classList.remove("list-none");
-    editTop10MoviesList.classList.add("list-decimal");
+    editTop5TvSeriesList.classList.remove("list-none");
+    editTop5TvSeriesList.classList.add("list-decimal");
     editHiddenInput.value = "ordered";
 })

@@ -80,20 +80,6 @@ class FavouriteMoviesRepository extends ServiceEntityRepository
         $conn->executeQuery($sql);
     }
 
-    public function updateList(int $userId, string $listOfTitles)
-    {
-        $conn = $this->getEntityManager()->getConnection();
-
-        $sql = "
-            INSERT INTO favourite_movies (titles, user_id)
-            VALUES ('$listOfTitles', '$userId')
-        ";
-        
-        $conn->executeQuery($sql);
-        
-        //return $resultSet->fetchOne();
-    }
-
     public function gettingTop10(int $userId): array
     {
         return $this->createQueryBuilder('f')

@@ -2,9 +2,9 @@
 <div
   data-te-modal-init
   class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-  id="deleteTop10Modal"
+  id="deleteTop5Modal"
   tabindex="-1"
-  aria-labelledby="deleteModalTitle"
+  aria-labelledby="deleteModalSeries"
   aria-modal="true"
   role="dialog">
   <div
@@ -15,7 +15,7 @@
 
       <!--Modal body-->
       <div class="relative p-4">
-        <div class="text-[#031e49] mb-2">Are you sure you want to delete your TOP 10 MOVIES list?</div>
+        <div class="text-[#031e49] mb-2">Are you sure you want to delete your TOP 5 TV SERIES list?</div>
         <div class="flex justify-end">
             <button
                 type="button"
@@ -23,7 +23,7 @@
                 data-te-modal-dismiss>
                 No
             </button>
-            <a href="{{ path('app_delete_top_ten') }}">
+            <a href="{{ path('app_delete_top_five') }}">
                 <button
                     type="button"
                     class="font-bold text-xs text-indigo-700 uppercase leading-normal ml-2 px-3 py-1 rounded border-2 border-[#031e49] hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600">

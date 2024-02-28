@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Create Top 10 Movies!{% endblock %}
+{% block title %}Create Top 5 Tv Series!{% endblock %}
 
 {% block bread %}
 → <a href="{{ path('app_favourites') }}">Favourites</a>
@@ -8,12 +8,12 @@
 
 {% block footer %}
     <script src="/js/favouritesMain.js"></script>
-    <script src="/js/favouritesMovies.js"></script>
+    <script src="/js/favouritesTvSeries.js"></script>
 {% endblock %}
 
 {% block body %}
     <div class="mt-8">
-        {{ include('favourites/_movies_nav.html.twig') }}
+        {{ include('favourites/_series_nav.html.twig') }}
     </div>
     
     {% for message in app.flashes('success') %}                                                       
@@ -57,7 +57,7 @@
         </div>
     {% endfor %}
 
-    <form class="my-4" action="{{ path('app_create_top_ten_success') }}" method="POST" novalidate>
+    <form class="my-4" action="{{ path('app_create_top_five_success') }}" method="POST" novalidate>
         <!--CHECKBOX (TYPE OF LIST)-->
         <div class="flex justify-center mt-5 mb-1">
             <div class="inline-flex">            
@@ -65,7 +65,7 @@
                     class="peer/ordered relative float-left accent-indigo-500 enabled:hover:cursor-pointer enabled:hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
                     type="checkbox" 
                     id="orderedListCheckbox" 
-                    name="orderedTop10"
+                    name="orderedTop5"
                     checked
                     disabled>
                 <label 
@@ -79,7 +79,7 @@
                     class="peer/unordered relative float-left accent-indigo-500 enabled:hover:cursor-pointer enabled:hover:shadow-[4px_4px_8px_1px_#94a3b8]" 
                     type="checkbox" 
                     id="unorderedListCheckbox" 
-                    name="unorderedTop10">
+                    name="unorderedTop5">
                 <label 
                     class="inline-block font-light text-slate-200 ml-1 hover:underline hover:cursor-pointer peer-disabled/unordered:hover:no-underline peer-disabled/unordered:hover:cursor-default" 
                     for="unorderedListCheckbox">
@@ -93,23 +93,23 @@
             <input type="hidden" id="typeOfList" name="typeOfList" value="ordered">
         </div>
 
-        <div>        
+        <div class="">        
             {% if data|length > 0 %}
-                <ul id="top10MoviesList" class="list-decimal">
-                    {% for i in 1..10 %} 
-                        <li id="movieItem{{ i }}" class="border border-emerald-500 mb-4">
+                <ul id="top5TvSeriesList" class="list-decimal">
+                    {% for i in 1..5 %} 
+                        <li id="seriesItem{{ i }}" class="border border-emerald-500 mb-4">                                                        
                             <select 
                                 data-te-select-init
                                 data-te-select-filter="true" 
-                                data-te-select-placeholder="Choose movie from your library"
+                                data-te-select-placeholder="Choose tv series from your library"
                                 data-te-select-clear-button="true"
-                                name="pickMoviesSelection{{ i }}"
-                                id="pickMoviesSelection{{ i }}"
+                                name="pickSeriesSelection{{ i }}"
+                                id="pickSeriesSelection{{ i }}"
                                 onchange="checkingIfSelectedTitleIsDuplicated(event)">                           
                                 {% for value in data %}
                                     <option value="{{ value.originalTitle }}">{{ value.originalTitle }}</option>
                                 {% endfor %}
-                            </select>
+                            </select>                            
                         </li>                
                     {% endfor %}
                 </ul>
@@ -121,7 +121,7 @@
             <button 
                 type="submit"
                 class="font-bold text-xs text-slate-300 uppercase leading-normal bg-gradient-to-r from-indigo-600 ml-2 px-3 py-1 rounded border-2 border-indigo-500 hover:text-indigo-700 hover:bg-[#708090] hover:border-indigo-700 hover:shadow-[3px_3px_30px_5px_#708090]"
-                id="top10MoviesBtn">
+                id="top5TvSeriesBtn">
                 Save
             </button>        
         </div>

@@ -24,18 +24,18 @@
 
       <!--Modal body-->
       <div class="relative p-4">
-        <div class="text-[#031e49] mb-2">Are you sure you want to remove this title from the library?</div>
+        <div class="text-[#031e49] mb-2">Are you sure you want to remove this title from your library?</div>
         <div class="flex justify-end">
             <button
                 type="button"
-                class="font-medium text-xs text-slate-300 uppercase leading-normal bg-slate-900 px-3 py-1 rounded shadow-lg shadow-slate-900/50 hover:bg-slate-800 hover:shadow-md shadow-slate-800/50"
+                class="font-medium text-xs text-slate-300 uppercase leading-normal bg-slate-900 px-3 py-1 rounded hover:text-slate-50"
                 data-te-modal-dismiss>
                 No
             </button>
             <a href="{{ path('app_library_remove_title', { id: value.id }) }}">
                 <button
                     type="button"
-                    class="font-bold text-xs text-indigo-700 uppercase leading-normal ml-2 px-3 py-1 rounded border-2 border-[#031e49] shadow-lg shadow-indigo-500/50 hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600 hover:shadow-lg hover:shadow-slate-900/75">
+                    class="font-bold text-xs text-indigo-700 uppercase leading-normal ml-2 px-3 py-1 rounded border-2 border-[#031e49] hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600">
                     Yes
                 </button>
             </a>

@@ -1,0 +1,25 @@
+<div id="reviewContent{{ value.id }}" class="flex justify-between">
+  {% if value.review|length > 100 %}
+    <div id="beginningRev{{ value.id }}">      
+        {{ value.review[:100] }}...      
+    </div>  
+    <div>
+      <button 
+        class="revBtn text-xs uppercase leading-normal text-indigo-400 tracking-wide w-40 px-1 py-1 border-2 border-[#778899] rounded transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600"
+        type="button"
+        id="reviewExpandedButton{{ value.id }}"
+        data-te-collapse-init
+        data-te-target="#collapseReview{{ value.id }}"
+        aria-expanded="false"
+        aria-controls="collapseReview{{ value.id }}">
+        Show full review
+      </button>
+    </div>
+  {% else %}
+    <div id="beginningRev{{ value.id }}">{{ value.review }}</div>
+  {% endif %}
+</div>
+
+<div class="!visible hidden mt-2" id="collapseReview{{ value.id }}" data-te-collapse-item>
+  <div class="block text-slate-200 rounded p-6 border-2 border-indigo-500/75">{{ value.review }}</div>
+</div>

@@ -2,51 +2,38 @@
 
 namespace App\Controller;
 
-use App\Model\Add;
 use App\Entity\User;
 use App\Model\Model;
 use App\Model\AddTitle;
 use App\Model\EditTitle;
 use App\Service\Service;
-use App\Model\Favourites;
-use App\Entity\FavouriteMovies;
 use App\Entity\TitleInformation;
-use App\Form\TitleInformationType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\FavouriteMoviesRepository;
 use App\Repository\FavouriteSeriesRepository;
-use Symfony\Component\HttpFoundation\Request;
 use App\Repository\TitleInformationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotEqualTo;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class LibraryController extends AbstractController
-{  
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+{    
     #[Route('/library', name: 'app_library')]
-    public function filmLibrary(TitleInformationRepository $titles): Response
+    public function index(TitleInformationRepository $titles): Response
     {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
         $userId = $currentUser->getId();
         
         $data = $titles->findby(['user' => $userId]);
-
-        //dd($data);
                 
         return $this->render('library/default_list.html.twig', [
                 'data' => $data,
         ]);
     }
 
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/library/add/{id}', name: 'app_add_title')]
     public function addTitleToLibrary($id, TitleInformationRepository $titles): Response
     {        
@@ -153,7 +140,6 @@ class LibraryController extends AbstractController
     }
 
     //FORM FOR ADDING TITLE MANUALLY
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/library/addtitle', name: 'app_form_add_title_manually')]
     public function addTitleToLibraryManually(): Response
     {
@@ -161,7 +147,6 @@ class LibraryController extends AbstractController
     }
 
     //ADD TITLE MANUALLY FAIL
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/library/addtitle/fail', name: 'app_add_title_manually_fail')]
     public function addTitleManuallyFail(): Response
     {
@@ -169,7 +154,6 @@ class LibraryController extends AbstractController
     }
     
     //ADD TITLE MANUALLY SUCCESS
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/library/addtitle/success', name: 'app_add_title_manually_success')]
     public function addTitleManuallySuccess(TitleInformationRepository $titles): Response
     {
@@ -179,8 +163,6 @@ class LibraryController extends AbstractController
 
         $newTitle = new AddTitle();
         $allData = $newTitle->addTitleManually();
-        
-        //dd($allData);
         
         $title = new TitleInformation();
         $title->setUser($currentUser);
@@ -228,7 +210,6 @@ class LibraryController extends AbstractController
 
     //ADD/EDIT STUFF
     #[Route('/library/edit/{id}', name: 'app_library_edit_title')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function editTitle($id, TitleInformationRepository $titles, EntityManagerInterface $entityManager): Response
     {        
         /** @var User $currentUser */
@@ -237,8 +218,6 @@ class LibraryController extends AbstractController
         
         $editTitle = new EditTitle();
         $allData = $editTitle->editTitle();
-
-        //dd($allData);
 
         $title = $entityManager->getRepository(TitleInformation::class)->find($id);
         
@@ -278,12 +257,11 @@ class LibraryController extends AbstractController
         return $this->render('library/default_list.html.twig', [
                 'data' => $data,
                 'id' => $id
-        ]);      
+        ]);
     }
     
     //DELETE TITLE
     #[Route('/library/delete/{id}', name: 'app_library_remove_title')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function deleteTitle($id, TitleInformationRepository $titles, FavouriteMoviesRepository $favouriteMovies, FavouriteSeriesRepository $favouriteSeries): Response
     {        
         /** @var User $currentUser */
@@ -340,7 +318,6 @@ class LibraryController extends AbstractController
 
     //LIBRARY LIST FILTER BY TITLE
     #[Route('/library/title', name: 'app_library_title_filter')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function filterLibraryByTitle(TitleInformationRepository $titles): Response
     {        
         /** @var User $currentUser */
@@ -357,7 +334,6 @@ class LibraryController extends AbstractController
 
     //LIBRARY LIST FILTER BY TITLETYPE (MOVIE)
     #[Route('/library/titletype/movie', name: 'app_library_titletype_movie_filter')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function filterLibraryByTitleTypeMovie(TitleInformationRepository $titles): Response
     {        
         /** @var User $currentUser */
@@ -374,7 +350,6 @@ class LibraryController extends AbstractController
 
     //LIBRARY LIST FILTER BY TITLETYPE (TV SERIES)
     #[Route('/library/titletype/tvseries', name: 'app_library_titletype_tvseries_filter')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function filterLibraryByTitleTypeTvSeries(TitleInformationRepository $titles): Response
     {        
         /** @var User $currentUser */
@@ -391,7 +366,6 @@ class LibraryController extends AbstractController
 
     //LIBRARY LIST FILTER BY TITLETYPE (OTHER)
     #[Route('/library/titletype/other', name: 'app_library_titletype_other_filter')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function filterLibraryByTitleTypeOther(TitleInformationRepository $titles): Response
     {        
         /** @var User $currentUser */
@@ -408,7 +382,6 @@ class LibraryController extends AbstractController
 
     //LIBRARY LIST FILTER BY RATING (ASC)
     #[Route('/library/rating/asc', name: 'app_library_rating_asc_filter')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function filterLibraryByRatingAsc(TitleInformationRepository $titles): Response
     {        
         /** @var User $currentUser */
@@ -425,7 +398,6 @@ class LibraryController extends AbstractController
 
     //LIBRARY LIST FILTER BY RATING (DESC)
     #[Route('/library/rating/desc', name: 'app_library_rating_desc_filter')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function filterLibraryByRatingDesc(TitleInformationRepository $titles): Response
     {        
         /** @var User $currentUser */
@@ -442,7 +414,6 @@ class LibraryController extends AbstractController
 
     //LIBRARY LIST FILTER BY IMDB RATING (ASC)
     #[Route('/library/imdbrating/asc', name: 'app_library_imdbrating_asc_filter')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function filterLibraryByImdbRatingAsc(TitleInformationRepository $titles): Response
     {        
         /** @var User $currentUser */
@@ -459,7 +430,6 @@ class LibraryController extends AbstractController
 
     //LIBRARY LIST FILTER BY IMDB RATING (DESC)
     #[Route('/library/imdbrating/desc', name: 'app_library_imdbrating_desc_filter')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function filterLibraryByImdbRatingDesc(TitleInformationRepository $titles): Response
     {        
         /** @var User $currentUser */
@@ -476,7 +446,6 @@ class LibraryController extends AbstractController
 
     //LIBRARY LIST FILTER BY TOWATCH
     #[Route('/library/toWatch', name: 'app_library_towatch_filter')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function filterLibraryByToWatch(TitleInformationRepository $titles): Response
     {        
         /** @var User $currentUser */

@@ -89,14 +89,14 @@
             <label 
                 class="inline-block text-[#031e49] ml-1 hover:cursor-pointer" 
                 for="optionalInfoCheckbox{{ value.id }}">
-                Yes, I want to change other information about the title.
+                I want to change other information about the title.
             </label>
         </div>
 
         <!--Hidden inputs-->
         <div class="hidden" id="hiddenInputs{{ value.id }}">
             <!--Title input-->
-            <div class="mb-4">
+            <div class="flex mb-4">
                 <label 
                     for="originalTitle{{ value.id }}" 
                     class="inline-block text-[#031e49]"
@@ -104,22 +104,22 @@
                 </label>
                 <input 
                     type="text" 
-                    class="text-slate-200 w-80 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
+                    class="text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                     id="originalTitle{{ value.id }}" 
                     name="originalTitle"
                     maxlength="100" 
                     value="{{ value.originalTitle }}">
-                <div class="inline-block text-sm font-semibold" id="errorMessageForTitle{{ value.id }}"></div>
+                <div class="inline-block text-sm font-semibold ml-1" id="errorMessageForTitle{{ value.id }}"></div>
             </div>
 
             <!--Title type input-->
-            <div class="mb-4">
+            <div class="flex items-center mb-4">
                 <div>
                     <input type="hidden" id="hiddenValueTitleType{{ value.id }}" name="hiddenValueTitleType" value="{{ value.titleType }}">
                 </div>            
             
                 <label class="inline-block text-[#031e49]" for="titleType">Title type:</label>
-                <div class="inline-block w-2/4 font-light border border-[#031e49]">
+                <div class="inline-block grow ml-1 font-light border border-[#031e49]">
                     <select onchange="selectTitleTypeEdit(event)" name="titleType" id="titleType{{ value.id }}" data-te-select-init>
                         <option value="Movie">Movie</option>
                         <option value="Music Video">Music Video</option>
@@ -197,33 +197,33 @@
             {% if value.titleType == "Movie" or value.titleType == "Short" or value.titleType == "Tv Episode" or 
                 value.titleType == "Tv Movie" or value.titleType == "Tv Short" or value.titleType == "Tv Special" or
                 value.titleType == "Video" or value.titleType == "Video Game" %}
-                <div class="mb-4">
+                <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Director(s):</label>
                     <input 
                         type="text" 
-                        class="text-slate-200 w-3/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
+                        class="text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                         id="director{{ value.id }}" 
                         name="director"
                         maxlength="100" 
                         value="{{ value.director }}">
                 </div>
                 
-                <div class="mb-4">
+                <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Writer(s):</label>
                     <input 
                         type="text" 
-                        class="inline-block text-slate-200 w-5/6 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
+                        class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                         id="writer{{ value.id }}" 
                         name="writer"
                         maxlength="100" 
                         value="{{ value.writer }}">
                 </div>            
                 
-                <div class="mb-4">
+                <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Creator(s):</label>
                     <input 
                         type="text" 
-                        class="inline-block text-slate-200 w-4/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
                         id="creator{{ value.id }}" 
                         name="creator"
                         maxlength="100" 
@@ -231,11 +231,11 @@
                         disabled>
                 </div>            
             {% elseif value.titleType == "Tv Series" or value.titleType == "Tv Mini Series" %}
-                <div class="mb-4">
+                <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Director(s):</label>
                     <input 
                         type="text" 
-                        class="text-slate-200 w-3/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        class="text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
                         id="director{{ value.id }}" 
                         name="director"
                         maxlength="100" 
@@ -243,11 +243,11 @@
                         disabled>
                 </div>
                 
-                <div class="mb-4">
+                <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Writer(s):</label>
                     <input 
                         type="text" 
-                        class="inline-block text-slate-200 w-5/6 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
                         id="writer{{ value.id }}" 
                         name="writer"
                         maxlength="100" 
@@ -255,22 +255,22 @@
                         disabled>
                 </div>            
                 
-                <div class="mb-4">
+                <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Creator(s):</label>
                     <input 
                         type="text" 
-                        class="inline-block text-slate-200 w-4/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
+                        class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                         id="creator{{ value.id }}" 
                         name="creator"
                         maxlength="100" 
                         value="{{ value.creator }}">
                 </div>
             {% elseif value.titleType == "Podcast Episode" or value.titleType == "Podcast Series" %}
-                <div class="mb-4">
+                <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Director(s):</label>
                     <input 
                         type="text" 
-                        class="text-slate-200 w-3/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        class="text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
                         id="director{{ value.id }}" 
                         name="director"
                         maxlength="100" 
@@ -278,11 +278,11 @@
                         disabled>
                 </div>
                 
-                <div class="mb-4">
+                <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Writer(s):</label>
                     <input 
                         type="text" 
-                        class="inline-block text-slate-200 w-5/6 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
                         id="writer{{ value.id }}" 
                         name="writer"
                         maxlength="100" 
@@ -290,11 +290,11 @@
                         disabled>
                 </div>            
                 
-                <div class="mb-4">
+                <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Creator(s):</label>
                     <input 
                         type="text" 
-                        class="inline-block text-slate-200 w-4/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
                         id="creator{{ value.id }}" 
                         name="creator"
                         maxlength="100" 
@@ -302,22 +302,22 @@
                         disabled>
                 </div>
             {% elseif value.titleType == "Music Video" %}
-                <div class="mb-4">
+                <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Director(s):</label>
                     <input 
                         type="text" 
-                        class="text-slate-200 w-3/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
+                        class="text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                         id="director{{ value.id }}" 
                         name="director"
                         maxlength="100" 
                         value="{{ value.director }}">
                 </div>
                 
-                <div class="mb-4">
+                <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Writer(s):</label>
                     <input 
                         type="text" 
-                        class="inline-block text-slate-200 w-5/6 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
                         id="writer{{ value.id }}" 
                         name="writer"
                         maxlength="100" 
@@ -325,11 +325,11 @@
                         disabled>
                 </div>            
                 
-                <div class="mb-4">
+                <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Creator(s):</label>
                     <input 
                         type="text" 
-                        class="inline-block text-slate-200 w-4/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
+                        class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
                         id="creator{{ value.id }}" 
                         name="creator"
                         maxlength="100" 
@@ -363,14 +363,14 @@
             </div>
 
             <!--Genres input-->
-            <div class="mb-4">
+            <div class="flex items-center mb-4">
                 <div>
                     <input type="hidden" id="hiddenValueGenres{{ value.id }}" name="hiddenValueGenres" value="{{ value.genres }}">
                 </div>
 
                 <label for="genres" class="inline-block text-[#031e49]">Genres:</label>
-                <div class="inline-block font-light border border-[#031e49] w-4/5">
-                    <select name="genres[]" id="genres{{ value.id }}" data-te-select-init multiple>
+                <div class="inline-block font-light border border-[#031e49] grow ml-1">
+                    <select name="genres[]" id="genres{{ value.id }}" data-te-select-init multiple data-te-select-filter="true">
                         <option value="Action">Action</option>
                         <option value="Adult">Adult</option>
                         <option value="Adventure">Adventure</option>
@@ -404,11 +404,11 @@
             </div>
 
             <!--Cast input-->
-            <div class="mb-4">
+            <div class="flex mb-4">
                 <label class="inline-block text-[#031e49]">Stars:</label>
                 <input 
                     type="text" 
-                    class="text-slate-200 w-4/5 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
+                    class="text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
                     id="cast{{ value.id }}" 
                     name="cast"
                     maxlength="255" 
@@ -416,17 +416,26 @@
             </div>
 
             <!--IMAGE INPUT-->
-            <div class="mb-4">
-                <label for="fileName" class="inline-block text-[#031e49]">Select an image</label>
-                <input 
-                    class="relative hover:cursor-pointer" 
-                    type="file" 
-                    id="fileName{{ value.id }}"
-                    name="fileName"
-                    accept=".jpg, .jpeg, .png"
-                    onchange="validateFileTypeForEditTitle()">
-                <div class="inline-block text-sm font-semibold" id="errorMessageForEditFileType{{ value.id }}"></div>
-            </div>
+            <div class="text-[#031e49]">Edit an image:</div>
+            <div class="inline-flex">
+                <div class="relative h-20 w-12 mr-1">
+                    {% if value.imageUrl != null %}
+                        <img class="absolute w-full h-full inset-0 object-cover" src="{{ value.imageUrl }}" alt="Cover">
+                    {% else %}
+                        <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                    {% endif %}                        
+                </div>
+                <div class="flex items-center mb-4">                    
+                    <input 
+                        class="relative rounded-sm bg-gradient-to-r from-indigo-700 to-indigo-400 hover:cursor-pointer" 
+                        type="file" 
+                        id="fileName{{ value.id }}"
+                        name="fileName"
+                        accept=".jpg, .jpeg, .png"
+                        onchange="validateFileTypeForEditTitle()">
+                    <div class="inline-block text-sm font-semibold" id="errorMessageForEditFileType{{ value.id }}"></div>
+                </div>
+            </div>            
 
             <!--Plot input-->
             <div class="mb-4">
@@ -445,13 +454,13 @@
         <div class="flex justify-end">
             <button
                 type="button"
-                class="font-medium text-xs text-slate-300 uppercase leading-normal bg-slate-900 px-3 py-1 rounded shadow-lg shadow-slate-900/50 hover:bg-slate-800 hover:shadow-md shadow-slate-800/50"
+                class="font-medium text-xs text-slate-300 uppercase leading-normal bg-slate-900 px-3 py-1 rounded hover:text-slate-50"
                 data-te-modal-dismiss>
                 Close
             </button>
             <button 
                 type="submit"
-                class="font-bold text-xs text-indigo-700 uppercase leading-normal ml-2 px-3 py-1 rounded border-2 border-[#031e49] shadow-lg shadow-indigo-500/50 hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600 hover:shadow-lg hover:shadow-slate-900/75"
+                class="font-bold text-xs text-indigo-700 uppercase leading-normal ml-2 px-3 py-1 rounded border-2 border-[#031e49] hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600"
                 onclick="return validateForm()">
                 Save
             </button>

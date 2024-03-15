@@ -5,13 +5,18 @@ const errorMessageForFileType = "Only jpg/jpeg and png files are allowed!";
 const colorForErrorMessages = "rgb(175 30 30)";
 
 let IdToRemember = "";
-let reviewsBtnsId = "";
 let editBtns = document.getElementsByClassName("edit");
 let revBtns = document.getElementsByClassName("revBtn");
-let allInfoCheckB = document.getElementsByClassName("allInfo");
-let favBtns = document.getElementsByClassName("favBtn");
+let allInfoCheckBtn = document.getElementsByClassName("allInfo");
 
-function thatCollapse(id) {    
+function getIdNumberOut(id) {
+    let result = id.slice(20);
+
+    return result;
+}
+
+//EDIT TITLES
+function setupForSelectedValues(id) {    
     const arrayOfGenres = ["Action", "Adult", "Adventure", "Animation", "Biography", "Comedy", "Crime",
     "Documentary", "Drama", "Family", "Fantasy", "Film-Noir", "Game-Show", "History", "Horror", "Music",
     "Musical", "Mystery", "News", "Reality-TV", "Romance", "Sci-Fi", "Short", "Sport", "Talk-Show", "Thriller",
@@ -31,7 +36,6 @@ function thatCollapse(id) {
     let hiddenValueForGenres = "hiddenValueGenres" + id;
     let multiSelect = document.getElementById(genresId);
     let defaultGenresValue = document.getElementById(hiddenValueForGenres).value;
-    let isNoGenreSelected = false;
     
     for (let i = 0; i < arrayOfGenres.length; i++) {
         if (defaultGenresValue.includes(arrayOfGenres[i])) {
@@ -40,47 +44,53 @@ function thatCollapse(id) {
     }
 }
 
-function getIdOut(editBtnid) {
-    let result = editBtnid.slice(3);
-
-    return result;
-}
-
 for (let i = 0; i < editBtns.length; i++) {
     editBtns[i].addEventListener("click", function(e) {
         let clickedButtonId = e.target.id;
-        IdToRemember = getIdOut(clickedButtonId);
+        IdToRemember = getIdNumberOut(clickedButtonId);
         settingUpNeededElements();
-        thatCollapse(IdToRemember);
+        setupForSelectedValues(IdToRemember);
     });
 }
 
 //REVIEWS
+function changingButtonPosition(id, textBtn) {
+    let divId = "reviewContent" + id;
+    let manipulatedDiv = document.getElementById(divId);
+    
+    if (textBtn == "Hide full review") {
+        manipulatedDiv.classList.remove("justify-between");
+        manipulatedDiv.classList.add("justify-end");
+    } else {
+        manipulatedDiv.classList.remove("justify-end");
+        manipulatedDiv.classList.add("justify-between");
+    }    
+}
+
 function showHideFullReview(id) {
     let divId = "beginningRev" + id;
     let manipulatedDiv = document.getElementById(divId);
-    let revBtn = "reviewExpandBtn" + id;
+    let revBtn = "reviewExpandedButton" + id;
     let manipulatedBtn = document.getElementById(revBtn);
+    let buttonTextAsString = "";
     
     if (manipulatedDiv.classList.contains("hidden")) {
         manipulatedDiv.classList.remove("hidden");
         manipulatedBtn.innerHTML = "Show full review";
+        buttonTextAsString = "Show full review";
+        changingButtonPosition(id, buttonTextAsString);
     } else {
         manipulatedDiv.classList.add("hidden");        
         manipulatedBtn.innerHTML = "Hide full review";
+        buttonTextAsString = "Hide full review";
+        changingButtonPosition(id, buttonTextAsString);
     }    
-}
-
-function getIdOut2(id) {
-    let temp = id.slice(15);
-    
-    return temp;
 }
 
 for (let i = 0; i < revBtns.length; i++) {
     revBtns[i].addEventListener("click", function(e) {
         let clickedButtonId = e.target.id;
-        let idNumber = getIdOut2(clickedButtonId);
+        let idNumber = getIdNumberOut(clickedButtonId);
         showHideFullReview(idNumber);
     });
 }
@@ -97,58 +107,10 @@ function showHideAllInformationAboutTheTitle(id) {
     }
 }
 
-function getIdOut5(id) {
-    let temp = id.slice(20);
-    
-    return temp;
-}
-
-for (let i = 0; i < allInfoCheckB.length; i++) {
-    allInfoCheckB[i].addEventListener("click", function(e) {
+for (let i = 0; i < allInfoCheckBtn.length; i++) {
+    allInfoCheckBtn[i].addEventListener("click", function(e) {
         let clickedButtonId = e.target.id;
-        let idNumber = getIdOut5(clickedButtonId);
+        let idNumber = getIdNumberOut(clickedButtonId);
         showHideAllInformationAboutTheTitle(idNumber);
     });
 }
-
-//FAVOURITES
-let idFromFavouriteButtonsToRemember = "";
-
-function getIdFromFavouriteButtons(btnId) {
-    let result = btnId.slice(3);
-
-    return result;
-}
-
-for (let i = 0; i < favBtns.length; i++) {
-    favBtns[i].addEventListener("click", function(e) {
-        let clickedButtonId = e.target.id;
-        let idNumber = getIdFromFavouriteButtons(clickedButtonId);
-        idFromFavouriteButtonsToRemember = idNumber;
-    });
-}
-
-function test33() {
-    //console.log(idFromFavouriteButtonsToRemember);
-    let x = "tytuł filmu";
-    let y = 2024;
-
-    let data = {};
-    data.title = x;
-    data.year = y;
-    data.id = idFromFavouriteButtonsToRemember;
-
-    fetch('/library/favourites', {
-		
-		method: 'post',
-		body: JSON.stringify({data})
-			
-	}).then (function(response) {
-        return response.text();
-	}).then (function(text) {				
-		renderEditingIncome(text);				
-	}).catch (function(error) {
-        console.error(error);
-	})
-}
-

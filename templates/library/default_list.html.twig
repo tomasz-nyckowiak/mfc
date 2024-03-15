@@ -2,31 +2,59 @@
 
 {% block title %}Library!{% endblock %}
 
+{% block bread %}
+→ <a href="{{ path('app_library') }}">Library</a>
+{% endblock %}
+
 {% block footer %}
     <script src="/js/main.js"></script>
     <script src="/js/formsTitleValidation.js"></script>
-    <script src="/js/editTitle.js"></script>
-    <script 
-        type="module"
-        src="https://unpkg.com/@material-tailwind/html@latest/scripts/popover.js">
-    </script>  
+    <script src="/js/editTitle.js"></script>  
 {% endblock %}
 
 {% block body %}
     {% for message in app.flashes('delete') %}
-        <div class="rounded-md p-2 border-green-300 bg-green-50 border dark:border-green-600 dark:bg-green-700 dark:text-white mb-4">{{ message }}</div>
+        <div
+            class="my-3 inline-flex w-full items-center rounded-lg bg-green-700 px-6 py-5 text-base text-white"
+            role="alert"
+            data-te-alert-init
+            data-te-alert-show>
+            <span class="mr-2">
+                <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="h-6 w-6">
+                <path
+                    fill-rule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                    clip-rule="evenodd" />
+                </svg>
+            </span>
+            <div>{{ message }}</div>
+            <button
+                type="button"
+                class="ml-auto box-content rounded-none border-none p-1 text-white opacity-100 hover:text-white hover:no-underline hover:opacity-50 focus:opacity-100 focus:shadow-none focus:outline-none"
+                data-te-alert-dismiss
+                aria-label="Close">
+                <span
+                    class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="h-6 w-6">
+                        <path
+                            fill-rule="evenodd"
+                            d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                            clip-rule="evenodd">
+                    </svg>
+                </span>
+            </button>
+        </div>
     {% endfor %}
     <div class="flex flex-row">
-        <div class="mb-5">{{ include('library/_dropdown_filter.html.twig') }}</div>
-        <div>
-            <a href="{{ path('app_favourites') }}">
-                <button
-                    type="button"
-                    class="favBtn text-xs uppercase leading-normal text-indigo-400 tracking-wide w-40 px-1 py-1 border-2 border-[#778899] rounded transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600">
-                    Favourites
-                </button>
-            </a>
-        </div>
+        <div class="mb-5">{{ include('library/_dropdown_filter.html.twig') }}</div>        
     </div>    
     <div>
         {% if data|length > 0 %}
@@ -38,7 +66,44 @@
                         {% if id is defined %}
                             {% if value.id == id %} 
                                 {% for message in app.flashes('success') %}                                                       
-                                    <div class="rounded-md border dark:border-green-600 dark:bg-green-700 dark:text-white">{{ message }}</div>
+                                    <div
+                                        class="my-3 inline-flex w-full items-center rounded-lg bg-green-700 px-6 py-5 text-base text-white"
+                                        role="alert"
+                                        data-te-alert-init
+                                        data-te-alert-show>
+                                        <span class="mr-2">
+                                            <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                            fill="currentColor"
+                                            class="h-6 w-6">
+                                            <path
+                                                fill-rule="evenodd"
+                                                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                                                clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <div>{{ message }}</div>
+                                        <button
+                                            type="button"
+                                            class="ml-auto box-content rounded-none border-none p-1 text-white opacity-100 hover:text-white hover:no-underline hover:opacity-50 focus:opacity-100 focus:shadow-none focus:outline-none"
+                                            data-te-alert-dismiss
+                                            aria-label="Close">
+                                            <span
+                                                class="w-[1em] focus:opacity-100 disabled:pointer-events-none disabled:select-none disabled:opacity-25 [&.disabled]:pointer-events-none [&.disabled]:select-none [&.disabled]:opacity-25">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="currentColor"
+                                                    class="h-6 w-6">
+                                                    <path
+                                                        fill-rule="evenodd"
+                                                        d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                                                        clip-rule="evenodd">
+                                                </svg>
+                                            </span>
+                                        </button>
+                                    </div>
                                 {% endfor %}
                                 {% for message in app.flashes('fail') %}                                                       
                                     <div class="rounded-md border dark:border-green-600 dark:bg-green-700 dark:text-white">{{ message }}</div>
@@ -185,19 +250,7 @@
                         {# THIRD COLUMN #}
                         <div class="flex items-center">
                             <div class="flex-col">
-                                <div class="mb-1">{{ include('library/_edit_modal.html.twig') }}</div>
-                                {% if value.titleType == "Movie" %}
-                                    <div class="mb-1">
-                                        <a href="#">
-                                            <button 
-                                                type="button"
-                                                id="fav{{ value.id }}"
-                                                class="favBtn text-xs uppercase leading-normal text-indigo-400 tracking-wide w-40 px-1 py-1 border-2 border-[#778899] rounded transition-all hover:text-white hover:bg-gradient-to-r from-indigo-600">
-                                                Favourites
-                                            </button>
-                                        </a>
-                                    </div>
-                                {% endif %}                    
+                                <div class="mb-1">{{ include('library/_edit_modal.html.twig') }}</div>                    
                                 <div class="">{{ include('library/_delete_modal.html.twig') }}</div>
                             </div>
                         </div>                        
@@ -213,13 +266,13 @@
                             {% endif %}
                         </div>                       
                         <div class="mt-4">Stars: {{ value.stars }}</div>
-                        <div class="italic my-3">{{ value.plot }}</div>
+                        <div class="italic text-slate-200 my-3">{{ value.plot }}</div>
                     </div>
                     <div>
                         {% if value.review != null %}
-                            <div>{{ include('library/_review.html.twig') }}</div>
+                            <div>{{ include('library/_reviews.html.twig') }}</div>
                         {% else %}
-                            <div>No review</div>
+                            <div>No review yet!</div>
                         {% endif %}
                     </div>               
                 </div>                              

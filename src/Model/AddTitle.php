@@ -54,8 +54,7 @@ class AddTitle
                         $finalReleaseDate = $releaseDate . "-";
                     } else $finalReleaseDate = $releaseDate;                        
                 } else $finalReleaseDate = $releaseDate;                
-            } else $finalReleaseDate = $releaseDate . "-" . $releaseDateEndYear;
-            
+            } else $finalReleaseDate = $releaseDate . "-" . $releaseDateEndYear;            
             ##### ##### #####
             
             ##### Ratings #####

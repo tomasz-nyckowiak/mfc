@@ -11,16 +11,14 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LoginController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
-    public function index(
-        AuthenticationUtils $utils,
-        Request $request,
-    ): Response {
+    public function index(AuthenticationUtils $utils, Request $request): Response 
+    {
         $lastUsername = $utils->getLastUsername();
         $error = $utils->getLastAuthenticationError();
         //$temp = $request->getUri();
         $temp = $request->headers->get('referer');
 
-        return $this->render('login/index.html.twig', [
+        return $this->render('login/login.html.twig', [
             'lastUsername' => $lastUsername,
             'error' => $error,
             'temp' => $temp

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MFC: Create and Manage Your Own Film Library{% endblock %}
+
+{% block body %}
+    <div>
+        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+            <div class="flex flex-row relative">
+                <img class="h-[427px] w-[640px] rounded border-2 border-[#708090]" src="/img/library.jpg" alt="">
+                <div class="flex items-center">
+                    <div class="text-[#708090] p-2 ml-3 rounded border-2 border-indigo-500/75">
+                        <p class="underline decoration-2 text-lg text-center mb-5">Hello there my fellow movie fan!</p>
+                        <p class="text-justify">
+                            On this website you can create your own film library with additional feature of creating your top best movies and tv series!
+                            <p>Search Internet Movie Database (<a href="https://www.imdb.com/" target="_blank" class="hover:text-indigo-500 hover:underline decoration-1">IMDb</a>) for title and add it to your collection (or you can add title manually)! This way your library will grow in no time!</p>
+                            There you can write and save reviews, compare IMDb title rating with yours, filter titles and much more...
+                        </p>
+                    </div>
+                </div>            
+            </div>
+        {% else %}
+            <div>{{ include('api/_search_form.html.twig') }}</div>
+            <div class="text-3xl my-6">Upcoming:</div>
+            <div class="flex justify-center mb-5">    
+                <div class="grid grid-cols-3">
+                    {% for value in data|slice(0, 3) %}            
+                    <div class="inline-flex flex-row">
+                        <div>
+                            <div class="relative h-64 w-40">
+                            {% if value.image != null %}
+                                <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="{{ value.image }}" alt="Cover"></a>
+                            {% else %}
+                                <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover"></a>
+                            {% endif %}
+                            </div>
+                        </div>                
+                        {% if loop.last == false %}            
+                        <div class="flex items-center">
+                            <div>
+                                <div class="mx-6 h-32 min-h-[1em] w-px self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-20 dark:opacity-100"></div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>        
+                    {% endfor %}        
+                </div>     
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

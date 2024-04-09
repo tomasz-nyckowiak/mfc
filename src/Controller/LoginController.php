@@ -15,13 +15,12 @@ class LoginController extends AbstractController
     {
         $lastUsername = $utils->getLastUsername();
         $error = $utils->getLastAuthenticationError();
-        //$temp = $request->getUri();
-        $temp = $request->headers->get('referer');
+        $lastVisitedPage = $request->headers->get('referer');        
 
         return $this->render('login/login.html.twig', [
             'lastUsername' => $lastUsername,
             'error' => $error,
-            'temp' => $temp
+            'lastVisitedPage' => $lastVisitedPage
         ]);
     }
 

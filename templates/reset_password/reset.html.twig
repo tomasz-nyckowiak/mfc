@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MFC: Reset Your Password{% endblock %}
+
+{% block body %}
+    <div class="w-1/2 mx-auto">
+        <div class="text-[#708090] rounded border-2 border-indigo-500/75 p-4">
+            <h1 class="text-3xl font-normal leading-tight mb-4">Reset your password</h1>
+
+            {{ form_start(resetForm, {'attr': {'novalidate': 'novalidate'}}) }}                
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        {{ form_label(resetForm.plainPassword.first, 'Password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                        {{ form_widget(resetForm.plainPassword.first, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8] p-2 mt-1 mb-2'}})}}
+                        {{ form_errors(resetForm.plainPassword.first) }}
+                        <div class="text-sm font-medium">(*Passwords must be at least 8 characters)</div>
+                    </div>
+                    
+                    <div>
+                        {{ form_label(resetForm.plainPassword.second, 'Re-enter password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                        {{ form_widget(resetForm.plainPassword.second, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8] p-2 mt-1 mb-2'}})}}
+                        {{ form_errors(resetForm.plainPassword.second) }}
+                    </div>
+                </div>
+
+                <div class="mt-10">
+                    <button type="submit" 
+                        class="block w-full font-semibold text-slate-200 uppercase tracking-wider border-2 border-[#708090] hover:text-indigo-500 hover:border-indigo-500/75 rounded-md p-2">Reset password</button>
+                </div>
+            {{ form_end(resetForm) }}
+        </div>
+    </div>
+{% endblock %}

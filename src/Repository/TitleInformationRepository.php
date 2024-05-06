@@ -172,6 +172,18 @@ class TitleInformationRepository extends ServiceEntityRepository
         return $resultSet->fetchOne();
     }
 
+    public function removingAllTitlesByUserId($id) 
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            DELETE FROM title_information
+            WHERE title_information.user_id = '$id'
+        ";
+        
+        $conn->executeQuery($sql);
+    }
+
 //    /**
 //     * @return TitleInformation[] Returns an array of TitleInformation objects
 //     */

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MFC Profile{% endblock %}
+
+{% block body %}    
+    {{ include('profile/_flash_message.html.twig') }}
+    
+    <div class="flex w-full items-center mb-5">
+        <div>
+            {% if form1IsSubmitted == true %}
+                {% if form1IsValid == true %}
+                    <img class="" src="{{ asset('img/uploads/' ~ userProfile.imageFileName) }}" height="100" width="100">
+                {% else %}
+                    {% if userProfile.imageFileName != null %}
+                        <img class="" src="{{ asset('img/uploads/' ~ userProfile.imageFileName) }}" height="100" width="100">
+                    {% else %}
+                        <img class="" src="/img/icon-user.png" height="100" width="100">
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if userProfile.imageFileName != null %}
+                    <img class="" src="{{ asset('img/uploads/' ~ userProfile.imageFileName) }}" height="100" width="100">
+                {% else %}
+                    <img class="" src="/img/icon-user.png" height="100" width="100">
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="ml-2">
+            <div class="text-xl font-bold">
+                {% if form1IsSubmitted == true %}
+                    {% if form1IsValid == true %}
+                        {{ userProfile.name }}
+                    {% else %}
+                        {{ rememberUserName }}
+                    {% endif %}
+                {% else %}
+                    {{ userProfile.name }}
+                {% endif %}
+            </div>  
+            <div class="text-lg">
+                {% if form1IsSubmitted == true %}
+                    {% if form1IsValid == true %}
+                        {{ userProfile.websiteUrl }}
+                    {% else %}
+                        {{ rememberUserWebsiteUrl }}
+                    {% endif %}
+                {% else %}
+                    {{ userProfile.websiteUrl }}
+                {% endif %}
+            </div>
+            <div class="text-sm">MFC member since {{ userProfile.memberSince|date("m/Y") }}</div>
+        </div>        
+    </div>
+    
+    <div class="w-1/2 mx-auto">
+        {{ include('profile/_accordion_settings.html.twig') }}
+    </div>    
+{% endblock %}

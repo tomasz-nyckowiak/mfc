@@ -1,0 +1,444 @@
+<div id="accordionProfileSettings">
+    {# Item 1 #}
+    <div class="mb-1.5">
+        {% if form1IsSubmitted == true %}
+            {% if form1IsValid == true %}
+                <button
+                    class="group relative flex w-full items-center uppercase leading-normal text-indigo-400 tracking-wide w-40 px-2 py-1 border-2 border-[#778899] rounded transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                    type="button"
+                    data-te-collapse-init
+                    data-te-collapse-collapsed
+                    data-te-target="#collapseEditProfile"
+                    aria-expanded="false"
+                    aria-controls="collapseEditProfile">
+                    Edit profile
+                    <span
+                    class="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[te-collapse-collapsed]:me-0 group-data-[te-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor">
+                        <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19.5 8.25l-7.5 7.5-7.5-7.5">
+                    </svg>
+                    </span>
+                </button>
+                <div
+                    id="collapseEditProfile"
+                    class="!visible hidden"
+                    data-te-collapse-item
+                    data-te-parent="#accordionProfileSettings">
+                    <div class="px-5 py-4">
+                        <div class="text-[#708090] rounded border-2 border-indigo-500/75 p-4">
+                            {{ form_start(changeProfileForm, {'attr': {'novalidate': 'novalidate'}}) }}                                
+                                <div class="mb-4">
+                                    {{ form_label(changeProfileForm.name, 'Username', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                    {{ form_widget(changeProfileForm.name, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}}) }}
+                                    {{ form_errors(changeProfileForm.name) }}
+                                </div>
+
+                                <div class="mb-4">
+                                    {{ form_label(changeProfileForm.websiteUrl, 'Website URL', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                    {{ form_widget(changeProfileForm.websiteUrl, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}}) }}
+                                    {{ form_errors(changeProfileForm.websiteUrl) }}                                    
+                                </div>
+
+                                <div class="mb-4">                                   
+                                    {{ form_label(changeProfileForm.avatar, 'Avatar', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                    {{ form_widget(changeProfileForm.avatar, {'attr': {'class': 'block font-light text-slate-200 w-full rounded-sm bg-gradient-to-r from-indigo-700 to-indigo-400 hover:cursor-pointer hover:border-slate-400'}}) }}                                    
+                                    {{ form_errors(changeProfileForm.avatar) }}
+                                </div>   
+
+                                <div class="mt-10">
+                                    <button type="submit" 
+                                        class="block w-full font-semibold text-slate-200 uppercase tracking-wider border-2 border-[#708090] hover:text-indigo-500 hover:border-indigo-500/75 rounded-md p-2">Save Profile</button>
+                                </div>
+                            {{ form_end(changeProfileForm) }}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <button
+                    class="group relative flex w-full items-center uppercase leading-normal text-indigo-400 tracking-wide w-40 px-2 py-1 border-2 border-[#778899] rounded transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                    type="button"
+                    data-te-collapse-init
+                    data-te-target="#collapseEditProfile"
+                    aria-expanded="true"
+                    aria-controls="collapseEditProfile">
+                    Edit profile
+                    <span
+                    class="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[te-collapse-collapsed]:me-0 group-data-[te-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor">
+                        <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19.5 8.25l-7.5 7.5-7.5-7.5">
+                    </svg>
+                    </span>
+                </button>
+                <div
+                    id="collapseEditProfile"
+                    class="!visible"
+                    data-te-collapse-item
+                    data-te-collapse-show
+                    data-te-parent="#accordionProfileSettings">
+                    <div class="px-5 py-4">
+                        <div class="text-[#708090] rounded border-2 border-indigo-500/75 p-4">
+                            {{ form_start(changeProfileForm, {'attr': {'novalidate': 'novalidate'}}) }}                    
+                                {% set errorMsg1 = "Please enter a username" %}
+                                {% set errorMsg2 = "Your username must be at least 3 characters" %}
+                                {% set errorMsg3 = "This value is not a valid URL" %}
+                                {% set errorMsg4 = "Please upload a valid jpeg/png file" %}
+                                {% set errorMsg5 = "The file is too large. Allowed maximum size is 1024 kB" %}                                                                           
+
+                                {% if errorMsg1 in errors or errorMsg2 in errors %}
+                                    <div class="mb-4">
+                                        {{ form_label(changeProfileForm.name, 'Username', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}    
+                                        {{ form_widget(changeProfileForm.name, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#af1e1e] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}}) }}                                
+                                        {{ form_errors(changeProfileForm.name) }}
+                                    </div>
+                                {% else %}
+                                    <div class="mb-4">
+                                        {{ form_label(changeProfileForm.name, 'Username', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}    
+                                        {{ form_widget(changeProfileForm.name, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}}) }}                                
+                                        {{ form_errors(changeProfileForm.name) }}
+                                    </div>
+                                {% endif %}
+
+                                {% if errorMsg3 in errors %}
+                                    <div class="mb-4">
+                                        {{ form_label(changeProfileForm.websiteUrl, 'Website URL', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                        {{ form_widget(changeProfileForm.websiteUrl, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#af1e1e] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}}) }}
+                                        {{ form_errors(changeProfileForm.websiteUrl) }}                                    
+                                    </div>
+                                {% else %}                                
+                                    <div class="mb-4">
+                                        {{ form_label(changeProfileForm.websiteUrl, 'Website URL', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                        {{ form_widget(changeProfileForm.websiteUrl, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}}) }}
+                                        {{ form_errors(changeProfileForm.websiteUrl) }}                                    
+                                    </div>
+                                {% endif %}
+                                
+                                {% if errorMsg4 in errors or errorMsg5 in errors %}
+                                    <div class="mb-4">                                   
+                                        {{ form_label(changeProfileForm.avatar, 'Avatar', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                        {{ form_widget(changeProfileForm.avatar, {'attr': {'class': 'block font-light text-slate-200 w-full rounded-sm border-2 border-[#af1e1e] bg-gradient-to-r from-indigo-700 to-indigo-400 hover:cursor-pointer hover:border-slate-400'}}) }}                                    
+                                        {{ form_errors(changeProfileForm.avatar) }}
+                                    </div>
+                                {% else %}
+                                    <div class="mb-4">                                   
+                                        {{ form_label(changeProfileForm.avatar, 'Avatar', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                        {{ form_widget(changeProfileForm.avatar, {'attr': {'class': 'block font-light text-slate-200 w-full rounded-sm bg-gradient-to-r from-indigo-700 to-indigo-400 hover:cursor-pointer hover:border-slate-400'}}) }}                                    
+                                        {{ form_errors(changeProfileForm.avatar) }}
+                                    </div>
+                                {% endif %}
+                                
+                                <div class="mt-10">
+                                    <button type="submit" 
+                                        class="block w-full font-semibold text-slate-200 uppercase tracking-wider border-2 border-[#708090] hover:text-indigo-500 hover:border-indigo-500/75 rounded-md p-2">Save Profile</button>
+                                </div>
+                            {{ form_end(changeProfileForm) }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}    
+            <button
+                class="group relative flex w-full items-center uppercase leading-normal text-indigo-400 tracking-wide w-40 px-2 py-1 border-2 border-[#778899] rounded transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                type="button"
+                data-te-collapse-init
+                data-te-collapse-collapsed
+                data-te-target="#collapseEditProfile"
+                aria-expanded="false"
+                aria-controls="collapseEditProfile">
+                Edit profile
+                <span
+                class="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[te-collapse-collapsed]:me-0 group-data-[te-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor">
+                    <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5">
+                </svg>
+                </span>
+            </button>    
+            <div
+                id="collapseEditProfile"
+                class="!visible hidden"
+                data-te-collapse-item
+                data-te-parent="#accordionProfileSettings">
+                <div class="px-5 py-4">
+                    <div class="text-[#708090] rounded border-2 border-indigo-500/75 p-4">
+                        {{ form_start(changeProfileForm, {'attr': {'novalidate': 'novalidate'}}) }}                    
+                            <div class="mb-4">
+                                {{ form_label(changeProfileForm.name, 'Username', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                {{ form_widget(changeProfileForm.name, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}}) }}
+                                {{ form_errors(changeProfileForm.name) }}
+                            </div>
+
+                            <div class="mb-4">
+                                {{ form_label(changeProfileForm.websiteUrl, 'Website URL', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                {{ form_widget(changeProfileForm.websiteUrl, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}}) }}
+                                {{ form_errors(changeProfileForm.websiteUrl) }}                                    
+                            </div>
+
+                            <div class="mb-4">                                   
+                                {{ form_label(changeProfileForm.avatar, 'Avatar', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                {{ form_widget(changeProfileForm.avatar, {'attr': {'class': 'block font-light text-slate-200 w-full rounded-sm bg-gradient-to-r from-indigo-700 to-indigo-400 hover:cursor-pointer hover:border-slate-400'}}) }}                                    
+                                {{ form_errors(changeProfileForm.avatar) }}
+                            </div>                   
+
+                            <div class="mt-10">
+                                <button type="submit" 
+                                    class="block w-full font-semibold text-slate-200 uppercase tracking-wider border-2 border-[#708090] hover:text-indigo-500 hover:border-indigo-500/75 rounded-md p-2">Save Profile</button>
+                            </div>
+                        {{ form_end(changeProfileForm) }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    {# Item 2 #}
+    <div class="mb-1.5">
+        {% if form2IsSubmitted == true %}
+            {% if form2IsValid == true %}
+                <button
+                    class="group relative flex w-full items-center uppercase leading-normal text-indigo-400 tracking-wide w-40 px-2 py-1 border-2 border-[#778899] rounded transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                    type="button"
+                    data-te-collapse-init
+                    data-te-collapse-collapsed
+                    data-te-target="#collapseChangePassword"
+                    aria-expanded="false"
+                    aria-controls="collapseChangePassword">
+                    Change Password
+                    <span
+                    class="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[te-collapse-collapsed]:me-0 group-data-[te-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor">
+                        <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19.5 8.25l-7.5 7.5-7.5-7.5">
+                    </svg>
+                    </span>
+                </button>    
+                <div
+                    id="collapseChangePassword"
+                    class="!visible hidden"
+                    data-te-collapse-item
+                    data-te-parent="#accordionProfileSettings">
+                    <div class="px-5 py-4">
+                        <div class="text-[#708090] rounded border-2 border-indigo-500/75 p-4">
+                            {{ form_start(changePasswordForm, {'attr': {'novalidate': 'novalidate'}}) }}
+                                <div class="grid grid-cols-1 gap-4">
+                                    <div>
+                                        {{ form_label(changePasswordForm.plainPassword.first, 'New password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                        {{ form_widget(changePasswordForm.plainPassword.first, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                                        {{ form_errors(changePasswordForm.plainPassword.first) }}
+                                    </div>
+                                    
+                                    <div>
+                                        {{ form_label(changePasswordForm.plainPassword.second, 'Re-enter new password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                        {{ form_widget(changePasswordForm.plainPassword.second, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                                        {{ form_errors(changePasswordForm.plainPassword.second) }}
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-10">
+                                    <button type="submit" 
+                                        class="block w-full font-semibold text-slate-200 uppercase tracking-wider border-2 border-[#708090] hover:text-indigo-500 hover:border-indigo-500/75 rounded-md p-2">Change password</button>
+                                </div>
+                            {{ form_end(changePasswordForm) }}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <button
+                    class="group relative flex w-full items-center uppercase leading-normal text-indigo-400 tracking-wide w-40 px-2 py-1 border-2 border-[#778899] rounded transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                    type="button"
+                    data-te-collapse-init
+                    data-te-target="#collapseChangePassword"
+                    aria-expanded="true"
+                    aria-controls="collapseChangePassword">
+                    Change Password
+                    <span
+                    class="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[te-collapse-collapsed]:me-0 group-data-[te-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor">
+                        <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19.5 8.25l-7.5 7.5-7.5-7.5">
+                    </svg>
+                    </span>
+                </button>
+                <div
+                    id="collapseChangePassword"
+                    class="!visible"
+                    data-te-collapse-item
+                    data-te-parent="#accordionProfileSettings">
+                    <div class="px-5 py-4">
+                        <div class="text-[#708090] rounded border-2 border-indigo-500/75 p-4">
+                            {{ form_start(changePasswordForm, {'attr': {'novalidate': 'novalidate'}}) }}
+                                {% set errorMsg4 = "Please enter a password" %}
+                                {% set errorMsg5 = "Your password should be at least 8 characters" %}
+                                {% set errorMsg6 = "Passwords must match" %}                                
+                                
+                                <div class="grid grid-cols-1 gap-4">                                
+                                    <div>
+                                        {{ form_label(changePasswordForm.plainPassword.first, 'New password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                        {{ form_widget(changePasswordForm.plainPassword.first, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#af1e1e] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}                                        
+                                        {{ form_errors(changePasswordForm.plainPassword.first) }}
+                                    </div>
+                                    {% if errorMsg6 in errors %}
+                                        <div>
+                                            {{ form_label(changePasswordForm.plainPassword.second, 'Re-enter new password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                            {{ form_widget(changePasswordForm.plainPassword.second, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#af1e1e] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                                            {{ form_errors(changePasswordForm.plainPassword.second) }}
+                                        </div>
+                                    {% else %}
+                                        <div>
+                                            {{ form_label(changePasswordForm.plainPassword.second, 'Re-enter new password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                            {{ form_widget(changePasswordForm.plainPassword.second, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                                        </div>                                 
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mt-10">
+                                    <button type="submit" 
+                                        class="block w-full font-semibold text-slate-200 uppercase tracking-wider border-2 border-[#708090] hover:text-indigo-500 hover:border-indigo-500/75 rounded-md p-2">Change password</button>
+                                </div>
+                            {{ form_end(changePasswordForm) }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <button
+                class="group relative flex w-full items-center uppercase leading-normal text-indigo-400 tracking-wide w-40 px-2 py-1 border-2 border-[#778899] rounded transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600"
+                type="button"
+                data-te-collapse-init
+                data-te-collapse-collapsed
+                data-te-target="#collapseChangePassword"
+                aria-expanded="false"
+                aria-controls="collapseChangePassword">
+                Change Password
+                <span
+                class="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[te-collapse-collapsed]:me-0 group-data-[te-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor">
+                    <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5">
+                </svg>
+                </span>
+            </button>
+            <div
+                id="collapseChangePassword"
+                class="!visible hidden"
+                data-te-collapse-item
+                data-te-parent="#accordionProfileSettings">
+                <div class="px-5 py-4">
+                    <div class="text-[#708090] rounded border-2 border-indigo-500/75 p-4">
+                        {{ form_start(changePasswordForm, {'attr': {'novalidate': 'novalidate'}}) }}
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    {{ form_label(changePasswordForm.plainPassword.first, 'New password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                    {{ form_widget(changePasswordForm.plainPassword.first, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                                    {{ form_errors(changePasswordForm.plainPassword.first) }}
+                                </div>
+                                
+                                <div>
+                                    {{ form_label(changePasswordForm.plainPassword.second, 'Re-enter new password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
+                                    {{ form_widget(changePasswordForm.plainPassword.second, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                                    {{ form_errors(changePasswordForm.plainPassword.second) }}
+                                </div>
+                            </div>
+                            
+                            <div class="mt-10">
+                                <button type="submit" 
+                                    class="block w-full font-semibold text-slate-200 uppercase tracking-wider border-2 border-[#708090] hover:text-indigo-500 hover:border-indigo-500/75 rounded-md p-2">Change password</button>
+                            </div>
+                        {{ form_end(changePasswordForm) }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    {# Item 3 #}
+    <div class="mb-1.5">
+        <button
+            class="group relative flex w-full items-center uppercase leading-normal text-indigo-400 tracking-wide w-40 px-2 py-1 border-2 border-[#778899] rounded transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600"
+            type="button"
+            data-te-collapse-init
+            data-te-collapse-collapsed
+            data-te-target="#collapseDeleteAccount"
+            aria-expanded="false"
+            aria-controls="collapseDeleteAccount">
+            Delete Account
+            <span
+            class="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[te-collapse-collapsed]:me-0 group-data-[te-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor">
+                <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5">
+            </svg>
+            </span>
+        </button>    
+        <div
+            id="collapseDeleteAccount"
+            class="!visible hidden"
+            data-te-collapse-item
+            data-te-parent="#accordionProfileSettings">
+            <div class="px-5 py-4">
+                <div class="text-[#708090] rounded border-2 border-indigo-500/75 p-4">
+                    <div class="flex justify-center">
+                        <div>Are you sure you want to delete your account?</div>
+                        <a href="{{ path('app_delete_account', { 'id': userProfile.id }) }}">
+                            <button
+                                type="button"
+                                class="font-bold text-xs text-indigo-700 uppercase leading-normal ml-8 px-3 py-1 rounded border-2 border-[#708090] hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600">
+                                Yes
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

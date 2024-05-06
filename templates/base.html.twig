@@ -60,16 +60,16 @@
                             {% endif %}                            
                         </div>
                         <div class="ml-2">
-                            {% if app.request.get('_route') == "app_settings_profile" %}
+                            {% if app.request.get('_route') == "app_profile" %}
                                 <a 
-                                    href="{{ path('app_settings_profile') }}"
+                                    href="{{ path('app_profile') }}"
                                     class="text-indigo-500 underline decoration-2"
-                                >Profile Settings</a>
+                                >Profile</a>
                             {% else %}
                                 <a 
-                                    href="{{ path('app_settings_profile') }}"
+                                    href="{{ path('app_profile') }}"
                                     class="no-underline hover:text-indigo-500 hover:underline decoration-2"
-                                >Profile Settings</a>
+                                >Profile</a>
                             {% endif %}                            
                         </div>
                         <div class="ml-2">

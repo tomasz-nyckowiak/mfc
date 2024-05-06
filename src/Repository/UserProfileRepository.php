@@ -39,6 +39,19 @@ class UserProfileRepository extends ServiceEntityRepository
         }
     }
 
+    public function updateProfile(int $userId, string $newUserName, $newWebsiteUrl, $fileName): void
+    {        
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            UPDATE user_profile
+            SET name = '$newUserName', website_url = '$newWebsiteUrl', image_file_name = '$fileName'
+            WHERE user_id = '$userId'
+        ";
+        
+        $conn->executeQuery($sql);
+    }
+
 //    /**
 //     * @return UserProfile[] Returns an array of UserProfile objects
 //     */

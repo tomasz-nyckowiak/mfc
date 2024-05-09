@@ -129,12 +129,24 @@ function disablingSubmitButton() {
     }    
 }
 
+function checkingIfListIsEmpty(favouritesList) {
+    let isListEmpty;
+    
+    for (let i = 0; i < favouritesList.length; i++) {
+        if (favouritesList[i] != "") {
+            isListEmpty = false;
+            break;
+        } else isListEmpty = true;
+    }
+    return isListEmpty;
+}
+
 function validateForm(arrayUsed) {
     const selectedInputsArray = [];
     let temporaryArray = [];
     let newArray = [];
     let duplicatedTitlesArray = [];
-    let finalArrayOfDuplicateTitles = [];
+    let finalArrayOfDuplicateTitles = [];    
     
     for (let i = 0; i < arrayUsed.length; i++) {
         selectedInputsArray[i] = document.querySelector("#" + arrayUsed[i]);
@@ -164,8 +176,11 @@ function validateForm(arrayUsed) {
             let listItem = document.getElementById(itemFullId);            
             listItem.classList.remove("border-red-500");
             listItem.classList.add("border-emerald-500");
-        }
-        enablingSubmitButton();
+        }        
+        
+        if (checkingIfListIsEmpty(temporaryArray)) {
+            disablingSubmitButton();
+        } else enablingSubmitButton();
     }
 }
 

@@ -1,10 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Top 10 Movies!{% endblock %}
-
-{% block bread %}
-→ <a href="{{ path('app_favourites') }}">Favourites</a>
-{% endblock %}
+{% block title %}MFC Edit Top 10 Movies{% endblock %}
 
 {% block footer %}
     <script src="/js/favouritesMain.js"></script>
@@ -140,7 +136,7 @@
             <div class="flex justify-center mt-4">       
                 <button 
                     type="submit"
-                    class="font-bold text-xs text-slate-300 uppercase leading-normal bg-gradient-to-r from-indigo-600 ml-2 px-3 py-1 rounded border-2 border-indigo-500 hover:text-indigo-700 hover:bg-[#708090] hover:border-indigo-700 hover:shadow-[3px_3px_30px_5px_#708090]"
+                    class="font-bold text-xs text-indigo-700 uppercase leading-normal ml-8 px-3 py-1 rounded border-2 border-[#708090] hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600"
                     id="editTop10MoviesBtn">
                     Save
                 </button>        

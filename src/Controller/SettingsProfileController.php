@@ -20,10 +20,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class SettingsProfileController extends AbstractController
 {
     #[Route('/profile', name: 'app_profile')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function profile(
         Request $request,
         UserProfileRepository $profiles,
@@ -113,7 +113,6 @@ class SettingsProfileController extends AbstractController
     }
 
     #[Route('/profile/delete-account/{id}', name: 'app_delete_account')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function deleteAccount(
         $id, 
         UserProfileRepository $profiles, 

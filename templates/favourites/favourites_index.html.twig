@@ -1,15 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Favourites!{% endblock %}
-
-{% block bread %}
-→ <a href="{{ path('app_favourites') }}">Favourites</a>
-{% endblock %}
+{% block title %}MFC Favourites{% endblock %}
 
 {% block body %}
     <div>
-        <div class="text-slate-200">Here you can manage your TOP 10 (for movies) and TOP 5 (for tv series) lists!</div>
-        <div class="block font-medium text-[#708090] text-sm tracking-wide">(*you can choose only movies and tv series that are <span class="underline">already</span> in your library!)</div>
+        <div class="text-lg text-slate-200">Here you can manage your TOP 10 (for movies) and TOP 5 (for tv series) lists!</div>
+        <div class="font-medium text-[#708090] tracking-wide">(You can choose only movies and tv series that are <span class="underline">already</span> in your library!)</div>
     </div>
     
     {% for message in app.flashes('delete') %}                                                       

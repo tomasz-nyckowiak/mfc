@@ -47,7 +47,9 @@
                             {% endif %}                            
                         </div>
                         <div class="ml-2">
-                            {% if app.request.get('_route') == "app_favourites" %}
+                            {% set favouritesPages = ["app_favourites", "app_create_top_ten", "app_create_top_ten_success", "app_show_top_ten", "app_edit_top_ten", "app_edit_top_ten_success", "app_delete_top_ten",
+                                "app_create_top_five", "app_create_top_five_success", "app_show_top_five", "app_edit_top_five", "app_edit_top_five_success", "app_delete_top_five"] %}
+                            {% if app.request.get('_route') in favouritesPages %}
                                 <a 
                                     href="{{ path('app_favourites') }}"
                                     class="text-indigo-500 underline decoration-2"

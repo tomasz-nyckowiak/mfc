@@ -52,8 +52,7 @@ class FavouritesController extends AbstractController
             
             return $this->redirectToRoute('app_favourites');
         } else {
-            $isTop10exists = false;        
-        
+            $isTop10exists = false;
             $data = $titles->findby(['user' => $userId, 'titleType' => 'Movie']);
                     
             return $this->render('favourites/favourite_movies_create.html.twig', [
@@ -95,7 +94,6 @@ class FavouritesController extends AbstractController
             $list->setTypeOfList($allData["typeOfList"]);
             
             $favourites->createList($list, true);
-
             $this->addFlash('success', 'Your TOP 10 MOVIES list has been created!');
         
             $data = $favourites->findby(['user' => $userId]);
@@ -116,7 +114,6 @@ class FavouritesController extends AbstractController
         
         if ($favourites->checkIfRecordAlreadyExists($userId)) {
             $isTop10exists = true;
-
             $data = $favourites->findby(['user' => $userId]);
             
             return $this->render('favourites/favourite_movies_show.html.twig', [
@@ -184,7 +181,6 @@ class FavouritesController extends AbstractController
             $updateTop10List->setTypeOfList(($allData["typeOfList"]));
 
             $entityManager->flush();
-
             $this->addFlash('success', 'Your TOP 10 MOVIES list has been updated!');
     
             $data = $favourites->findby(['user' => $userId]);       
@@ -211,7 +207,6 @@ class FavouritesController extends AbstractController
         $result = $favourites->findOneBy(['id' => $listId]);
 
         $favourites->remove($result, true);
-
         $this->addFlash('delete', 'Your TOP 10 MOVIES list has been successfully deleted!');
         
         return $this->redirectToRoute('app_favourites');      
@@ -231,8 +226,7 @@ class FavouritesController extends AbstractController
             
             return $this->redirectToRoute('app_favourites');
         } else {
-            $isTop5exists = false;        
-        
+            $isTop5exists = false;
             $data = $titles->findby(['user' => $userId, 'titleType' => 'Tv Series']);
                     
             return $this->render('favourites/favourite_series_create.html.twig', [
@@ -269,7 +263,6 @@ class FavouritesController extends AbstractController
             $list->setTypeOfList($allData["typeOfList"]);
             
             $favourites->createList($list, true);
-
             $this->addFlash('success', 'Your TOP 5 TV SERIES list has been created!');
         
             $data = $favourites->findby(['user' => $userId]);
@@ -290,7 +283,6 @@ class FavouritesController extends AbstractController
         
         if ($favourites->checkIfRecordAlreadyExists($userId)) {
             $isTop5exists = true;
-
             $data = $favourites->findby(['user' => $userId]);
             
             return $this->render('favourites/favourite_series_show.html.twig', [
@@ -353,7 +345,6 @@ class FavouritesController extends AbstractController
             $updateTop5List->setTypeOfList(($allData["typeOfList"]));
 
             $entityManager->flush();
-
             $this->addFlash('success', 'Your TOP 5 TV SERIES list has been updated!');
     
             $data = $favourites->findby(['user' => $userId]);       
@@ -380,7 +371,6 @@ class FavouritesController extends AbstractController
         $result = $favourites->findOneBy(['id' => $listId]);
 
         $favourites->remove($result, true);
-
         $this->addFlash('delete', 'Your TOP 5 TV SERIES has been successfully deleted!');
         
         return $this->redirectToRoute('app_favourites');      

@@ -29,5 +29,27 @@ class Auxiliary
         $currentDateTime->modify('+1 year');
         
         return $currentDateTime->format('Y');
-    } 
+    }
+
+    public static function shortenVersionOfTheNumber($number)
+    {
+        $suffix = ["", "K", "M", "B"];
+        $precision = 1;
+        
+        for ($i = 0; $i < count($suffix); $i++) {
+            $divide = $number / pow(1000, $i);
+            if ($divide < 1000){
+                return round($divide, $precision).$suffix[$i];
+                break;
+            }
+        }
+    }
+    
+    public static function shortenVersionOfNumberOfVotes($votes)
+    {
+        $number = str_replace(' ', '', $votes);
+        $result = self::shortenVersionOfTheNumber($number);
+
+        return $result;
+    }
 }

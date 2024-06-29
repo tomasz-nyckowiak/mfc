@@ -2,56 +2,95 @@
 
 namespace App\Model;
 
+use App\Model\Auxiliary;
+use App\Model\Validation;
+use Symfony\Component\Validator\Constraints\Length;
+
 class Model
 {    
-    public function extractingMainData(array $baseInfo, int $entries) {
+    public function extractingMostPopularTitles(array $baseInfo) {
+        $titles = [];
+        
+        $howManyOutcomes = $baseInfo['entries'];
+
+        for ($i = 0; $i < $howManyOutcomes; $i++) {
+            if ($baseInfo['results'][$i]['meterRanking'] != null) {
+                array_push($titles, $baseInfo['results'][$i]);
+            }
+        }
+
+        // if (empty($titles)) {
+        //     $lessPopularTitles = self::extractingLessPopularTitles($baseInfo);
+        //     return $lessPopularTitles;
+        // }
+        
+        return $titles;
+    }
+
+    public function extractingLessPopularTitles(array $baseInfo) {
+        $titles = [];
+
+        $howManyOutcomes = $baseInfo['entries'];
+        
+        for ($i = 0; $i < $howManyOutcomes; $i++) {
+            if ($baseInfo['results'][$i]['meterRanking'] == null) {
+                array_push($titles, $baseInfo['results'][$i]);
+            }
+        }
+        return $titles;
+    }
+
+    public function isArrayWithTitlesNotEmpty(array $titles) {
+        if (!empty($titles)) {
+            return true;
+        } else return false;
+    }
+    
+    public function extractingMainData(array $titles) {
         $titlesId = [];
         $images = [];
         $imagesUrl = [];
         $titlesType = [];
-        $genres = [];
         $originalTitles = [];
         $releaseDates = [];
         $meterRanking = [];
+
+        $entries = sizeof($titles);
         
         for ($i = 0; $i < $entries; $i++) {
-            $titlesId[$i] = $baseInfo['results'][$i]['id'];
-            $images[$i] = $baseInfo['results'][$i]['primaryImage'];
+            $titlesId[$i] = $titles[$i]['id'];
+            $images[$i] = $titles[$i]['primaryImage'];
             if ($images[$i] != null) {
-                $imagesUrl[$i] = $baseInfo['results'][$i]['primaryImage']['url'];            
+                $imagesUrl[$i] = $titles[$i]['primaryImage']['url'];            
             } else $imagesUrl[$i] = null;
 
-            $titlesType[$i] = $baseInfo['results'][$i]['titleType']['text'];
+            $titlesType[$i] = $titles[$i]['titleType']['text'];
             
-            if ($baseInfo['results'][$i]['genres'] != null) {
-                $genres[$i] = $baseInfo['results'][$i]['genres']['genres'];
-                $genresCounter = count($genres[$i]);
-                $genresListAsStrings = [];
-                
-                for ($j = 0; $j < $genresCounter; $j++) {
-                    $genresListAsStrings[$j] = $genres[$i][$j]['text'];
-                }
-                $genres[$i] = $genresListAsStrings;
-            } else $genres[$i] = null;
+            $originalTitles[$i] = $titles[$i]['originalTitleText']['text'];
             
-            $originalTitles[$i] = $baseInfo['results'][$i]['originalTitleText']['text'];
-            $releaseDates[$i] = $baseInfo['results'][$i]['releaseYear'];
+            if ($titlesType[$i] == "TV Series") {
+                if ($titles[$i]['releaseYear'] != null) {
+                    $releaseDates[$i] = ["year" => $titles[$i]['releaseYear']['year'], "endYear" => $titles[$i]['releaseYear']['endYear']];
+                } else $releaseDates[$i] = null;
+            } else {
+                if ($titles[$i]['releaseYear'] != null) {
+                    $releaseDates[$i] = $titles[$i]['releaseYear']['year'];
+                } else $releaseDates[$i] = null;
+            }                        
 
-            if ($baseInfo['results'][$i]['meterRanking'] != null) {
-                $meterRanking[$i] = $baseInfo['results'][$i]['meterRanking']['currentRank'];
-            } else $meterRanking[$i] = null;
+            if ($titles[$i]['meterRanking'] != null) {
+                $meterRanking[$i] = $titles[$i]['meterRanking']['currentRank'];
+            } else $meterRanking[$i] = null;            
 
             $titlesBaseInfo[$i] = [
                 "id" => $titlesId[$i], 
                 "image" => $imagesUrl[$i], 
                 "titleType" => $titlesType[$i], 
-                "genres" => $genres[$i], 
                 "originalTitle" => $originalTitles[$i], 
                 "releaseDate" => $releaseDates[$i],
                 "meterRanking" => $meterRanking[$i]
             ];
         }
-
         return $titlesBaseInfo;       
     }
 
@@ -72,12 +111,15 @@ class Model
         return $fullCasts;      
     }
 
-    // For single entry (movie)
-    public function extractingMainDataFromSingleEntry(array $baseInfo) {
+    //For single entry
+    public function extractingMainDataFromSingleEntry(array $baseInfo)
+    {
         $titleId = $baseInfo['results']['id'];
         $rating = $baseInfo['results']['ratingsSummary']['aggregateRating'];
+        
         $totalVotes = $baseInfo['results']['ratingsSummary']['voteCount'];
-        $votes = number_format($totalVotes, 0, ",", " ");
+        $temp = number_format($totalVotes, 0, ",", " ");
+        $votes = Auxiliary::shortenVersionOfNumberOfVotes($temp);
 
         $image = $baseInfo['results']['primaryImage'];
         if ($image != null) {
@@ -213,44 +255,24 @@ class Model
         return $fullCrew;
     }
     
-    // FOR UPCOMING TITLES (IN MAIN PAGE)
+    //FOR UPCOMING TITLES (IN MAIN PAGE)
     public function extractingMainDataForUpcomingTitles(array $baseInfo, int $entries) {
         $titlesId = [];
         $images = [];
-        $imagesUrl = [];
-        $titlesType = [];
-        $genres = [];
-        $originalTitles = [];
-        $releaseDates = [];
+        $imagesUrl = [];        
         
         for ($i = 0; $i < $entries; $i++) {
             $titlesId[$i] = $baseInfo['results'][$i]['id'];
-            $images[$i] = $baseInfo['results'][$i]['primaryImage'];
+            $images[$i] = $baseInfo['results'][$i]['primaryImage'];            
             if ($images[$i] != null) {
                 $imagesUrl[$i] = $baseInfo['results'][$i]['primaryImage']['url'];            
-            } else $imagesUrl[$i] = null;
-
-            $titlesType[$i] = $baseInfo['results'][$i]['titleType']['text'];
-            $genres[$i] = $baseInfo['results'][$i]['genres']['genres'];
-            $genresCounter = count($genres[$i]);
-            $genresListAsStrings = [];
-            for ($j = 0; $j < $genresCounter; $j++) {
-                $genresListAsStrings[$j] = $genres[$i][$j]['text'];
-            }
-            $genres[$i] = $genresListAsStrings;
-            $originalTitles[$i] = $baseInfo['results'][$i]['originalTitleText']['text'];
-            $releaseDates[$i] = $baseInfo['results'][$i]['releaseYear'];
+            } else $imagesUrl[$i] = null;                        
 
             $titlesBaseInfo[$i] = [
                 "id" => $titlesId[$i], 
-                "image" => $imagesUrl[$i], 
-                "titleType" => $titlesType[$i], 
-                "genres" => $genres[$i], 
-                "originalTitle" => $originalTitles[$i], 
-                "releaseDate" => $releaseDates[$i],
+                "image" => $imagesUrl[$i]                
             ];
         }
-
         return $titlesBaseInfo;       
     }
 
@@ -268,5 +290,49 @@ class Model
         $titleInfo = ["rating" => $imdbRating, "image" => $imageUrl];
 
         return $titleInfo;      
+    }
+
+    public function sortingTitlesByPopularity(array $popularTitles) {
+        usort($popularTitles, function($item1, $item2) {
+            return $item1['meterRanking'] <=> $item2['meterRanking'];
+        });
+        
+        return $popularTitles;
+    }
+
+    public function managingTitleSearchFormInputs() {
+        $response = file_get_contents('php://input');
+        $arrayOfInputs = explode("&", $response);
+        
+        $title = substr($arrayOfInputs[0], 7); //0 => "search="
+        $titleType = substr($arrayOfInputs[1], 10); //1 => "titleType="
+        $startYear = substr($arrayOfInputs[2], 10); //2 => "startYear="
+        $endYear = substr($arrayOfInputs[3], 8); //3 => "endYear="
+
+        //Validation
+        $temp = new Validation();
+        $result = $temp->searchInputValidation($title);
+        
+        if ($temp->isUserInputEmpty($titleType)) {
+            $isTitleTypeEmpty = true;
+        } else $isTitleTypeEmpty = false;
+        if ($temp->isUserInputEmpty($startYear)) {
+            $isStartYearEmpty = true;
+        } else $isStartYearEmpty = false;
+        if ($temp->isUserInputEmpty($endYear)) {
+            $isEndYearEmpty = true;
+        } else $isEndYearEmpty = false;
+        
+        $inputs = [
+            "search" => $result,
+            "titleType" => $titleType,
+            "isTitleTypeEmpty" => $isTitleTypeEmpty,
+            "startYear" => $startYear,
+            "isStartYearEmpty" => $isStartYearEmpty,
+            "endYear" => $endYear,
+            "isEndYearEmpty" => $isEndYearEmpty
+        ];
+
+        return $inputs;
     }
 }

@@ -1,64 +1,73 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Find{% endblock %}
+{% block title %}Search - MFC{% endblock %}
+
+{% block footer %}
+    <script src="/js/scrollBackToTop.js"></script>
+    <script src="/js/hideClearButton.js"></script>    
+{% endblock %}
 
 {% block body %}
     <div>
         {{ include('api/_search_form.html.twig') }}
     </div>
-    <div class="mb-1">
+    
+    <div class="mt-6 mb-3">
         {% if title is not null %}
             <h4 class="text-3xl">Search "{{ title }}"</h4>
-        {% else %}
-            No result!
         {% endif %}               
-        <div>Not happy with the result? Add the title manually <a href="{{ path('app_form_add_title_manually')}}">here</a>.</div>      
+              
     </div>
+    
     <div class="mt-2">
-        {% if data|length > 0 %}            
-            <h4 class="text-xl my-2">Titles</h4>
-            <div>(Most popular ones)</div>                      
+        <h4 class="text-xl my-2">Titles (most popular ones)</h4>
+        {% if popularTitlesData|length > 0 %}                                 
             <ul>
-                {% for value in data %}
-                    {% if value.meterRanking != null %}
-                        {{ include('api/_search_list_result.html.twig') }}                       
-                    {% endif %} 
-                {% endfor %}
-                <div>
-                    <hr class="my-2 h-0 border border-t-0 border-solid border-neutral-700 opacity-25 dark:border-neutral-200">
-                </div>
-                {% for value in data %}
-                    {% if value.meterRanking == null %}
-                        {{ include('api/_search_list_result.html.twig') }}
-                    {% endif %}
-                {% endfor %}               
+                {% for value in popularTitlesData %}
+                    {{ include('api/_search_result.html.twig') }}
+                {% endfor %}       
             </ul>                       
         {% else %}
             No result!
         {% endif %}
-    </div>
-    <div class="mt-2">
-        {% if next == true %}           
-            <div>
-                {% if page >= 2 %}
-                    <a href="{{ path('app_show_more', { 'title': title, 'pageNumber': page - 1 }) }}">
-                        <button class="inline-block bg-indigo-600 text-white rounded-md border p-2 mt-4 mb-2">Previous</button>
-                    </a>
-                {% endif %}
-                <a href="{{ path('app_show_more', { 'title': title, 'pageNumber': page + 1 }) }}">
-                    <button class="inline-block bg-indigo-600 text-white rounded-md border p-2 mt-4 mb-2">More</button>
-                </a>                
-            </div>            
-        {% else %}
-            {% if page != 1 %}
+        
+        {% if lessPopularTitlesData is defined %}
+            {% if lessPopularTitlesData|length > 0 %}            
                 <div>
-                    <a href="{{ path('app_show_more', { 'title': title, 'pageNumber': page - 1 }) }}">
-                        <button class="inline-block bg-indigo-600 text-white rounded-md border p-2 mt-4 mb-2">Previous</button>
-                    </a>
-                </div>
+                    <hr class="my-3 h-0 border border-t-0 border-solid border-neutral-700 opacity-25 dark:border-neutral-200">
+                </div>                     
+                <ul>
+                    {% for value in lessPopularTitlesData %}
+                        {{ include('api/_search_result.html.twig') }}
+                    {% endfor %}       
+                </ul>                       
             {% else %}
-                Only one page!
+                {% if popularTitlesData|length > 0 %}
+                    No result!
+                {% endif %}
             {% endif %}
-        {% endif %}       
+        {% endif %}
     </div>
+
+    <div class="font-medium text-[#708090] tracking-wide my-2">Not happy with the result? Add more specific filter or add the title manually <a href="{{ path('app_form_add_title_manually')}}" class="hover:text-indigo-500 hover:underline decoration-1">here</a>.</div>
+
+    <!-- Back to top button -->
+    <button
+        type="button"
+        class="!fixed bottom-5 end-5 hidden rounded-full p-3 text-xs font-semibold uppercase leading-tight text-slate-200 border-2 border-[#708090] transition duration-150 ease-in-out hover:text-indigo-500 hover:border-indigo-500/75 focus:outline-none focus:ring-0"
+        id="btn-back-to-top">
+        <span class="[&>svg]:w-4">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="3"
+                stroke="currentColor">
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18">
+            </svg>
+        </span>
+    </button>
 {% endblock %}

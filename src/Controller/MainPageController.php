@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Model\Model;
 use App\Model\Auxiliary;
 use App\Service\Service;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,28 +24,23 @@ class MainPageController extends AbstractController
             $endYear = $other->setEndYear();
             
             //Preparing url
-            $url = $service->creatingBasicUrlForUpcomingTitles($startYear, $endYear);
-            
-            //Get main info
-            $urlBaseInfo = $service->creatingBaseInfoUrlForUpcomingTitles($url);
+            $url = $service->creatingUrlForUpcomingTitles($startYear, $endYear);
 
-            $response = [];
-            $response = $service->search($urlBaseInfo);              
+            $response = [];            
+            $response = $service->search($url); //Get main info             
             
             //How many results we got
             $howManyOutcomes = $response['entries'];               
                 
             $baseInfo = [];
             $baseInfo = $model->extractingMainDataForUpcomingTitles($response, $howManyOutcomes);
-            
+
             //Randomize elements (titles)
             shuffle($baseInfo);
             
             return $this->render('hello/main.html.twig', [
                 'data' => $baseInfo
             ]);
-        } else {
-            return $this->render('hello/main.html.twig');
-        }
+        } else return $this->render('hello/main.html.twig');
     }
 }

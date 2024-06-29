@@ -2,6 +2,10 @@
 
 {% block title %}MFC: Create and Manage Your Own Film Library{% endblock %}
 
+{% block footer %}
+    <script src="/js/hideClearButton.js"></script>
+{% endblock %}
+
 {% block body %}
     <div>
         {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -23,25 +27,25 @@
             <div class="text-3xl my-6">Upcoming:</div>
             <div class="flex justify-center mb-5">    
                 <div class="grid grid-cols-3">
-                    {% for value in data|slice(0, 3) %}            
-                    <div class="inline-flex flex-row">
-                        <div>
-                            <div class="relative h-64 w-40">
-                            {% if value.image != null %}
-                                <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="{{ value.image }}" alt="Cover"></a>
-                            {% else %}
-                                <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover"></a>
+                    {% for value in data|slice(0, 3) %}
+                        <div class="inline-flex flex-row">                                                       
+                            <div>                                
+                                <div class="relative h-64 w-40">
+                                    {% if value.image != null %}
+                                        <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="{{ value.image }}" loading="lazy" alt="Cover"></a>
+                                    {% else %}
+                                        <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" loading="lazy" alt="No cover"></a>
+                                    {% endif %}
+                                </div>
+                            </div>                
+                            {% if loop.last == false %}            
+                                <div class="flex items-center">
+                                    <div>
+                                        <div class="mx-6 h-32 min-h-[1em] w-px self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-20 dark:opacity-100"></div>
+                                    </div>
+                                </div>
                             {% endif %}
-                            </div>
-                        </div>                
-                        {% if loop.last == false %}            
-                        <div class="flex items-center">
-                            <div>
-                                <div class="mx-6 h-32 min-h-[1em] w-px self-stretch bg-gradient-to-tr from-transparent via-neutral-500 to-transparent opacity-20 dark:opacity-100"></div>
-                            </div>
-                        </div>
-                        {% endif %}
-                    </div>        
+                        </div>        
                     {% endfor %}        
                 </div>     
             </div>

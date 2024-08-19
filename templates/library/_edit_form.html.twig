@@ -1,32 +1,21 @@
 <div>
-    <form id="editForm{{ value.id }}" action="{{ path('app_library_edit_title', { id: value.id }) }}" method="POST" novalidate>
+    <form id="editForm{{ value.id }}" action="{{ path('app_library_edit_title', { id: value.id }) }}" method="POST" enctype="multipart/form-data" novalidate>
         <!--Rating input-->
         <div class="mb-4">
-            <label 
-                for="rating{{ value.id }}" 
-                class="inline-block text-[#031e49]"
-                >My Rating:
-            </label>
-            {% if value.rating != null %}
-            <input 
-                type="text" 
-                class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
-                id="rating{{ value.id }}" 
-                name="rating" 
-                minlength="1" 
-                maxlength="3"            
-                value="{{ value.rating }}">
-            {% else %}
-            <input 
-                type="text" 
-                class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
-                id="rating{{ value.id }}" 
-                name="rating" 
-                minlength="1" 
-                maxlength="3">
-            {% endif %}
-            <div class="inline-block text-sm font-semibold" id="errorMessageForRating{{ value.id }}"></div>
-            <div class="text-xs text-[#031e49] tracking-wide">*Proper values: 7; 5.5; 6,2</div>
+            <div class="inline-flex items-center">
+                <div class="inline-block text-[#031e49]">Rating:</div>
+                <div class="relative" id="ratingAsStars{{ value.id }}">{{ include('library/_edit_user_rating_stars.html.twig') }}</div>
+                {% if value.rating != null %}
+                    <div>
+                        <input type="hidden" id="rating{{ value.id }}" name="rating" value="{{ value.rating }}">
+                    </div>
+                {% else %}
+                    <div>
+                        <input type="hidden" id="rating{{ value.id }}" name="rating" value="">
+                    </div>
+                {% endif %}
+            </div>
+            <div class="text-xs text-[#031e49] tracking-wide">(*click to select, double click to reset rating)</div>
         </div>
 
         <!--To Watch Checkbox-->
@@ -96,6 +85,7 @@
         <!--Hidden inputs-->
         <div class="hidden" id="hiddenInputs{{ value.id }}">
             <!--Title input-->
+            <div class="flex justify-center text-sm font-semibold" id="errorMessageForTitle{{ value.id }}"></div>
             <div class="flex mb-4">
                 <label 
                     for="originalTitle{{ value.id }}" 
@@ -108,8 +98,7 @@
                     id="originalTitle{{ value.id }}" 
                     name="originalTitle"
                     maxlength="100" 
-                    value="{{ value.originalTitle }}">
-                <div class="inline-block text-sm font-semibold ml-1" id="errorMessageForTitle{{ value.id }}"></div>
+                    value="{{ value.originalTitle }}">                
             </div>
 
             <!--Title type input-->
@@ -153,7 +142,7 @@
                         name="releaseDate"
                         maxlength="4" 
                         value="{{ startDate }}">
-                    <div class="inline-block text-[#031e49]">-</div>
+                    <div id="dashBetweenDates{{ value.id }}" class="inline-block text-[#031e49]">-</div>
                     <input 
                         type="text" 
                         class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
@@ -340,26 +329,20 @@
 
             <!--IMDb Rating input-->
             <div class="mb-4">
-                <label for="rating{{ value.id }}" class="inline-block text-[#031e49]">IMDb Rating:</label>
-                {% if value.ImdbRating != null %}
-                <input 
-                    type="text" 
-                    class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
-                    id="imdbRating{{ value.id }}" 
-                    name="imdbRating" 
-                    minlength="1" 
-                    maxlength="3"            
-                    value="{{ value.ImdbRating }}">
-                {% else %}
-                <input 
-                    type="text" 
-                    class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
-                    id="imdbRating{{ value.id }}" 
-                    name="imdbRating" 
-                    minlength="1" 
-                    maxlength="3">
-                {% endif %}
-                <div class="inline-block text-sm font-semibold" id="errorMessageForIMDbRating{{ value.id }}"></div>
+                <div class="inline-flex items-center">
+                    <div class="inline-block text-[#031e49]">IMDb Rating:</div>
+                    <div class="relative" id="imdbRatingAsStars{{ value.id }}">{{ include('library/_edit_imdb_rating_stars.html.twig') }}</div>
+                    {% if value.ImdbRating != null %}
+                        <div>
+                            <input type="hidden" id="imdbRating{{ value.id }}" name="imdbRating" value="{{ value.ImdbRating }}">
+                        </div>
+                    {% else %}
+                        <div>
+                            <input type="hidden" id="imdbRating{{ value.id }}" name="imdbRating" value="">
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="text-xs text-[#031e49] tracking-wide">(*click to select, double click to reset rating)</div>
             </div>
 
             <!--Genres input-->
@@ -416,26 +399,28 @@
             </div>
 
             <!--IMAGE INPUT-->
-            <div class="text-[#031e49]">Edit an image:</div>
-            <div class="inline-flex">
-                <div class="relative h-20 w-12 mr-1">
-                    {% if value.imageUrl != null %}
-                        <img class="absolute w-full h-full inset-0 object-cover" src="{{ value.imageUrl }}" alt="Cover">
-                    {% else %}
-                        <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
-                    {% endif %}                        
+            <div class="flex justify-center text-sm font-semibold" id="errorMessageForEditFileInput{{ value.id }}"></div>
+            <div class="mb-4">                
+                <div class="inline-flex">                    
+                    <div class="flex items-center">                        
+                        <label class="inline-block text-[#031e49]">Edit an image:</label>
+                        <div class="relative h-20 w-20 mr-1">
+                            {% if value.imageUrl != null %}
+                                <img class="absolute w-full h-full inset-0 object-cover" src="{{ value.imageUrl }}" alt="Cover">
+                            {% else %}
+                                <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                            {% endif %}                        
+                        </div>
+                        <input 
+                            class="font-light text-slate-100 w-full ml-1 rounded-sm bg-gradient-to-r from-indigo-700 to-indigo-400 hover:cursor-pointer hover:border-slate-400" 
+                            type="file" 
+                            id="imageName{{ value.id }}"
+                            name="imageName"
+                            accept=".jpg, .jpeg, .png">                                                
+                    </div>
                 </div>
-                <div class="flex items-center mb-4">                    
-                    <input 
-                        class="relative rounded-sm bg-gradient-to-r from-indigo-700 to-indigo-400 hover:cursor-pointer" 
-                        type="file" 
-                        id="fileName{{ value.id }}"
-                        name="fileName"
-                        accept=".jpg, .jpeg, .png"
-                        onchange="validateFileTypeForEditTitle()">
-                    <div class="inline-block text-sm font-semibold" id="errorMessageForEditFileType{{ value.id }}"></div>
-                </div>
-            </div>            
+                <div class="text-xs text-[#031e49] tracking-wide">(*jpg, jpeg or png; max 5MB)</div>
+            </div>       
 
             <!--Plot input-->
             <div class="mb-4">

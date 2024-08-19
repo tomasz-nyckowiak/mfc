@@ -1,8 +1,10 @@
 const errorMessageForNoTitle = "Title is required!";
-const errorMessageForReleaseDate = "Invalid date!";
-const errorMessageForRatings = "Invalid value!";
+const errorMessageForReleaseDate = "Invalid date/s!";
 const errorMessageForFileType = "Only jpg/jpeg and png files are allowed!";
+const errorMessageForFileSize = "Image is too big!";
 const colorForErrorMessages = "rgb(175 30 30)";
+const firstPartForChosenRatingTooltipMessage = "Rating of ";
+const lastPartForChosenRatingTooltipMessage = " star";
 
 let IdToRemember = "";
 let editBtns = document.getElementsByClassName("edit");
@@ -44,12 +46,15 @@ function setupForSelectedValues(id) {
     }
 }
 
+//SHOW MODAL WHEN EDIT BUTTON IS CLICKED
 for (let i = 0; i < editBtns.length; i++) {
     editBtns[i].addEventListener("click", function(e) {
         let clickedButtonId = e.target.id;
         IdToRemember = getIdNumberOut(clickedButtonId);
         settingUpNeededElements();
         setupForSelectedValues(IdToRemember);
+        starsRating(IdToRemember);
+        starsImdbRating(IdToRemember);
     });
 }
 

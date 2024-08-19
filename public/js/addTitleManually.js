@@ -2,10 +2,9 @@ const icons = document.querySelectorAll('#selected-value-example [data-te-rating
 const titleUserInput = document.getElementById("originalTitle");
 const divForNoTitleErrorMessage = document.getElementById("errorMessageForTitle");
 const divForReleaseDateErrorMessage = document.getElementById("errorMessageForReleaseDate");
-const divForRatingErrorMessage = document.getElementById("errorMessageForRating");
-const divForIMDbRatingErrorMessage = document.getElementById("errorMessageForIMDbRating");
-const divForFileTypeErrorMessage = document.getElementById("errorMessageForFileType");
+const divForFileInputErrorMessage = document.getElementById("errorMessageForFileInput");
 const spanElementForPlotCharactersCount = document.getElementById("charactersForPlot");
+const starsDivWidth = document.getElementById("star1Rating").clientWidth; // w = 32
 
 //GETTING VALUES
 function titleInput() {		
@@ -37,6 +36,17 @@ function fileInput() {
 	let input = document.getElementById("fileName").value;			
 	return input;
 }
+
+function fileInputSize() {		
+	const file = document.getElementById("fileName");
+    let fileSize;
+    
+    if (fileInput() != "") {
+        fileSize = file.files[0].size;
+    } else fileSize = 0;
+    
+	return fileSize;
+}
 //  ...  //
 
 function clearOtherMessages(failedInput) {    
@@ -44,104 +54,48 @@ function clearOtherMessages(failedInput) {
         if (divForReleaseDateErrorMessage.innerHTML == errorMessageForReleaseDate) {
             divForReleaseDateErrorMessage.innerHTML = "";
         }
-
-        if (divForRatingErrorMessage.innerHTML == errorMessageForRatings) {
-            divForRatingErrorMessage.innerHTML = "";
+        if (divForFileInputErrorMessage.innerHTML == errorMessageForFileType) {
+            divForFileInputErrorMessage.innerHTML = "";
         }
-        
-        if (divForIMDbRatingErrorMessage.innerHTML == errorMessageForRatings) {
-            divForIMDbRatingErrorMessage.innerHTML = "";
-        }
-
-        if (divForFileTypeErrorMessage.innerHTML == errorMessageForFileType) {
-            divForFileTypeErrorMessage.innerHTML = "";
+        if (divForFileInputErrorMessage.innerHTML == errorMessageForFileSize) {
+            divForFileInputErrorMessage.innerHTML = "";
         }
     }
-
+    
     if (failedInput == "releaseDate") {
         if (divForNoTitleErrorMessage.innerHTML == errorMessageForNoTitle) {
             divForNoTitleErrorMessage.innerHTML = "";
             titleUserInput.classList.remove("border-[#af1e1e]");
         }
-        
-        if (divForRatingErrorMessage.innerHTML == errorMessageForRatings) {
-            divForRatingErrorMessage.innerHTML = "";
-        }
-        
-        if (divForIMDbRatingErrorMessage.innerHTML == errorMessageForRatings) {
-            divForIMDbRatingErrorMessage.innerHTML = "";
-        }
-
-        if (divForFileTypeErrorMessage.innerHTML == errorMessageForFileType) {
-            divForFileTypeErrorMessage.innerHTML = "";
-        }
-    }
-
-    if (failedInput == "myRating") {
-        if (divForNoTitleErrorMessage.innerHTML == errorMessageForNoTitle) {
-            divForNoTitleErrorMessage.innerHTML = "";
-            titleUserInput.classList.remove("border-[#af1e1e]");
-        }
-
-        if (divForReleaseDateErrorMessage.innerHTML == errorMessageForReleaseDate) {
-            divForReleaseDateErrorMessage.innerHTML = "";
-        }
-
-        if (divForIMDbRatingErrorMessage.innerHTML == errorMessageForRatings) {
-            divForIMDbRatingErrorMessage.innerHTML = "";
-        }
-
-        if (divForFileTypeErrorMessage.innerHTML == errorMessageForFileType) {
-            divForFileTypeErrorMessage.innerHTML = "";
+        if (divForFileInputErrorMessage.innerHTML == errorMessageForFileType) {
+            divForFileInputErrorMessage.innerHTML = "";
+        }        
+        if (divForFileInputErrorMessage.innerHTML == errorMessageForFileSize) {
+            divForFileInputErrorMessage.innerHTML = "";
         }
     }
     
-    if (failedInput == "imdbRating") {
+    if (failedInput == "fileType" || failedInput == "fileSize") {
         if (divForNoTitleErrorMessage.innerHTML == errorMessageForNoTitle) {
             divForNoTitleErrorMessage.innerHTML = "";
             titleUserInput.classList.remove("border-[#af1e1e]");
         }
-
         if (divForReleaseDateErrorMessage.innerHTML == errorMessageForReleaseDate) {
             divForReleaseDateErrorMessage.innerHTML = "";
-        }
-
-        if (divForRatingErrorMessage.innerHTML == errorMessageForRatings) {
-            divForRatingErrorMessage.innerHTML = "";
-        }
-
-        if (divForFileTypeErrorMessage.innerHTML == errorMessageForFileType) {
-            divForFileTypeErrorMessage.innerHTML = "";
-        }
-    }
-
-    if (failedInput == "fileType") {
-        if (divForNoTitleErrorMessage.innerHTML == errorMessageForNoTitle) {
-            divForNoTitleErrorMessage.innerHTML = "";
-            titleUserInput.classList.remove("border-[#af1e1e]");
-        }
-
-        if (divForReleaseDateErrorMessage.innerHTML == errorMessageForReleaseDate) {
-            divForReleaseDateErrorMessage.innerHTML = "";
-        }
-
-        if (divForRatingErrorMessage.innerHTML == errorMessageForRatings) {
-            divForRatingErrorMessage.innerHTML = "";
-        }
-        
-        if (divForIMDbRatingErrorMessage.innerHTML == errorMessageForRatings) {
-            divForIMDbRatingErrorMessage.innerHTML = "";
         }
     }
 }
 
 function validateFormForAddingTitleManually() {    
     let inputTitleValue = titleInput();
-    let inputRatingValue = ratingInput();
-    let inputIMDbRatingValue = iMDbRatingInput();
+    //let inputRatingValue = ratingInput();
+    //let inputIMDbRatingValue = iMDbRatingInput();
     let inputReleaseDateStartYearValue = releaseDateStartYearInput();
     let inputReleaseDateEndYearValue = releaseDateEndYearInput();
-    let inputFileName = fileInput();    
+    let inputFileName = fileInput();
+    let inputFileSize = fileInputSize();
+    //console.log(inputFileSize);
+    
     let whichInputFailed;
     
     //Title can't be empty!
@@ -154,7 +108,7 @@ function validateFormForAddingTitleManually() {
         whichInputFailed = "title";
         clearOtherMessages(whichInputFailed);
         return false;
-    }
+    }    
     
     if (!validateReleaseDate(inputReleaseDateStartYearValue, inputReleaseDateEndYearValue)) {
         divForReleaseDateErrorMessage.innerHTML = errorMessageForReleaseDate;
@@ -164,30 +118,21 @@ function validateFormForAddingTitleManually() {
         clearOtherMessages(whichInputFailed);
         return false;
     }
-
-    if (!validateRatings(inputRatingValue)) {
-        divForRatingErrorMessage.innerHTML = errorMessageForRatings;
-        divForRatingErrorMessage.style.color = colorForErrorMessages;
-
-        whichInputFailed = "myRating";
-        clearOtherMessages(whichInputFailed);
-        return false;
-    }
-
-    if (!validateRatings(inputIMDbRatingValue)) {
-        divForIMDbRatingErrorMessage.innerHTML = errorMessageForRatings;
-        divForIMDbRatingErrorMessage.style.color = colorForErrorMessages;
-
-        whichInputFailed = "imdbRating";
-        clearOtherMessages(whichInputFailed);
-        return false;
-    }
-
+    
     if (!validateFileType(inputFileName)) {
-        divForFileTypeErrorMessage.innerHTML = errorMessageForFileType;
-        divForFileTypeErrorMessage.style.color = colorForErrorMessages;
+        divForFileInputErrorMessage.innerHTML = errorMessageForFileType;
+        divForFileInputErrorMessage.style.color = colorForErrorMessages;
 
         whichInputFailed = "fileType";
+        clearOtherMessages(whichInputFailed);
+        return false;
+    }
+    
+    if (!validateFileSize(inputFileSize)) {
+        divForFileInputErrorMessage.innerHTML = errorMessageForFileSize;
+        divForFileInputErrorMessage.style.color = colorForErrorMessages;
+
+        whichInputFailed = "fileSize";
         clearOtherMessages(whichInputFailed);
         return false;
     }
@@ -215,7 +160,7 @@ function selectTitleType(event) {
         releaseDateInput.setAttribute("disabled", true);
         releaseDateInput.classList.add("opacity-25");
     }
-
+    
     if (event.target.value === "Tv Series" || event.target.value === "Tv MiniSeries") {
         directorInput.setAttribute("disabled", true);
         directorInput.classList.add("opacity-25");
@@ -226,7 +171,7 @@ function selectTitleType(event) {
         releaseDateInput.removeAttribute("disabled");
         releaseDateInput.classList.remove("opacity-25");
     }
-
+    
     if (event.target.value === "Podcast Episode" || event.target.value === "Podcast Series") {
         directorInput.setAttribute("disabled", true);
         directorInput.classList.add("opacity-25");
@@ -237,7 +182,7 @@ function selectTitleType(event) {
         releaseDateInput.removeAttribute("disabled");
         releaseDateInput.classList.remove("opacity-25");
     }
-
+    
     if (event.target.value === "Music Video") {
         creatorInput.setAttribute("disabled", true);
         creatorInput.classList.add("opacity-25");
@@ -256,6 +201,10 @@ function countCharacters(id) {
     spanElementForPlotCharactersCount.innerText = element.length;    
 }
 
+function afterClearingFormGoBackToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 function resetForm() {
     let form = document.getElementById("formAddManually");
     form.reset();
@@ -265,9 +214,7 @@ function resetForm() {
     titleUserInput.classList.add("border-[#708090]");
     divForNoTitleErrorMessage.innerHTML = "";
     divForReleaseDateErrorMessage.innerHTML = "";
-    divForRatingErrorMessage.innerHTML = "";
-    divForIMDbRatingErrorMessage.innerHTML = "";
-    divForFileTypeErrorMessage.innerHTML = "";
+    divForFileInputErrorMessage.innerHTML = "";
     
     let directorInput = document.getElementById("director");
     let writerInput = document.getElementById("writer");
@@ -281,4 +228,8 @@ function resetForm() {
     creatorInput.classList.remove("opacity-25");
     releaseDateEndYearInput.removeAttribute("disabled");
     releaseDateEndYearInput.classList.remove("opacity-25");
+
+    resetStarRating();
+    resetImdbStarRating();
+    afterClearingFormGoBackToTop();
 }

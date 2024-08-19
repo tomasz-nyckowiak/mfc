@@ -4,44 +4,6 @@ function validateTitle(inputValue) {
     } else return true;
 }
 
-function checkingConditionsForRatingsInput(userInput) {
-    let inputIsValid = true;
-    
-    if (isNaN(userInput) || userInput < 1 || userInput > 10) {
-        inputIsValid = false;
-    }
-
-    return inputIsValid;
-}
-
-function validateRatings(inputValue) {
-    let isRatingValueCorrect;
-    let inputIsValid;
-
-    if (inputValue == "") {
-        isRatingValueCorrect = true;
-    } else {
-        if (inputValue.includes(",")) {
-            result = inputValue.replace(",", ".");            
-            inputIsValid = checkingConditionsForRatingsInput(result);
-
-            if (!inputIsValid) {
-                isRatingValueCorrect = false;
-            } else isRatingValueCorrect = true; 
-        } else {
-            inputIsValid = checkingConditionsForRatingsInput(inputValue);
-            
-            if (!inputIsValid) {
-                isRatingValueCorrect = false;
-            } else isRatingValueCorrect = true;
-        }        
-    }    
-
-    if (isRatingValueCorrect) {
-        return true;
-    } else return false;
-}
-
 //RELEASE DATES
 function validateYearInput(userInput) {
     let isInputValueCorrect;
@@ -111,8 +73,9 @@ function validateReleaseDate(startYear, endYear) {
         } else return false;
     }
 }
-//  ...  //
+//  ...  \\
 
+//FILE
 function validateFileType(fileName) {
     let isFileTypeCorrect;  
     
@@ -129,18 +92,34 @@ function validateFileType(fileName) {
     return isFileTypeCorrect;
 }
 
-function clearingErrorMessagesForEditForm() {
-    let ratingElement = "errorMessageForRating" + IdToRemember;
-    document.getElementById(ratingElement).innerHTML = "";
+function validateFileSize(fileSize) {
+    let isFileSizeCorrect;
+
+    if (fileSize >= 5242880) {
+        isFileSizeCorrect = false;
+    } else isFileSizeCorrect = true;    
+    
+    return isFileSizeCorrect;
+}
+//  ...  \\
+
+function clearingErrorMessagesForEditForm() {    
     let titleElement = "errorMessageForTitle" + IdToRemember;
     document.getElementById(titleElement).innerHTML = "";
     let idTitleInput = "originalTitle" + IdToRemember;
     let titleUserInput = document.getElementById(idTitleInput);
-    titleUserInput.classList.remove("border-2", "border-[#af1e1e]");
+    titleUserInput.classList.remove("border-[#af1e1e]");
     let releaseDateElement = "errorMessageForReleaseDate" + IdToRemember;
     document.getElementById(releaseDateElement).innerHTML = "";
-    let imdbRatingElement = "errorMessageForIMDbRating" + IdToRemember;
-    document.getElementById(imdbRatingElement).innerHTML = "";
-    let imageElement = "errorMessageForEditFileType" + IdToRemember;
+    let idReleaseDateInput = "releaseDate" + IdToRemember;
+    let releaseDateInput = document.getElementById(idReleaseDateInput);
+    releaseDateInput.classList.remove("border-[#af1e1e]");
+    let idReleaseDateEndYearInput = "releaseDateEndYear" + IdToRemember;
+    let releaseDateEndYearInput = document.getElementById(idReleaseDateEndYearInput);
+    releaseDateEndYearInput.classList.remove("border-[#af1e1e]");
+    let idDashBetweenDates = "dashBetweenDates" + IdToRemember;
+    let dashBetweenDates = document.getElementById(idDashBetweenDates);
+    dashBetweenDates.style.color = "";    
+    let imageElement = "errorMessageForEditFileInput" + IdToRemember;
     document.getElementById(imageElement).innerHTML = "";
 }

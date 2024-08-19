@@ -59,13 +59,11 @@ class AddTitle
             
             ##### Ratings #####
             if (isset($_POST['rating'])) {
-                $tempRating = $_POST['rating'];
-                $rating = str_replace(",", ".", $tempRating);
+                $rating = $_POST['rating'];                
             } else $rating = "";
             
             if (isset($_POST['imdbRating'])) {
-                $tempImdbRating = $_POST['imdbRating'];
-                $imdbRating = str_replace(",", ".", $tempImdbRating);
+                $imdbRating = $_POST['imdbRating'];
             } else $imdbRating = "";
             ##### ##### #####
             
@@ -73,9 +71,15 @@ class AddTitle
                 $plot = $_POST['plot'];
             } else $plot = "";
             
-            if (isset($_POST['fileName'])) {
-                $image = $_POST['fileName'];
+            ##### Image #####
+            //Name of the uploaded image will change later for unique id,
+            //so it doesn't matter much - we can leave it empty for now.
+            $imageName = "";
+
+            if (isset($_FILES['fileName'])) {
+                $image = $_FILES['fileName'];
             } else $image = "";
+            ##### ##### #####
             
             if (isset($_POST['toWatchManually'])) {
                 $toWatch = 1;
@@ -97,8 +101,9 @@ class AddTitle
                 'releaseDate' => $finalReleaseDate, 
                 'rating' => $rating, 
                 'imdbRating' => $imdbRating, 
-                'plot' => $plot, 
-                'imageUrl' => $image, 
+                'plot' => $plot,
+                'imageName' => $imageName,
+                'imageData' => $image,
                 'toWatch' => $toWatch, 
                 'review' => $review
             ];

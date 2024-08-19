@@ -1,4 +1,6 @@
 const modalClose = document.querySelectorAll('[data-te-modal-dismiss]');
+const editStarsDivWidth = 32;
+//document.getElementById("editStar1Rating").clientWidth; // w = 32
 
 let formId = "";
 
@@ -7,12 +9,6 @@ function settingUpNeededElements() {
 }
 
 //GETTING VALUES
-function getRatingInput() {		
-	let idRatingInput = "rating" + IdToRemember;
-    let input = document.getElementById(idRatingInput).value;
-    return input;
-}
-
 function getTitleInput() {		
 	let idTitleInput = "originalTitle" + IdToRemember;
     let input = document.getElementById(idTitleInput).value;
@@ -36,139 +32,73 @@ function getReleaseDateEndYearInput() {
     return input;
 }
 
-function getIMDbRatingInput() {		
-	let idIMDbRatingInput = "imdbRating" + IdToRemember;
-    let input = document.getElementById(idIMDbRatingInput).value;
-    return input;
-}
-
 function getFileInput() {		
-	let idFileInput = "fileName" + IdToRemember;
+	let idFileInput = "imageName" + IdToRemember;
     let input = document.getElementById(idFileInput).value;
     return input;
 }
-//  ...  //
 
-function clearOtherMessagesEdit(failedInput) {    
-    let idRatingDiv = "errorMessageForRating" + IdToRemember;
-    let ratingElement = document.getElementById(idRatingDiv);
+function getFileInputSize() {		
+	let idFileInput = "imageName" + IdToRemember;    
+    const file = document.getElementById(idFileInput);
+    let fileSize;
+    
+    if (getFileInput() != "") {
+        fileSize = file.files[0].size;
+    } else fileSize = 0;
+    
+	return fileSize;
+}
+//  ...  \\
 
+function clearOtherMessagesEdit(failedInput) {
     let idTitleDiv = "errorMessageForTitle" + IdToRemember;
     let titleElement = document.getElementById(idTitleDiv);
     let idTitleInput = "originalTitle" + IdToRemember;
-    let titleUserInput = document.getElementById(idTitleInput);
-    
+    let titleUserInput = document.getElementById(idTitleInput);    
     let idReleaseDateDiv = "errorMessageForReleaseDate" + IdToRemember;
-    let releaseDateElement = document.getElementById(idReleaseDateDiv);
-    
-    let idIMDbRatingDiv = "errorMessageForIMDbRating" + IdToRemember;
-    let iMDbRatingElement = document.getElementById(idIMDbRatingDiv);
-
-    let idFileDiv = "errorMessageForEditFileType" + IdToRemember;
+    let releaseDateElement = document.getElementById(idReleaseDateDiv);    
+    let idReleaseDateInput = "releaseDate" + IdToRemember;
+    let releaseDateInput = document.getElementById(idReleaseDateInput);
+    let idReleaseDateEndYearInput = "releaseDateEndYear" + IdToRemember;
+    let releaseDateEndYearInput = document.getElementById(idReleaseDateEndYearInput);
+    let idDashBetweenDates = "dashBetweenDates" + IdToRemember;
+    let dashBetweenDates = document.getElementById(idDashBetweenDates);
+    let idFileDiv = "errorMessageForEditFileInput" + IdToRemember;
     let imageElement = document.getElementById(idFileDiv);
     
-    if (failedInput == "rating") {
-        if (titleElement.innerHTML == errorMessageForNoTitle) {
-            titleElement.innerHTML = "";
-            titleUserInput.classList.remove("border-2", "border-[#af1e1e]");
-        }
-        
+    if (failedInput == "title") {        
         if (releaseDateElement.innerHTML == errorMessageForReleaseDate) {
             releaseDateElement.innerHTML = "";
+            releaseDateInput.classList.remove("border-[#af1e1e]");
+            releaseDateEndYearInput.classList.remove("border-[#af1e1e]");
+            dashBetweenDates.style.color = "";
         }
-        
-        if (iMDbRatingElement.innerHTML == errorMessageForRatings) {
-            iMDbRatingElement.innerHTML = "";
-        }
-
-        if (imageElement.innerHTML == errorMessageForFileType) {
+        if (imageElement.innerHTML == errorMessageForFileType || imageElement.innerHTML == errorMessageForFileSize) {
             imageElement.innerHTML = "";
         }
     }
-    
-    if (failedInput == "title") {
-        if (ratingElement.innerHTML == errorMessageForRatings) {
-            ratingElement.innerHTML = "";
+    if (failedInput == "releaseDate") {        
+        if (titleElement.innerHTML == errorMessageForNoTitle) {
+            titleElement.innerHTML = "";
+            titleUserInput.classList.remove("border-[#af1e1e]");
         }
-        
-        if (releaseDateElement.innerHTML == errorMessageForReleaseDate) {
-            releaseDateElement.innerHTML = "";
-        }
-        
-        if (iMDbRatingElement.innerHTML == errorMessageForRatings) {
-            iMDbRatingElement.innerHTML = "";
-        }
-
-        if (imageElement.innerHTML == errorMessageForFileType) {
+        if (imageElement.innerHTML == errorMessageForFileType || imageElement.innerHTML == errorMessageForFileSize) {
             imageElement.innerHTML = "";
         }
     }
-
-    if (failedInput == "releaseDate") {
-        if (ratingElement.innerHTML == errorMessageForRatings) {
-            ratingElement.innerHTML = "";
-        }
-        
+    if (failedInput == "fileType" || failedInput == "fileSize") {        
         if (titleElement.innerHTML == errorMessageForNoTitle) {
             titleElement.innerHTML = "";
-            titleUserInput.classList.remove("border-2", "border-red-500");
+            titleUserInput.classList.remove("border-[#af1e1e]");
         }
-        
-        if (iMDbRatingElement.innerHTML == errorMessageForRatings) {
-            iMDbRatingElement.innerHTML = "";
-        }
-
-        if (imageElement.innerHTML == errorMessageForFileType) {
-            imageElement.innerHTML = "";
-        }
-    }
-
-    if (failedInput == "imdbRating") {
-        if (ratingElement.innerHTML == errorMessageForRatings) {
-            ratingElement.innerHTML = "";
-        }
-        
-        if (titleElement.innerHTML == errorMessageForNoTitle) {
-            titleElement.innerHTML = "";
-            titleUserInput.classList.remove("border-2", "border-red-500");
-        }
-
         if (releaseDateElement.innerHTML == errorMessageForReleaseDate) {
             releaseDateElement.innerHTML = "";
-        }
-
-        if (imageElement.innerHTML == errorMessageForFileType) {
-            imageElement.innerHTML = "";
-        }
-    }
-
-    if (failedInput == "fileType") {
-        if (ratingElement.innerHTML == errorMessageForRatings) {
-            ratingElement.innerHTML = "";
-        }
-        
-        if (titleElement.innerHTML == errorMessageForNoTitle) {
-            titleElement.innerHTML = "";
-            titleUserInput.classList.remove("border-2", "border-red-500");
-        }
-
-        if (releaseDateElement.innerHTML == errorMessageForReleaseDate) {
-            releaseDateElement.innerHTML = "";
-        }
-
-        if (iMDbRatingElement.innerHTML == errorMessageForRatings) {
-            iMDbRatingElement.innerHTML = "";
+            releaseDateInput.classList.remove("border-[#af1e1e]");
+            releaseDateEndYearInput.classList.remove("border-[#af1e1e]");
+            dashBetweenDates.style.color = "";
         }
     }
-}
-
-function isHiddenInputsShown() {
-    let divId = "optionalInfoCheckbox" + IdToRemember;
-    let checkBox = document.getElementById(divId);
-
-    if (checkBox.checked == true) {
-        return true;
-    } else return false;
 }
 
 //FOR SELECT TITLETYPE
@@ -241,88 +171,73 @@ function selectTitleTypeEdit(event) {
         }        
     }    
 }
-//  ...  //
+//  ...  \\
 
 function validateForm() {    
-    let inputTitleValue = getTitleInput();
-    let inputRatingValue = getRatingInput();
-    let inputIMDbRatingValue = getIMDbRatingInput();
+    let inputTitleValue = getTitleInput();    
     let inputReleaseDateStartYearValue = getReleaseDateStartYearInput();
     let inputReleaseDateEndYearValue = getReleaseDateEndYearInput();
     let inputFileName = getFileInput();
+    let inputFileSize = getFileInputSize();
     
-    if (isHiddenInputsShown()) {
-        let whichInputFailed;
-
-        if (!validateRatings(inputRatingValue)) {
-            let divId = "errorMessageForRating" + IdToRemember;
-            let manipulatedDiv = document.getElementById(divId);
-            manipulatedDiv.innerHTML = errorMessageForRatings;
-            manipulatedDiv.style.color = colorForErrorMessages;
-            manipulatedDiv.focus();
-                
-            whichInputFailed = "rating";            
-            clearOtherMessagesEdit(whichInputFailed);            
-            return false;
-        }
+    let whichInputFailed;
         
-        //Title can't be empty!
-        if (!validateTitle(inputTitleValue)) {
-            let divId = "errorMessageForTitle" + IdToRemember;
-            let manipulatedDiv = document.getElementById(divId);
-            manipulatedDiv.innerHTML = errorMessageForNoTitle;
-            manipulatedDiv.style.color = colorForErrorMessages;
-            let idTitleInput = "originalTitle" + IdToRemember;
-            let titleUserInput = document.getElementById(idTitleInput);
-            titleUserInput.classList.add("border-2", "border-[#af1e1e]");
-    
-            whichInputFailed = "title";
-            clearOtherMessagesEdit(whichInputFailed);            
-            return false;
-        }
+    //Title can't be empty!
+    if (!validateTitle(inputTitleValue)) {
+        let divId = "errorMessageForTitle" + IdToRemember;
+        let manipulatedDiv = document.getElementById(divId);
+        manipulatedDiv.innerHTML = errorMessageForNoTitle;
+        manipulatedDiv.style.color = colorForErrorMessages;
+        let idTitleInput = "originalTitle" + IdToRemember;
+        let titleUserInput = document.getElementById(idTitleInput);
+        titleUserInput.classList.add("border-[#af1e1e]");
 
-        if (!validateReleaseDate(inputReleaseDateStartYearValue, inputReleaseDateEndYearValue)) {
-            let divId = "errorMessageForReleaseDate" + IdToRemember;
-            let manipulatedDiv = document.getElementById(divId);
-            manipulatedDiv.innerHTML = errorMessageForReleaseDate;
-            manipulatedDiv.style.color = colorForErrorMessages;
-    
-            whichInputFailed = "releaseDate";
-            clearOtherMessagesEdit(whichInputFailed);
-            return false;
-        }
-    
-        if (!validateRatings(inputIMDbRatingValue)) {
-            let divId = "errorMessageForIMDbRating" + IdToRemember;
-            let manipulatedDiv = document.getElementById(divId);            
-            manipulatedDiv.innerHTML = errorMessageForRatings;
-            manipulatedDiv.style.color = colorForErrorMessages;
-    
-            whichInputFailed = "imdbRating";
-            clearOtherMessagesEdit(whichInputFailed);
-            return false;
-        }
-    
-        if (!validateFileType(inputFileName)) {
-            let divId = "errorMessageForEditFileType" + IdToRemember;
-            let manipulatedDiv = document.getElementById(divId);
-            manipulatedDiv.innerHTML = errorMessageForFileType;
-            manipulatedDiv.style.color = colorForErrorMessages;
-    
-            whichInputFailed = "fileType";
-            clearOtherMessagesEdit(whichInputFailed);
-            return false;
-        }
-    } else {
-        if (!validateRatings(inputRatingValue)) {
-            let divId = "errorMessageForRating" + IdToRemember;
-            let manipulatedDiv = document.getElementById(divId);
-            manipulatedDiv.innerHTML = errorMessageForRatings;
-            manipulatedDiv.style.color = colorForErrorMessages;
-            
-            return false;
-        }
+        whichInputFailed = "title";
+        clearOtherMessagesEdit(whichInputFailed);
+        console.log("IN " + inputTitleValue);          
+        return false;
     }
+    if (!validateReleaseDate(inputReleaseDateStartYearValue, inputReleaseDateEndYearValue)) {
+        let divId = "errorMessageForReleaseDate" + IdToRemember;
+        let manipulatedDiv = document.getElementById(divId);
+        manipulatedDiv.innerHTML = errorMessageForReleaseDate;
+        manipulatedDiv.style.color = colorForErrorMessages;
+        let idReleaseDateInput = "releaseDate" + IdToRemember;
+        let releaseDateInput = document.getElementById(idReleaseDateInput);
+        let idReleaseDateEndYearInput = "releaseDateEndYear" + IdToRemember;
+        let releaseDateEndYearInput = document.getElementById(idReleaseDateEndYearInput);
+        let idDashBetweenDates = "dashBetweenDates" + IdToRemember;
+        let dashBetweenDates = document.getElementById(idDashBetweenDates);
+        releaseDateInput.classList.add("border-[#af1e1e]");
+        releaseDateEndYearInput.classList.add("border-[#af1e1e]");
+        dashBetweenDates.style.color = colorForErrorMessages;
+
+        whichInputFailed = "releaseDate";
+        clearOtherMessagesEdit(whichInputFailed);
+        return false;
+    }
+    if (!validateFileType(inputFileName)) {
+        let divId = "errorMessageForEditFileInput" + IdToRemember;
+        let manipulatedDiv = document.getElementById(divId);
+        manipulatedDiv.innerHTML = errorMessageForFileType;
+        manipulatedDiv.style.color = colorForErrorMessages;
+
+        whichInputFailed = "fileType";
+        clearOtherMessagesEdit(whichInputFailed);
+        return false;
+    }
+    if (!validateFileSize(inputFileSize)) {
+        let divId = "errorMessageForEditFileInput" + IdToRemember;
+        let manipulatedDiv = document.getElementById(divId);
+        manipulatedDiv.innerHTML = errorMessageForFileSize;
+        manipulatedDiv.style.color = colorForErrorMessages;
+
+        whichInputFailed = "fileSize";
+        clearOtherMessagesEdit(whichInputFailed);
+        return false;
+    }
+    
+    return true;
 }
 
 function resettingFieldsAttributeToDefault() {
@@ -348,6 +263,17 @@ function afterModalIsClosed() {
     
     clearingErrorMessagesForEditForm();
     resettingFieldsAttributeToDefault();
+    
+    //Resetting stars for user rating
+    settingStarsEmpty();
+    removeEventListenersForChosenRatingTooltips();
+    removingEventListenersForUserRatingChoosing();
+    setHiddenInputWhenClosingModalWithoutSaving();
+    //Resetting stars for imdb rating
+    settingStarsEmptyForImdbRating();
+    removeEventListenersForChosenImdbRatingTooltips();
+    removingEventListenersForImdbRatingChoosing();
+    setHiddenInputForImdbRatingWhenClosingModalWithoutSaving();
     
     let divId = "hiddenInputs" + IdToRemember;
     let manipulatedDiv = document.getElementById(divId);

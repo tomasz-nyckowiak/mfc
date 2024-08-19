@@ -8,17 +8,12 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        {{ include('api/_search_form.html.twig') }}
-    </div>
-    
+    <div>{{ include('api/_search_form.html.twig') }}</div>    
     <div class="mt-6 mb-3">
         {% if title is not null %}
             <h4 class="text-3xl">Search "{{ title }}"</h4>
-        {% endif %}               
-              
-    </div>
-    
+        {% endif %}
+    </div>    
     <div class="mt-2">
         <h4 class="text-xl my-2">Titles (most popular ones)</h4>
         {% if popularTitlesData|length > 0 %}                                 
@@ -48,26 +43,8 @@
             {% endif %}
         {% endif %}
     </div>
-
     <div class="font-medium text-[#708090] tracking-wide my-2">Not happy with the result? Add more specific filter or add the title manually <a href="{{ path('app_form_add_title_manually')}}" class="hover:text-indigo-500 hover:underline decoration-1">here</a>.</div>
-
-    <!-- Back to top button -->
-    <button
-        type="button"
-        class="!fixed bottom-5 end-5 hidden rounded-full p-3 text-xs font-semibold uppercase leading-tight text-slate-200 border-2 border-[#708090] transition duration-150 ease-in-out hover:text-indigo-500 hover:border-indigo-500/75 focus:outline-none focus:ring-0"
-        id="btn-back-to-top">
-        <span class="[&>svg]:w-4">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="3"
-                stroke="currentColor">
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18">
-            </svg>
-        </span>
-    </button>
+    <div>
+        {{ include('shared/_back_to_top_btn.html.twig') }}
+    </div>
 {% endblock %}

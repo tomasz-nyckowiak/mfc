@@ -8,12 +8,15 @@ use App\Model\AddTitle;
 use App\Model\EditTitle;
 use App\Service\Service;
 use App\Entity\TitleInformation;
+use App\Form\TitleInformationType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\FavouriteMoviesRepository;
 use App\Repository\FavouriteSeriesRepository;
+use Symfony\Component\HttpFoundation\Request;
 use App\Repository\TitleInformationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -28,12 +31,14 @@ class LibraryController extends AbstractController
         $userId = $currentUser->getId();
         
         $data = $titles->findby(['user' => $userId]);
+        //dd($data);
                 
         return $this->render('library/default_list.html.twig', [
                 'data' => $data,
         ]);
     }
 
+    //ADD TITLE
     #[Route('/library/add/{id}', name: 'app_add_title')]
     public function addTitleToLibrary($id, TitleInformationRepository $titles): Response
     {        
@@ -139,7 +144,26 @@ class LibraryController extends AbstractController
         ]);
     }
 
-    //FORM FOR ADDING TITLE MANUALLY
+    //ADDING TITLE MANUALLY
+    #[Route('/library/addtitleManually', name: 'app_add_title_manually')]
+    public function addTitleManually(Request $request): Response
+    {
+        $form = $this->createForm(TitleInformationType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //$message = 'title';
+            //$this->addFlash('success', $message);
+            return $this->redirectToRoute('app_add_title_manually', [
+                'form' => $form->createView(),
+            ]);
+        }
+        
+        return $this->render('library/addTitle.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
     #[Route('/library/addtitle', name: 'app_form_add_title_manually')]
     public function addTitleToLibraryManually(): Response
     {
@@ -155,14 +179,25 @@ class LibraryController extends AbstractController
     
     //ADD TITLE MANUALLY SUCCESS
     #[Route('/library/addtitle/success', name: 'app_add_title_manually_success')]
-    public function addTitleManuallySuccess(TitleInformationRepository $titles): Response
+    public function addTitleManuallySuccess(
+        TitleInformationRepository $titles,
+        #[Autowire('%titles_image_dir%')] string $imageDir): Response
     {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
         $userId = $currentUser->getId();
-
+        
         $newTitle = new AddTitle();
         $allData = $newTitle->addTitleManually();
+        
+        if ($tempName = $allData['imageData']['tmp_name']) {        
+            $name = basename($allData['imageData']['name']);
+            $pos = strrpos($name, '.');
+            $ext = substr($name, $pos + 1);
+            $fileName = uniqid().'.'.$ext;
+            $allData['imageName'] = $fileName;
+            move_uploaded_file($tempName, "$imageDir/$fileName");
+        }            
         
         $title = new TitleInformation();
         $title->setUser($currentUser);
@@ -180,15 +215,13 @@ class LibraryController extends AbstractController
         $title->setDirector($allData['directors']);
         $title->setWriter($allData['writers']);
 
-        //Cast
         $title->setStars($allData['cast']);
-
         $title->setRuntime($allData['runtime']);
         $title->setReleaseDate($allData['releaseDate']);
         $title->setRating($allData['rating']);
         $title->setImdbRating($allData['imdbRating']);
         $title->setPlot($allData['plot']);
-        $title->setImageUrl($allData['imageUrl']);
+        $title->setImageUrl($allData['imageName']);        
         $title->setToWatch($allData['toWatch']);
         $title->setReview($allData['review']);
 
@@ -208,9 +241,13 @@ class LibraryController extends AbstractController
         }        
     }
 
-    //ADD/EDIT STUFF
+    //EDIT TITLE
     #[Route('/library/edit/{id}', name: 'app_library_edit_title')]
-    public function editTitle($id, TitleInformationRepository $titles, EntityManagerInterface $entityManager): Response
+    public function editTitle(
+        $id,
+        TitleInformationRepository $titles,
+        EntityManagerInterface $entityManager,
+        #[Autowire('%titles_image_dir%')] string $imageDir): Response
     {        
         /** @var User $currentUser */
         $currentUser = $this->getUser();
@@ -218,6 +255,7 @@ class LibraryController extends AbstractController
         
         $editTitle = new EditTitle();
         $allData = $editTitle->editTitle();
+        //dd($allData);        
 
         $title = $entityManager->getRepository(TitleInformation::class)->find($id);
         
@@ -239,7 +277,18 @@ class LibraryController extends AbstractController
             $title->setRating($allData['rating']);
             $title->setImdbRating($allData['imdbRating']);
             $title->setPlot($allData['plot']);
-            $title->setImageUrl($allData['imageUrl']);
+
+            if ($tempName = $allData['imageData']['tmp_name']) {        
+                $name = basename($allData['imageData']['name']);
+                $pos = strrpos($name, '.');
+                $ext = substr($name, $pos + 1);
+                $fileName = uniqid().'.'.$ext;
+                $allData['imageName'] = $fileName;
+                move_uploaded_file($tempName, "$imageDir/$fileName");
+
+                $title->setImageUrl($allData['imageName']);
+            }
+
             $title->setToWatch($allData['toWatch']);
             $title->setReview($allData['review']);
         } else {
@@ -262,7 +311,12 @@ class LibraryController extends AbstractController
     
     //DELETE TITLE
     #[Route('/library/delete/{id}', name: 'app_library_remove_title')]
-    public function deleteTitle($id, TitleInformationRepository $titles, FavouriteMoviesRepository $favouriteMovies, FavouriteSeriesRepository $favouriteSeries): Response
+    public function deleteTitle(
+        $id,
+        TitleInformationRepository $titles,
+        FavouriteMoviesRepository $favouriteMovies,
+        FavouriteSeriesRepository $favouriteSeries,
+        #[Autowire('%titles_image_dir%')] string $imageDir): Response
     {        
         /** @var User $currentUser */
         $currentUser = $this->getUser();
@@ -270,6 +324,7 @@ class LibraryController extends AbstractController
         
         $result = $titles->findOneBy(['id' => $id]);
         $titleToRemove = $result->getOriginalTitle();
+        //dd($result->getImageUrl());
         $message = "Title " . $titleToRemove . " has been successfully removed from your library!";
 
         //Title to remove could also be in TOP list, if is then we remove it from there too.
@@ -310,11 +365,19 @@ class LibraryController extends AbstractController
         }
         
         $titles->remove($result, true);
+        
+        //Removing title from database will not delete UPLOADED images - we need to do it manually!
+        $image = $result->getImageUrl();
+        if (!str_starts_with($image, 'https')) {
+            unlink("$imageDir/$image");
+        }
 
         $this->addFlash('delete', $message);
         
         return $this->redirectToRoute('app_library');      
     }
+
+    //LIBRARY LIST FILTERS\\
 
     //LIBRARY LIST FILTER BY TITLE
     #[Route('/library/title', name: 'app_library_title_filter')]

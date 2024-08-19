@@ -34,7 +34,12 @@
                 <div class="text-sm font-semibold uppercase tracking-wider dark:text-gray-400 flex">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <div>
-                            {% if app.request.get('_route') == "app_library" %}
+                            {% set libraryPages = ["app_library", "app_add_title", "app_library_edit_title", "app_library_remove_title",
+                            "app_library_title_filter", "app_library_titletype_movie_filter", "app_library_titletype_tvseries_filter",
+                            "app_library_titletype_other_filter", "app_library_rating_asc_filter", "app_library_rating_desc_filter",
+                            "app_library_imdbrating_asc_filter", "app_library_imdbrating_desc_filter", "app_library_towatch_filter",
+                            "app_form_add_title_manually", "app_add_title_manually_fail", "app_add_title_manually_success"] %}
+                            {% if app.request.get('_route') in libraryPages %}
                                 <a 
                                     href="{{ path('app_library') }}"
                                     class="text-indigo-500 underline decoration-2"

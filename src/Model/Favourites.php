@@ -135,6 +135,26 @@ class Favourites
         return $top10;
     }
 
+    public static function managingFavouriteMovies($top10Movies, $titlesWithImages)
+    {
+        $imagesForTop10 = [];
+
+        //Matching image to the right title
+        if (sizeof($top10Movies) > 0) {
+            foreach ($top10Movies as $key_position => $title) {
+                if ($title != "") {
+                    foreach ($titlesWithImages as $key_title => $images) {                    
+                        if ($title == $key_title) {
+                            $img = $images['image_Url'];
+                            array_push($imagesForTop10, $img);
+                        }
+                    }
+                } else array_push($imagesForTop10, "");                
+            }
+        }
+        return $imagesForTop10;
+    }
+
     //TV SERIES
     public function addTop5Series() {
         $top5 = [];
@@ -214,5 +234,25 @@ class Favourites
             ];
         }
         return $top5;
+    }
+
+    public static function managingFavouriteSeries($top5series, $titlesWithImages)
+    {
+        $imagesForTop5 = [];
+
+        //Matching image to the right title
+        if (sizeof($top5series) > 0) {
+            foreach ($top5series as $key_position => $title) {
+                if ($title != "") {
+                    foreach ($titlesWithImages as $key_title => $images) {                    
+                        if ($title == $key_title) {
+                            $img = $images['image_Url'];
+                            array_push($imagesForTop5, $img);
+                        }
+                    }
+                } else array_push($imagesForTop5, "");                
+            }
+        }
+        return $imagesForTop5;
     }
 }

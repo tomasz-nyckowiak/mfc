@@ -184,6 +184,36 @@ class TitleInformationRepository extends ServiceEntityRepository
         $conn->executeQuery($sql);
     }
 
+    public function findMoviesByUserIdThenReturnArray(int $id): array
+    {        
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            SELECT original_title, image_Url FROM title_information
+            WHERE title_information.user_id = '$id'
+            AND title_information.title_type = 'Movie'
+        ";
+
+        $result = $conn->executeQuery($sql);
+        
+        return $result->fetchAllAssociativeIndexed();
+    }
+
+    public function findTVSeriesByUserIdThenReturnArray(int $id): array
+    {        
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            SELECT original_title, image_Url FROM title_information
+            WHERE title_information.user_id = '$id'
+            AND title_information.title_type = 'TV Series'
+        ";
+
+        $result = $conn->executeQuery($sql);
+        
+        return $result->fetchAllAssociativeIndexed();
+    }
+
 //    /**
 //     * @return TitleInformation[] Returns an array of TitleInformation objects
 //     */

@@ -52,33 +52,44 @@ class LibraryController extends AbstractController
         //Preparing url
         $url = $service->creatingBasicUrlWithoutOptionalInfoForSingleEntry($id);
         
-        // Get main info
+        //Get main info
         $urlBaseInfo = $service->creatingBaseInfoUrlForSingleEntry($url); 
         $response = $service->search($urlBaseInfo);       
         $baseInfo = [];
         $baseInfo = $model->extractingMainDataFromSingleEntry($response);
-
-        // Get cast
+        
+        //Get cast
         $urlExtendedCast = $service->creatingUrlForExtendedCastForSingleEntry($url);
         $response = $service->search($urlExtendedCast);
         $mainCast = [];
         $mainCast = $model->extractingMainCastFromSingleEntry($response);
         
-        // Get makers (creator/s, director/s and writer/s)
+        //Get makers (creator/s, director/s and writer/s)
         $urlCreators = $service->creatingUrlForCreatorsForSingleEntry($url);     
         $response = $service->search($urlCreators);
         $creators = [];
         $creators = $model->extractingCreatorsFromSingleEntry($response);
 
-        // Merging all data arrays into one
+        //Merging all data arrays into one
         $data = array_merge($baseInfo, $mainCast, $creators);
-
+        //dd($data);
         $title = new TitleInformation();
 
         $title->setUser($currentUser);
         $title->setOriginalTitle($data['originalTitle']);
         $title->setTitleType($data['titleType']);
-        $title->setReleaseDate($data['releaseDate']['year']);
+        
+        if ($data['releaseDate']['endYear'] != null) {
+            $startYear = $data['releaseDate']['year'];
+            $endYear = $data['releaseDate']['endYear'];
+            $relaseDate = $startYear . "-" . $endYear;
+            $title->setReleaseDate($relaseDate);
+        } else {
+            if ($data['titleType'] == 'TV Series') {
+                $relaseDate = $data['releaseDate']['year'] . "-";
+                $title->setReleaseDate($relaseDate);
+            } else $title->setReleaseDate($data['releaseDate']['year']);
+        }        
         
         if ($data['rating'] != null) {
             $title->setImdbRating($data['rating']);
@@ -93,13 +104,13 @@ class LibraryController extends AbstractController
             $title->setPlot($data['plot']);
         }        
         
-        //GENRES
+        //Genres
         if ($data['genres'] != null) {
             $genresAsString = implode(", ", $data['genres']);
             $title->setGenres($genresAsString);
         }        
 
-        //CAST
+        //Cast
         if ($data['cast'] != null) {
             $stars = array_slice($data['cast'], 0, 5);        
             
@@ -111,7 +122,7 @@ class LibraryController extends AbstractController
             $title->setStars($finalCast);
         }        
         
-        //CREATORS
+        //Creators
         if ($data['creators'] != null) {
             if (count($data['creators']) > 1) {
                 $creatorsAsString = implode(", ", $data['creators']);
@@ -133,35 +144,41 @@ class LibraryController extends AbstractController
         
         $userRating = null;
 
+        $message = $data['originalTitle'];
+
+        // $result = $titles->checkIfTitleAlreadyExistInLibraryForCurrentUser($userId, $data['originalTitle'], $data['titleType']);
+        
+        // if (!$result) {
+        //     $this->addFlash('success', $message);
+        //     $titles->add($title, true);
+        //     $nowTitleIsInLibrary = true;
+
+        //     return $this->render('title/details.html.twig', [
+        //         'data' => $data,
+        //         'alreadyExist' => $nowTitleIsInLibrary,
+        //         'userRating' => $userRating
+        //     ]);
+        // } else {
+        //     $this->addFlash('fail', $message);
+            
+        //     return $this->redirectToRoute('app_add_title_manually_fail');
+        // }
+        
+        $this->addFlash('success', $message);
+        
         $titles->add($title, true);
-        
-        $nowTitleIsInLibrary = true;
-        
-        return $this->render('title/details.html.twig', [
-            'data' => $data,
-            'alreadyExist' => $nowTitleIsInLibrary,
-            'userRating' => $userRating
-        ]);
-    }
 
-    //ADDING TITLE MANUALLY
-    #[Route('/library/addtitleManually', name: 'app_add_title_manually')]
-    public function addTitleManually(Request $request): Response
-    {
-        $form = $this->createForm(TitleInformationType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            //$message = 'title';
-            //$this->addFlash('success', $message);
-            return $this->redirectToRoute('app_add_title_manually', [
-                'form' => $form->createView(),
-            ]);
-        }
-        
-        return $this->render('library/addTitle.html.twig', [
-            'form' => $form->createView(),
+        return $this->redirectToRoute('app_details', [
+            'id' => $id
         ]);
+        
+        // $nowTitleIsInLibrary = true;
+        
+        // return $this->render('title/details.html.twig', [
+        //     'data' => $data,
+        //     'alreadyExist' => $nowTitleIsInLibrary,
+        //     'userRating' => $userRating
+        // ]);
     }
 
     #[Route('/library/addtitle', name: 'app_form_add_title_manually')]
@@ -323,8 +340,10 @@ class LibraryController extends AbstractController
         $userId = $currentUser->getId();
         
         $result = $titles->findOneBy(['id' => $id]);
-        $titleToRemove = $result->getOriginalTitle();
-        //dd($result->getImageUrl());
+        $titleToRemove = $result->getOriginalTitle();        
+        
+        //dd($image);
+
         $message = "Title " . $titleToRemove . " has been successfully removed from your library!";
 
         //Title to remove could also be in TOP list, if is then we remove it from there too.
@@ -366,11 +385,14 @@ class LibraryController extends AbstractController
         
         $titles->remove($result, true);
         
-        //Removing title from database will not delete UPLOADED images - we need to do it manually!
+        //Removing title from database will not delete UPLOADED images - we need to do it manually!        
         $image = $result->getImageUrl();
-        if (!str_starts_with($image, 'https')) {
-            unlink("$imageDir/$image");
+        if ($image != "") {
+            if (!str_starts_with($image, 'https')) {
+                unlink("$imageDir/$image");
+            }
         }
+        
 
         $this->addFlash('delete', $message);
         

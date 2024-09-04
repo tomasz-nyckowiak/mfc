@@ -1,6 +1,5 @@
 const modalClose = document.querySelectorAll('[data-te-modal-dismiss]');
 const editStarsDivWidth = 32;
-//document.getElementById("editStar1Rating").clientWidth; // w = 32
 
 let formId = "";
 
@@ -112,8 +111,8 @@ function selectTitleTypeEdit(event) {
     let idReleaseDateEndYear = "releaseDateEndYear" + IdToRemember;
     let releaseDateInput = document.getElementById(idReleaseDateEndYear);
     
-    if (event.target.value === "Movie" || event.target.value === "Short" || event.target.value === "Tv Episode" || 
-        event.target.value === "Tv Movie" || event.target.value === "Tv Short" || event.target.value === "Tv Special" || 
+    if (event.target.value === "Movie" || event.target.value === "Short" || event.target.value === "TV Episode" || 
+        event.target.value === "TV Movie" || event.target.value === "TV Short" || event.target.value === "TV Special" || 
         event.target.value === "Video" || event.target.value === "Video Game") {
         
         creatorInput.setAttribute("disabled", true);
@@ -129,7 +128,7 @@ function selectTitleTypeEdit(event) {
         }        
     }
 
-    if (event.target.value === "Tv Series" || event.target.value === "Tv Mini Series") {
+    if (event.target.value === "TV Series" || event.target.value === "TV Mini Series") {
         directorInput.setAttribute("disabled", true);
         directorInput.classList.add("opacity-25");       
         writerInput.setAttribute("disabled", true);
@@ -178,8 +177,7 @@ function validateForm() {
     let inputReleaseDateStartYearValue = getReleaseDateStartYearInput();
     let inputReleaseDateEndYearValue = getReleaseDateEndYearInput();
     let inputFileName = getFileInput();
-    let inputFileSize = getFileInputSize();
-    
+    let inputFileSize = getFileInputSize();    
     let whichInputFailed;
         
     //Title can't be empty!
@@ -193,10 +191,10 @@ function validateForm() {
         titleUserInput.classList.add("border-[#af1e1e]");
 
         whichInputFailed = "title";
-        clearOtherMessagesEdit(whichInputFailed);
-        console.log("IN " + inputTitleValue);          
+        clearOtherMessagesEdit(whichInputFailed);          
         return false;
     }
+    
     if (!validateReleaseDate(inputReleaseDateStartYearValue, inputReleaseDateEndYearValue)) {
         let divId = "errorMessageForReleaseDate" + IdToRemember;
         let manipulatedDiv = document.getElementById(divId);
@@ -216,6 +214,7 @@ function validateForm() {
         clearOtherMessagesEdit(whichInputFailed);
         return false;
     }
+
     if (!validateFileType(inputFileName)) {
         let divId = "errorMessageForEditFileInput" + IdToRemember;
         let manipulatedDiv = document.getElementById(divId);
@@ -226,6 +225,7 @@ function validateForm() {
         clearOtherMessagesEdit(whichInputFailed);
         return false;
     }
+
     if (!validateFileSize(inputFileSize)) {
         let divId = "errorMessageForEditFileInput" + IdToRemember;
         let manipulatedDiv = document.getElementById(divId);
@@ -235,8 +235,7 @@ function validateForm() {
         whichInputFailed = "fileSize";
         clearOtherMessagesEdit(whichInputFailed);
         return false;
-    }
-    
+    }    
     return true;
 }
 
@@ -250,6 +249,10 @@ function resettingFieldsAttributeToDefault() {
     let idCreator = "creator" + IdToRemember;
     let creatorInput = document.getElementById(idCreator);
     creatorInput.removeAttribute("disabled");
+    let idDashBetweenDates = "dashBetweenDates" + IdToRemember;
+    let dashBetweenDates = document.getElementById(idDashBetweenDates);
+    dashBetweenDates.style.color = "";
+
     let idReleaseDateEndYear = "releaseDateEndYear" + IdToRemember;
     let releaseDateInput = document.getElementById(idReleaseDateEndYear);    
     if (releaseDateInput != null) {
@@ -269,6 +272,7 @@ function afterModalIsClosed() {
     removeEventListenersForChosenRatingTooltips();
     removingEventListenersForUserRatingChoosing();
     setHiddenInputWhenClosingModalWithoutSaving();
+    
     //Resetting stars for imdb rating
     settingStarsEmptyForImdbRating();
     removeEventListenersForChosenImdbRatingTooltips();
@@ -276,8 +280,7 @@ function afterModalIsClosed() {
     setHiddenInputForImdbRatingWhenClosingModalWithoutSaving();
     
     let divId = "hiddenInputs" + IdToRemember;
-    let manipulatedDiv = document.getElementById(divId);
-    
+    let manipulatedDiv = document.getElementById(divId);    
     if (!manipulatedDiv.classList.contains("hidden")) {
         manipulatedDiv.classList.add("hidden");
     }

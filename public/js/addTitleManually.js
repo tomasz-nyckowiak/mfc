@@ -1,5 +1,11 @@
 const icons = document.querySelectorAll('#selected-value-example [data-te-rating-icon-ref]')
 const titleUserInput = document.getElementById("originalTitle");
+const directorInput = document.getElementById("director");
+const writerInput = document.getElementById("writer");
+const creatorInput = document.getElementById("creator");
+const releaseDateStartYear = document.getElementById("releaseDate");
+const dashBetweenDates = document.getElementById("dashBetweenDates");
+const releaseDateEndYear = document.getElementById("releaseDateEndYear");
 const divForNoTitleErrorMessage = document.getElementById("errorMessageForTitle");
 const divForReleaseDateErrorMessage = document.getElementById("errorMessageForReleaseDate");
 const divForFileInputErrorMessage = document.getElementById("errorMessageForFileInput");
@@ -13,12 +19,12 @@ function titleInput() {
 }
 
 function releaseDateStartYearInput() {		
-	let input = document.getElementById("releaseDate").value;			
+	let input = releaseDateStartYear.value;			
 	return input;
 }
 
 function releaseDateEndYearInput() {		
-	let input = document.getElementById("releaseDateEndYear").value;			
+	let input = releaseDateEndYear.value;			
 	return input;
 }
 
@@ -47,12 +53,27 @@ function fileInputSize() {
     
 	return fileSize;
 }
-//  ...  //
+//  ...  \\
 
-function clearOtherMessages(failedInput) {    
+function scrollToIncorrectInput(failedInput) {
+    if (failedInput == "title") {
+        titleUserInput.scrollIntoView();
+    }
+    if (failedInput == "releaseDate") {
+        releaseDateStartYear.scrollIntoView();
+    }
+    if (failedInput == "fileType" || failedInput == "fileSize") {
+        document.getElementById("fileName").scrollIntoView();
+    }
+}
+
+function clearOtherMessages(failedInput) {
     if (failedInput == "title") {
         if (divForReleaseDateErrorMessage.innerHTML == errorMessageForReleaseDate) {
             divForReleaseDateErrorMessage.innerHTML = "";
+            releaseDateStartYear.classList.remove("border-[#af1e1e]");
+            releaseDateEndYear.classList.remove("border-[#af1e1e]");
+            dashBetweenDates.style.color = "";
         }
         if (divForFileInputErrorMessage.innerHTML == errorMessageForFileType) {
             divForFileInputErrorMessage.innerHTML = "";
@@ -82,20 +103,19 @@ function clearOtherMessages(failedInput) {
         }
         if (divForReleaseDateErrorMessage.innerHTML == errorMessageForReleaseDate) {
             divForReleaseDateErrorMessage.innerHTML = "";
+            releaseDateStartYear.classList.remove("border-[#af1e1e]");
+            releaseDateEndYear.classList.remove("border-[#af1e1e]");
+            dashBetweenDates.style.color = "";
         }
     }
 }
 
 function validateFormForAddingTitleManually() {    
-    let inputTitleValue = titleInput();
-    //let inputRatingValue = ratingInput();
-    //let inputIMDbRatingValue = iMDbRatingInput();
+    let inputTitleValue = titleInput();    
     let inputReleaseDateStartYearValue = releaseDateStartYearInput();
     let inputReleaseDateEndYearValue = releaseDateEndYearInput();
     let inputFileName = fileInput();
     let inputFileSize = fileInputSize();
-    //console.log(inputFileSize);
-    
     let whichInputFailed;
     
     //Title can't be empty!
@@ -103,19 +123,23 @@ function validateFormForAddingTitleManually() {
         divForNoTitleErrorMessage.innerHTML = errorMessageForNoTitle;
         divForNoTitleErrorMessage.style.color = colorForErrorMessages;
         titleUserInput.classList.add("border-[#af1e1e]");
-        titleUserInput.focus();
 
         whichInputFailed = "title";
         clearOtherMessages(whichInputFailed);
+        scrollToIncorrectInput(whichInputFailed);
         return false;
     }    
     
     if (!validateReleaseDate(inputReleaseDateStartYearValue, inputReleaseDateEndYearValue)) {
         divForReleaseDateErrorMessage.innerHTML = errorMessageForReleaseDate;
         divForReleaseDateErrorMessage.style.color = colorForErrorMessages;
+        releaseDateStartYear.classList.add("border-[#af1e1e]");
+        releaseDateEndYear.classList.add("border-[#af1e1e]");
+        dashBetweenDates.style.color = colorForErrorMessages;
 
         whichInputFailed = "releaseDate";
         clearOtherMessages(whichInputFailed);
+        scrollToIncorrectInput(whichInputFailed);
         return false;
     }
     
@@ -125,6 +149,7 @@ function validateFormForAddingTitleManually() {
 
         whichInputFailed = "fileType";
         clearOtherMessages(whichInputFailed);
+        scrollToIncorrectInput(whichInputFailed);
         return false;
     }
     
@@ -134,21 +159,16 @@ function validateFormForAddingTitleManually() {
 
         whichInputFailed = "fileSize";
         clearOtherMessages(whichInputFailed);
+        scrollToIncorrectInput(whichInputFailed);
         return false;
     }
-
     return true;
 }
 
 //FOR SELECT TITLETYPE INPUT
-function selectTitleType(event) {
-    let directorInput = document.getElementById("director");
-    let writerInput = document.getElementById("writer");
-    let creatorInput = document.getElementById("creator");
-    let releaseDateInput = document.getElementById("releaseDateEndYear");
-    
-    if (event.target.value === "Movie" || event.target.value === "Short" || event.target.value === "Tv Episode" || 
-        event.target.value === "Tv Movie" || event.target.value === "Tv Short" || event.target.value === "Tv Special" || 
+function selectTitleType(event) {    
+    if (event.target.value === "Movie" || event.target.value === "Short" || event.target.value === "TV Episode" || 
+        event.target.value === "TV Movie" || event.target.value === "TV Short" || event.target.value === "TV Special" || 
         event.target.value === "Video" || event.target.value === "Video Game") {        
         
         creatorInput.setAttribute("disabled", true);
@@ -157,20 +177,20 @@ function selectTitleType(event) {
         directorInput.classList.remove("opacity-25");
         writerInput.removeAttribute("disabled");
         writerInput.classList.remove("opacity-25");
-        releaseDateInput.setAttribute("disabled", true);
-        releaseDateInput.classList.add("opacity-25");
-    }
+        releaseDateEndYear.setAttribute("disabled", true);
+        releaseDateEndYear.classList.add("opacity-25");
+    }    
     
-    if (event.target.value === "Tv Series" || event.target.value === "Tv MiniSeries") {
+    if (event.target.value === "TV Series" || event.target.value === "TV Mini Series") {
         directorInput.setAttribute("disabled", true);
         directorInput.classList.add("opacity-25");
         writerInput.setAttribute("disabled", true);
         writerInput.classList.add("opacity-25");
         creatorInput.removeAttribute("disabled");
         creatorInput.classList.remove("opacity-25");
-        releaseDateInput.removeAttribute("disabled");
-        releaseDateInput.classList.remove("opacity-25");
-    }
+        releaseDateEndYear.removeAttribute("disabled");
+        releaseDateEndYear.classList.remove("opacity-25");
+    }    
     
     if (event.target.value === "Podcast Episode" || event.target.value === "Podcast Series") {
         directorInput.setAttribute("disabled", true);
@@ -179,8 +199,8 @@ function selectTitleType(event) {
         writerInput.classList.add("opacity-25");
         creatorInput.setAttribute("disabled", true);
         creatorInput.classList.add("opacity-25");
-        releaseDateInput.removeAttribute("disabled");
-        releaseDateInput.classList.remove("opacity-25");
+        releaseDateEndYear.removeAttribute("disabled");
+        releaseDateEndYear.classList.remove("opacity-25");
     }
     
     if (event.target.value === "Music Video") {
@@ -190,11 +210,11 @@ function selectTitleType(event) {
         writerInput.classList.add("opacity-25");
         directorInput.removeAttribute("disabled");
         directorInput.classList.remove("opacity-25");
-        releaseDateInput.setAttribute("disabled", true);
-        releaseDateInput.classList.add("opacity-25");
+        releaseDateEndYear.setAttribute("disabled", true);
+        releaseDateEndYear.classList.add("opacity-25");
     }    
 }
-//  ...  //
+//  ...  \\
 
 function countCharacters(id) {
     let element = document.getElementById(id).value;
@@ -213,21 +233,20 @@ function resetForm() {
     titleUserInput.classList.remove("border-[#af1e1e]");
     titleUserInput.classList.add("border-[#708090]");
     divForNoTitleErrorMessage.innerHTML = "";
+    releaseDateStartYear.classList.remove("border-[#af1e1e]");
+    releaseDateEndYear.classList.remove("border-[#af1e1e]");
+    dashBetweenDates.style.color = "";
     divForReleaseDateErrorMessage.innerHTML = "";
     divForFileInputErrorMessage.innerHTML = "";
     
-    let directorInput = document.getElementById("director");
-    let writerInput = document.getElementById("writer");
-    let creatorInput = document.getElementById("creator");
-    let releaseDateEndYearInput = document.getElementById("releaseDateEndYear");
     directorInput.removeAttribute("disabled");
     directorInput.classList.remove("opacity-25");
     writerInput.removeAttribute("disabled");
     writerInput.classList.remove("opacity-25");
     creatorInput.removeAttribute("disabled");
     creatorInput.classList.remove("opacity-25");
-    releaseDateEndYearInput.removeAttribute("disabled");
-    releaseDateEndYearInput.classList.remove("opacity-25");
+    releaseDateEndYear.removeAttribute("disabled");
+    releaseDateEndYear.classList.remove("opacity-25");
 
     resetStarRating();
     resetImdbStarRating();

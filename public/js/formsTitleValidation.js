@@ -57,7 +57,7 @@ function validateReleaseDate(startYear, endYear) {
             } else if (endYear.length == "") {
                 return true;
             } else {
-                if (startYear > endYear) {
+                if (startYear > endYear || startYear == endYear) {
                     return false;
                 } else return true;
             }

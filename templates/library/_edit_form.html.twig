@@ -115,12 +115,12 @@
                         <option value="Podcast Episode">Podcast Episode</option>
                         <option value="Podcast Series">Podcast Series</option>
                         <option value="Short">Short</option>
-                        <option value="Tv Episode">Tv Episode</option>
-                        <option value="Tv Mini Series">Tv Mini Series</option>
-                        <option value="Tv Movie">Tv Movie</option>
-                        <option value="Tv Series">Tv Series</option>
-                        <option value="Tv Short">Tv Short</option>
-                        <option value="Tv Special">Tv Special</option>
+                        <option value="TV Episode">TV Episode</option>
+                        <option value="TV Mini Series">TV Mini Series</option>
+                        <option value="TV Movie">TV Movie</option>
+                        <option value="TV Series">TV Series</option>
+                        <option value="TV Short">TV Short</option>
+                        <option value="TV Special">TV Special</option>
                         <option value="Video">Video</option>
                         <option value="Video Game">Video Game</option>
                     </select>
@@ -158,7 +158,7 @@
                         name="releaseDate"
                         maxlength="4" 
                         value="{{ value.releaseDate }}">
-                    <div class="inline-block text-[#031e49]">-</div>
+                    <div id="dashBetweenDates{{ value.id }}" class="inline-block text-[#031e49]">-</div>
                     <input 
                         type="text" 
                         class="text-slate-200 w-12 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
@@ -183,8 +183,8 @@
             </div>
 
             <!--Director, writer and creator inputs-->
-            {% if value.titleType == "Movie" or value.titleType == "Short" or value.titleType == "Tv Episode" or 
-                value.titleType == "Tv Movie" or value.titleType == "Tv Short" or value.titleType == "Tv Special" or
+            {% if value.titleType == "Movie" or value.titleType == "Short" or value.titleType == "TV Episode" or 
+                value.titleType == "TV Movie" or value.titleType == "TV Short" or value.titleType == "TV Special" or
                 value.titleType == "Video" or value.titleType == "Video Game" %}
                 <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Director(s):</label>
@@ -219,7 +219,7 @@
                         value="{{ value.creator }}"
                         disabled>
                 </div>            
-            {% elseif value.titleType == "Tv Series" or value.titleType == "Tv Mini Series" %}
+            {% elseif value.titleType == "TV Series" or value.titleType == "TV Mini Series" %}
                 <div class="flex mb-4">
                     <label class="inline-block text-[#031e49]">Director(s):</label>
                     <input 

@@ -34,6 +34,9 @@
         {% elseif toWatch is defined %}
             {{ toWatch }}
             {% set chosenFilter = toWatch %}
+        {% elseif default is defined %}
+            {{ default }}
+            {% set chosenFilter = default %}
         {% endif %}
         <span class="ml-2 w-2">
             <svg
@@ -209,6 +212,23 @@
                     href="{{ path('app_library_towatch_filter') }}"
                     data-te-dropdown-item-ref>
                     To Watch
+                </a>
+            {% endif %}
+        </li>
+        <li>
+            {% if default is defined and chosenFilter == default %}
+                <a
+                    class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
+                    href="{{ path('app_library') }}"
+                    data-te-dropdown-item-ref>
+                    Default
+                </a>
+            {% else %}
+                <a
+                    class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
+                    href="{{ path('app_library') }}"
+                    data-te-dropdown-item-ref>
+                    Default
                 </a>
             {% endif %}
         </li>

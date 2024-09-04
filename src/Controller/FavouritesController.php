@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Loader\Configurator\serializer;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class FavouritesController extends AbstractController
@@ -106,7 +107,9 @@ class FavouritesController extends AbstractController
     }
 
     #[Route('/favourites/show-top-ten', name: 'app_show_top_ten')]
-    public function showTop10Movies(FavouriteMoviesRepository $favourites): Response
+    public function showTop10Movies(
+        FavouriteMoviesRepository $favourites,
+        TitleInformationRepository $titles): Response
     {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
@@ -114,10 +117,14 @@ class FavouritesController extends AbstractController
         
         if ($favourites->checkIfRecordAlreadyExists($userId)) {
             $isTop10exists = true;
-            $data = $favourites->findby(['user' => $userId]);
+            $top10Movies = $favourites->gettingTop10($userId);
+            $titlesWithImages = $titles->findMoviesByUserIdThenReturnArray($userId);
             
+            $imagesForTop10 = Favourites::managingFavouriteMovies($top10Movies, $titlesWithImages);
+            //dd($imagesForTop10);
             return $this->render('favourites/favourite_movies_show.html.twig', [
-                'data' => $data,
+                'top10' => $top10Movies,
+                'images' => $imagesForTop10,
                 'isTop10exists' => $isTop10exists
             ]);            
         } else {
@@ -128,7 +135,9 @@ class FavouritesController extends AbstractController
     }
 
     #[Route('/favourites/edit-top-ten', name: 'app_edit_top_ten')]
-    public function editTop10Movies(TitleInformationRepository $titles, FavouriteMoviesRepository $favourites): Response
+    public function editTop10Movies(
+        TitleInformationRepository $titles,
+        FavouriteMoviesRepository $favourites): Response
     {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
@@ -153,7 +162,10 @@ class FavouritesController extends AbstractController
     }
 
     #[Route('/favourites/edit-top-ten-success', name: 'app_edit_top_ten_success')]
-    public function editTop10MoviesSuccess(FavouriteMoviesRepository $favourites, EntityManagerInterface $entityManager): Response
+    public function editTop10MoviesSuccess(
+        FavouriteMoviesRepository $favourites,
+        EntityManagerInterface $entityManager,
+        TitleInformationRepository $titles): Response
     {        
         /** @var User $currentUser */
         $currentUser = $this->getUser();
@@ -183,10 +195,14 @@ class FavouritesController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Your TOP 10 MOVIES list has been updated!');
     
-            $data = $favourites->findby(['user' => $userId]);       
+            //$data = $favourites->findby(['user' => $userId]);
+            $top10Movies = $favourites->gettingTop10($userId);
+            $titlesWithImages = $titles->findMoviesByUserIdThenReturnArray($userId);
+            $imagesForTop10 = Favourites::managingFavouriteMovies($top10Movies, $titlesWithImages);      
 
             return $this->render('favourites/favourite_movies_show.html.twig', [
-                    'data' => $data,
+                    'top10' => $top10Movies,
+                    'images' => $imagesForTop10,
                     'isTop10exists' => $isTop10exists
             ]);
         } else {
@@ -215,19 +231,21 @@ class FavouritesController extends AbstractController
     
     //TOP 5 TV SERIES STUFF
     #[Route('/favourites/create-top-five', name: 'app_create_top_five')]
-    public function createTop5Series(TitleInformationRepository $titles, FavouriteSeriesRepository $favourites): Response
+    public function createTop5Series(
+        TitleInformationRepository $titles,
+        FavouriteSeriesRepository $favourites): Response
     {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
         $userId = $currentUser->getId();
 
         if ($favourites->checkIfRecordAlreadyExists($userId)) {
-            $isTop5exists = true;
+            $isTop5exists = true;            
             
             return $this->redirectToRoute('app_favourites');
         } else {
             $isTop5exists = false;
-            $data = $titles->findby(['user' => $userId, 'titleType' => 'Tv Series']);
+            $data = $titles->findby(['user' => $userId, 'titleType' => 'TV Series']);
                     
             return $this->render('favourites/favourite_series_create.html.twig', [
                     'data' => $data,
@@ -275,7 +293,9 @@ class FavouritesController extends AbstractController
     }
 
     #[Route('/favourites/show-top-five', name: 'app_show_top_five')]
-    public function showTop5TvSeries(FavouriteSeriesRepository $favourites): Response
+    public function showTop5TvSeries(
+        FavouriteSeriesRepository $favourites,
+        TitleInformationRepository $titles): Response
     {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
@@ -283,12 +303,22 @@ class FavouritesController extends AbstractController
         
         if ($favourites->checkIfRecordAlreadyExists($userId)) {
             $isTop5exists = true;
-            $data = $favourites->findby(['user' => $userId]);
+            $top5series = $favourites->gettingTop5($userId);
+            $titlesWithImages = $titles->findTVSeriesByUserIdThenReturnArray($userId);
             
+            $imagesForTop5 = Favourites::managingFavouriteSeries($top5series, $titlesWithImages);
+            //dd($imagesForTop10);
             return $this->render('favourites/favourite_series_show.html.twig', [
-                'data' => $data,
+                'top5' => $top5series,
+                'images' => $imagesForTop5,
                 'isTop5exists' => $isTop5exists
-            ]);            
+            ]);
+            // $data = $favourites->findby(['user' => $userId]);
+            
+            // return $this->render('favourites/favourite_series_show.html.twig', [
+            //     'data' => $data,
+            //     'isTop5exists' => $isTop5exists
+            // ]);            
         } else {
             $isTop5exists = false;
 
@@ -297,7 +327,9 @@ class FavouritesController extends AbstractController
     }
 
     #[Route('/favourites/edit-top-five', name: 'app_edit_top_five')]
-    public function editTop5Series(TitleInformationRepository $titles, FavouriteSeriesRepository $favourites): Response
+    public function editTop5Series(
+        TitleInformationRepository $titles,
+        FavouriteSeriesRepository $favourites): Response
     {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
@@ -307,7 +339,7 @@ class FavouritesController extends AbstractController
             $isTop5exists = true;
             
             $top5list = $favourites->gettingTop5($userId);
-            $data = $titles->findby(['user' => $userId, 'titleType' => 'Tv Series']);
+            $data = $titles->findby(['user' => $userId, 'titleType' => 'TV Series']);
                     
             return $this->render('favourites/favourite_series_edit.html.twig', [
                     'data' => $data,
@@ -322,7 +354,10 @@ class FavouritesController extends AbstractController
     }
 
     #[Route('/favourites/edit-top-five-success', name: 'app_edit_top_five_success')]
-    public function editTop5SeriesSuccess(FavouriteSeriesRepository $favourites, EntityManagerInterface $entityManager): Response
+    public function editTop5SeriesSuccess(
+        FavouriteSeriesRepository $favourites,
+        EntityManagerInterface $entityManager,
+        TitleInformationRepository $titles): Response
     {        
         /** @var User $currentUser */
         $currentUser = $this->getUser();
@@ -347,12 +382,21 @@ class FavouritesController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Your TOP 5 TV SERIES list has been updated!');
     
-            $data = $favourites->findby(['user' => $userId]);       
+            $top5series = $favourites->gettingTop5($userId);
+            $titlesWithImages = $titles->findTVSeriesByUserIdThenReturnArray($userId);
+            $imagesForTop5 = Favourites::managingFavouriteSeries($top5series, $titlesWithImages);      
 
             return $this->render('favourites/favourite_series_show.html.twig', [
-                    'data' => $data,
+                    'top5' => $top5series,
+                    'images' => $imagesForTop5,
                     'isTop5exists' => $isTop5exists
             ]);
+            // $data = $favourites->findby(['user' => $userId]);       
+
+            // return $this->render('favourites/favourite_series_show.html.twig', [
+            //         'data' => $data,
+            //         'isTop5exists' => $isTop5exists
+            // ]);
         } else {
             $isTop5exists = false;
 

@@ -127,6 +127,7 @@ class Model
         } else $imageUrl = null;
 
         $titleType = $baseInfo['results']['titleType']['text'];
+        
         $genres = $baseInfo['results']['genres']['genres'];
         $genresCounter = count($genres);
         $genresListAsStrings = [];
@@ -134,8 +135,10 @@ class Model
             $genresListAsStrings[$i] = $genres[$i]['text'];
         }
         $genres = $genresListAsStrings;
-        $originalTitle = $baseInfo['results']['originalTitleText']['text'];
+        
+        $originalTitle = $baseInfo['results']['originalTitleText']['text'];        
         $releaseDate = $baseInfo['results']['releaseYear'];
+                
         $runtime = $baseInfo['results']['runtime'];
         if ($runtime != null) {
             $runtimeInSeconds = $baseInfo['results']['runtime']['seconds'];

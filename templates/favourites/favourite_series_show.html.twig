@@ -3,32 +3,203 @@
 {% block title %}MFC Top 5 Tv Series{% endblock %}
 
 {% block body %}    
-    <div>
-        {{ include('favourites/_flash_message.html.twig') }}
-    </div>
-    
-    <div class="mt-8">
-        {{ include('favourites/_series_nav.html.twig') }}
-    </div>
+    <div>{{ include('favourites/_flash_message.html.twig') }}</div>
+    <div class="mt-8">{{ include('favourites/_series_nav.html.twig') }}</div>
     
     <div class="flex justify-center mt-10">
-        {% if data|length > 0 %}
+        {% if top5|length > 0 %}
             <div>
-                {% if data[0].typeOfList == "ordered" %}
+                {% if top5.typeOfList == "ordered" %}
                     <ul class="list-decimal font-light text-lg text-slate-200">
-                        <li class="font-bold mb-2">{{ data[0].first }}</li>
-                        <li class="font-semibold mb-2">{{ data[0].second }}</li>
-                        <li class="font-medium mb-2">{{ data[0].third }}</li>
-                        <li class="font-normal mb-2">{{ data[0].fourth }}</li>
-                        <li class="font-normal mb-2">{{ data[0].fifth }}</li>
+                        {# 1 #}
+                        <li class="font-bold mb-2">
+                            <div class="inline-flex flex-row">
+                                <div class="relative h-20 w-14 mr-1">
+                                    {% if images.0 is not empty %}
+                                        {% if images.0 starts with 'https' %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.0 }}" alt="Cover">
+                                        {% else %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/uploads/titles/{{ images.0 }}" alt="Cover">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if top5.first is not empty %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center">{{ top5.first }}</div>
+                            </div>
+                        </li>
+                        {# 2 #}
+                        <li class="font-semibold mb-2">
+                            <div class="inline-flex flex-row">
+                                <div class="relative h-20 w-14 mr-1">
+                                    {% if images.1 is not empty %}
+                                        {% if images.1 starts with 'https' %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.1 }}" alt="Cover">
+                                        {% else %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/uploads/titles/{{ images.1 }}" alt="Cover">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if top5.second is not empty %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center">{{ top5.second }}</div>
+                            </div>
+                        </li>
+                        {# 3 #}
+                        <li class="font-medium mb-2">
+                            <div class="inline-flex flex-row">
+                                <div class="relative h-20 w-14 mr-1">
+                                    {% if images.2 is not empty %}
+                                        {% if images.2 starts with 'https' %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.2 }}" alt="Cover">
+                                        {% else %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/uploads/titles/{{ images.2 }}" alt="Cover">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if top5.third is not empty %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center">{{ top5.third }}</div>
+                            </div>
+                        </li>
+                        {# 4 #}
+                        <li class="font-normal mb-2">
+                            <div class="inline-flex flex-row">
+                                <div class="relative h-20 w-14 mr-1">
+                                    {% if images.3 is not empty %}
+                                        {% if images.3 starts with 'https' %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.3 }}" alt="Cover">
+                                        {% else %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/uploads/titles/{{ images.3 }}" alt="Cover">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if top5.fourth is not empty %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center">{{ top5.fourth }}</div>
+                            </div>
+                        </li>
+                        {# 5 #}
+                        <li class="font-normal mb-2">
+                            <div class="inline-flex flex-row">
+                                <div class="relative h-20 w-14 mr-1">
+                                    {% if images.4 is not empty %}
+                                        {% if images.4 starts with 'https' %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.4 }}" alt="Cover">
+                                        {% else %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/uploads/titles/{{ images.4 }}" alt="Cover">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if top5.fifth is not empty %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center">{{ top5.fifth }}</div>
+                            </div>
+                        </li>
                     </ul>
                 {% else %}
+                    {# IN NO PARTICULAR ORDER #}
                     <ul class="list-none font-light text-lg text-slate-200">
-                        <li class="mb-2">{{ data[0].first }}</li>
-                        <li class="mb-2">{{ data[0].second }}</li>
-                        <li class="mb-2">{{ data[0].third }}</li>
-                        <li class="mb-2">{{ data[0].fourth }}</li>
-                        <li class="mb-2">{{ data[0].fifth }}</li>
+                        <li class="font-normal mb-2">
+                            <div class="inline-flex flex-row">
+                                <div class="relative h-20 w-14 mr-1">
+                                    {% if images.0 is not empty %}
+                                        {% if images.0 starts with 'https' %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.0 }}" alt="Cover">
+                                        {% else %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/uploads/titles/{{ images.0 }}" alt="Cover">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if top5.first is not empty %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center">{{ top5.first }}</div>
+                            </div>
+                        </li>
+                        <li class="font-normal mb-2">
+                            <div class="inline-flex flex-row">
+                                <div class="relative h-20 w-14 mr-1">
+                                    {% if images.1 is not empty %}
+                                        {% if images.1 starts with 'https' %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.1 }}" alt="Cover">
+                                        {% else %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/uploads/titles/{{ images.1 }}" alt="Cover">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if top5.second is not empty %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center">{{ top5.second }}</div>
+                            </div>
+                        </li>
+                        <li class="font-normal mb-2">
+                            <div class="inline-flex flex-row">
+                                <div class="relative h-20 w-14 mr-1">
+                                    {% if images.2 is not empty %}
+                                        {% if images.2 starts with 'https' %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.2 }}" alt="Cover">
+                                        {% else %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/uploads/titles/{{ images.2 }}" alt="Cover">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if top5.third is not empty %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center">{{ top5.third }}</div>
+                            </div>
+                        </li>
+                        <li class="font-normal mb-2">
+                            <div class="inline-flex flex-row">
+                                <div class="relative h-20 w-14 mr-1">
+                                    {% if images.3 is not empty %}
+                                        {% if images.3 starts with 'https' %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.3 }}" alt="Cover">
+                                        {% else %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/uploads/titles/{{ images.3 }}" alt="Cover">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if top5.fourth is not empty %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center">{{ top5.fourth }}</div>
+                            </div>
+                        </li>
+                        <li class="font-normal mb-2">
+                            <div class="inline-flex flex-row">
+                                <div class="relative h-20 w-14 mr-1">
+                                    {% if images.4 is not empty %}
+                                        {% if images.4 starts with 'https' %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.4 }}" alt="Cover">
+                                        {% else %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/uploads/titles/{{ images.4 }}" alt="Cover">
+                                        {% endif %}
+                                    {% else %}
+                                        {% if top5.fifth is not empty %}
+                                            <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center">{{ top5.fifth }}</div>
+                            </div>
+                        </li>
                     </ul>
                 {% endif %}
             </div>

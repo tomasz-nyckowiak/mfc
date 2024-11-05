@@ -13,15 +13,19 @@ class LoginController extends AbstractController
     #[Route('/login', name: 'app_login')]
     public function index(AuthenticationUtils $utils, Request $request): Response 
     {
-        $lastUsername = $utils->getLastUsername();
-        $error = $utils->getLastAuthenticationError();
-        $lastVisitedPage = $request->headers->get('referer');        
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_index');
+        } else {        
+            $lastUsername = $utils->getLastUsername();
+            $error = $utils->getLastAuthenticationError();
+            $lastVisitedPage = $request->headers->get('referer');
 
-        return $this->render('login/login.html.twig', [
-            'lastUsername' => $lastUsername,
-            'error' => $error,
-            'lastVisitedPage' => $lastVisitedPage
-        ]);
+            return $this->render('login/login.html.twig', [
+                'lastUsername' => $lastUsername,
+                'error' => $error,
+                'lastVisitedPage' => $lastVisitedPage
+            ]);
+        }
     }
 
     #[Route('/logout', name: 'app_logout')]

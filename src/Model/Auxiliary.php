@@ -52,4 +52,12 @@ class Auxiliary
 
         return $result;
     }
+
+    public static function getTodaysDate()
+    {
+        $currentDateTime = new DateTime('now');
+        $formattedDate = $currentDateTime->format('m/Y');
+
+        return $formattedDate;
+    }
 }

@@ -3,28 +3,28 @@
 {% block title %}MFC Registration{% endblock %}
 
 {% block body %}
-    {% for message in app.flashes('success') %}
-        <div
-            class="my-3 inline-flex w-full items-center rounded-lg bg-green-700 px-6 py-5 text-base text-white"
+    {% for message in app.flashes('fail') %}                                                       
+        <div 
+            class="mb-3 inline-flex w-full items-center rounded-lg bg-[#f9edd2] px-6 py-5 text-base text-[#825c0f]"
             role="alert"
             data-te-alert-init
-            data-te-alert-show>
+            data-te-alert-show>            
             <span class="mr-2">
                 <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                class="h-6 w-6">
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="h-6 w-6">
                 <path
                     fill-rule="evenodd"
-                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
-                    clip-rule="evenodd" />
+                    d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
+                    clip-rule="evenodd">
                 </svg>
-            </span>
+            </span>            
             <div>{{ message }}</div>
             <button
                 type="button"
-                class="ml-auto box-content rounded-none border-none p-1 text-white opacity-100 hover:text-white hover:no-underline hover:opacity-50 focus:opacity-100 focus:shadow-none focus:outline-none"
+                class="ml-auto box-content rounded-none border-none p-1 text-[#825c0f] opacity-50 hover:text-[#825c0f] hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
                 data-te-alert-dismiss
                 aria-label="Close">
                 <span
@@ -40,12 +40,8 @@
                             clip-rule="evenodd">
                     </svg>
                 </span>
-            </button>
+            </button>            
         </div>
-    {% endfor %}
-
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="rounded-md p-2 border-red-300 bg-red-50 border dark:border-red-600 dark:bg-red-700 dark:text-white mb-4" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
     <div class="w-1/2 mx-auto mb-10">
@@ -54,26 +50,26 @@
                 <h1 class="text-3xl font-normal leading-tight mb-4">Create account</h1>
 
                 <div class="mb-4">
-                    {{ include('/settings_profile/_profile_form.html.twig', { form: registrationForm.userProfile }) }}
-                </div>        
+                    {{ include('/profile/_profile_form.html.twig', { form: registrationForm.userProfile }) }}
+                </div>
 
                 <div>
                     {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
-                    {{ form_widget(registrationForm.email, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8] p-2 mt-1 mb-2'}})}}
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
                     {{ form_errors(registrationForm.email) }}
                 </div>
 
                 <div class="grid grid-cols-1 gap-4">
                     <div>
                         {{ form_label(registrationForm.plainPassword.first, 'Password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
-                        {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8] p-2 mt-1 mb-2'}})}}
+                        {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
                         {{ form_errors(registrationForm.plainPassword.first) }}
                         <div class="text-sm font-medium">(*Passwords must be at least 8 characters)</div>
                     </div>
                     
                     <div>
                         {{ form_label(registrationForm.plainPassword.second, 'Re-enter password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
-                        {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none shadow-[4px_4px_8px_1px_#708090] focus:border-slate-300 focus:shadow-[4px_4px_8px_1px_#cbd5e1] hover:border-slate-400 hover:shadow-[4px_4px_8px_1px_#94a3b8] p-2 mt-1 mb-2'}})}}
+                        {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
                         {{ form_errors(registrationForm.plainPassword.second) }}
                     </div>
                 </div>

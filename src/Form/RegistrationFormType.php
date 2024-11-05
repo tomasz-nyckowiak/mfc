@@ -23,7 +23,8 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('userProfile', UserProfileType::class)
+            ->add('userProfile', UserNameType::class)
+            //->add('userName', UserNameType::class)            
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new NotBlank([
@@ -65,7 +66,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => 'You should agree to our terms',
                     ]),
                 ],
             ]);

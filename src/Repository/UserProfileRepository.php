@@ -52,6 +52,19 @@ class UserProfileRepository extends ServiceEntityRepository
         $conn->executeQuery($sql);
     }
 
+    public function setMemmberSinceProperty(int $userId, string $memberSince): void
+    {        
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            UPDATE user_profile
+            SET member_since = '$memberSince'
+            WHERE user_id = '$userId'
+        ";
+        
+        $conn->executeQuery($sql);
+    }
+
 //    /**
 //     * @return UserProfile[] Returns an array of UserProfile objects
 //     */

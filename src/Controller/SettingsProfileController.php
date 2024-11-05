@@ -114,12 +114,14 @@ class SettingsProfileController extends AbstractController
 
     #[Route('/profile/delete-account/{id}', name: 'app_delete_account')]
     public function deleteAccount(
-        $id, 
+        $id,
+        Request $request, 
         UserProfileRepository $profiles, 
         UserRepository $users,
         TitleInformationRepository $titles,
         FavouriteMoviesRepository $favMovies,
-        FavouriteSeriesRepository $favSeries): Response 
+        FavouriteSeriesRepository $favSeries,
+        #[Autowire('%image_dir%')] string $imageDir): Response 
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -144,8 +146,17 @@ class SettingsProfileController extends AbstractController
         $titles->removingAllTitlesByUserId($userId);
         $profiles->remove($removingProfile, true);
         $users->remove($user, true);
+
+        //Removing user from database will not delete UPLOADED images - we need to do it manually!        
+        $image = $removingProfile->getImageFileName();
+        if ($image != "") {
+            unlink("$imageDir/$image");
+        }
+        
+        //To avoid Symfony error about identifier after deleting a user we need to invalidate its session 
+        $request->getSession()->invalidate();
+        $this->container->get('security.token_storage')->setToken(null);
         
         return $this->redirectToRoute('app_logout');
-        //return $this->redirectToRoute('app_index');
     }
 }

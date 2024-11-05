@@ -3,16 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Model\Auxiliary;
 use App\Security\EmailVerifier;
+use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
+use Symfony\Component\Mime\Address;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserProfileRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\ExpiredSignatureException;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -25,58 +29,104 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        UserProfileRepository $profiles,
+        EntityManagerInterface $entityManager): Response
     {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            //Encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            //Generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('accounts@mfc.com', 'My Film Collection'))
-                    ->to($user->getEmail())
-                    ->subject('Please confirm your email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_index');
-        }
+        } else {        
+            $user = new User();
+            $form = $this->createForm(RegistrationFormType::class, $user);
+            $form->handleRequest($request);
 
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+            if ($form->isSubmitted() && $form->isValid()) {
+                //Encode the plain password
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+
+                $entityManager->persist($user);
+                $entityManager->flush();            
+                
+                $memberSince = Auxiliary::getTodaysDate();
+                $profiles->setMemmberSinceProperty($user->getId(), $memberSince);            
+
+                //Generate a signed url and email it to the user
+                $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+                    (new TemplatedEmail())
+                        ->from(new Address('accounts@mfc.com', 'My Film Collection'))
+                        ->to($user->getEmail())
+                        ->subject('Please confirm your email')
+                        ->htmlTemplate('registration/confirmation_email.html.twig')
+                );
+
+                return $this->redirectToRoute('app_register_success');
+            }
+
+            return $this->render('registration/register.html.twig', [
+                'registrationForm' => $form->createView()
+            ]);
+        }
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
-    public function verifyUserEmail(Request $request): Response
-    {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+    public function verifyUserEmail(
+        Request $request,
+        UserProfileRepository $profiles,
+        UserRepository $users): Response
+    {        
+        $id = $request->query->get('id');
 
-        //Validate email confirmation link, sets User::isVerified=true and persists
-        try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $exception->getReason());
-
-            return $this->redirectToRoute('app_register');
+        if (null === $id) {
+            return $this->redirectToRoute('app_index');
         }
 
-        //Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $user = $users->find($id);
 
-        return $this->redirectToRoute('app_register');
+        if (null === $user) {
+            return $this->redirectToRoute('app_index');
+        }
+
+        try {
+            $this->emailVerifier->handleEmailConfirmation($request, $user);            
+            
+            return $this->redirectToRoute('app_register_activated');            
+        } catch (ExpiredSignatureException $expiredException) {
+            //We remove the user from the database, as the token has expired
+            //This allows the user to re-register and resend the email with the confirmation link
+            $removingProfile = $profiles->findOneBy(['user' => $id]);
+            $profiles->remove($removingProfile, true);
+            $users->remove($user, true);
+            
+            $this->addFlash('fail', 'The link to verify your email has expired. Please re-register to get a new link.');
+            
+            return $this->redirectToRoute('app_register');            
+        } catch (VerifyEmailExceptionInterface $exception) {
+            $this->addFlash('fail', $exception->getReason());            
+            
+            return $this->redirectToRoute('app_register');
+        }
+    }
+
+    #[Route('/register/success', name: 'app_register_success')]
+    public function registerSuccess(): Response
+    {
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_index');
+        } else return $this->render('registration/success.html.twig');        
+    }
+
+    #[Route('/register/activated', name: 'app_register_activated')]
+    public function registerActivated(): Response
+    {
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('app_index');
+        } else return $this->render('registration/activated.html.twig');        
     }
 }

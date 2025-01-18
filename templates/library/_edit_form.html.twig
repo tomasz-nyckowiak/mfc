@@ -3,7 +3,7 @@
         <!--Rating input-->
         <div class="mb-4">
             <div class="inline-flex items-center">
-                <div class="inline-block text-[#031e49]">Rating:</div>
+                <div class="inline-block 2xl:text-lg text-[#031e49]">Rating:</div>
                 <div class="relative" id="ratingAsStars{{ value.id }}">{{ include('library/_edit_user_rating_stars.html.twig') }}</div>
                 {% if value.rating != null %}
                     <div>
@@ -15,7 +15,7 @@
                     </div>
                 {% endif %}
             </div>
-            <div class="text-xs text-[#031e49] tracking-wide">(*click to select, double click to reset rating)</div>
+            <div class="text-xs 2xl:text-sm text-[#031e49] tracking-wide">(*click to select, double click to reset rating)</div>
         </div>
 
         <!--To Watch Checkbox-->
@@ -29,7 +29,7 @@
                         name="toWatch"
                         checked>
                     <label 
-                        class="inline-block text-[#031e49] ml-1 hover:cursor-pointer" 
+                        class="inline-block 2xl:text-lg text-[#031e49] ml-1 hover:cursor-pointer" 
                         for="checkboxToWatch{{ value.id }}">
                         Add to watchlist
                     </label>
@@ -40,7 +40,7 @@
                         id="checkboxToWatch{{ value.id }}" 
                         name="toWatch">
                     <label 
-                        class="inline-block text-[#031e49] ml-1 hover:cursor-pointer" 
+                        class="inline-block 2xl:text-lg text-[#031e49] ml-1 hover:cursor-pointer" 
                         for="checkboxToWatch{{ value.id }}">
                         Add to watchlist
                     </label>
@@ -50,7 +50,7 @@
 
         <!--Review-->
         <div class="mb-4">
-            <div class="text-[#031e49]">My Review:</div>
+            <div class="2xl:text-lg text-[#031e49]">My Review:</div>
             {% if value.review != null %}
             <textarea 
                 class="text-slate-200 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 p-1.5 outline-none focus:border-slate-300"
@@ -76,7 +76,7 @@
                 id="optionalInfoCheckbox{{ value.id }}" 
                 name="noteOptionalInfo">
             <label 
-                class="inline-block text-[#031e49] ml-1 hover:cursor-pointer" 
+                class="inline-block 2xl:text-lg text-[#031e49] ml-1 hover:cursor-pointer" 
                 for="optionalInfoCheckbox{{ value.id }}">
                 I want to change other information about the title.
             </label>
@@ -89,7 +89,7 @@
             <div class="flex mb-4">
                 <label 
                     for="originalTitle{{ value.id }}" 
-                    class="inline-block text-[#031e49]"
+                    class="inline-block 2xl:text-lg text-[#031e49]"
                     >Title:
                 </label>
                 <input 
@@ -107,7 +107,7 @@
                     <input type="hidden" id="hiddenValueTitleType{{ value.id }}" name="hiddenValueTitleType" value="{{ value.titleType }}">
                 </div>            
             
-                <label class="inline-block text-[#031e49]" for="titleType">Title type:</label>
+                <label class="inline-block 2xl:text-lg text-[#031e49]" for="titleType">Title type:</label>
                 <div class="inline-block grow ml-1 font-light border border-[#031e49]">
                     <select onchange="selectTitleTypeEdit(event)" name="titleType" id="titleType{{ value.id }}" data-te-select-init>
                         <option value="Movie">Movie</option>
@@ -129,7 +129,7 @@
             
             <!--Release date input-->
             <div class="mb-4">
-                <label class="inline-block text-[#031e49]">Release Date:</label>
+                <label class="inline-block 2xl:text-lg text-[#031e49]">Release Date:</label>
                 {% set startDate = "" %}
                 {% set endDate = "" %}
                 {% if '-' in value.releaseDate %}
@@ -172,7 +172,7 @@
 
             <!--Runtime input-->
             <div class="mb-4">
-                <label class="inline-block text-[#031e49]">Runtime:</label>
+                <label class="inline-block 2xl:text-lg text-[#031e49]">Runtime:</label>
                 <input 
                     type="text" 
                     class="text-slate-200 w-20 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
@@ -187,7 +187,7 @@
                 value.titleType == "TV Movie" or value.titleType == "TV Short" or value.titleType == "TV Special" or
                 value.titleType == "Video" or value.titleType == "Video Game" %}
                 <div class="flex mb-4">
-                    <label class="inline-block text-[#031e49]">Director(s):</label>
+                    <label class="inline-block 2xl:text-lg text-[#031e49]">Director(s):</label>
                     <input 
                         type="text" 
                         class="text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
@@ -198,7 +198,7 @@
                 </div>
                 
                 <div class="flex mb-4">
-                    <label class="inline-block text-[#031e49]">Writer(s):</label>
+                    <label class="inline-block 2xl:text-lg text-[#031e49]">Writer(s):</label>
                     <input 
                         type="text" 
                         class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
@@ -209,7 +209,7 @@
                 </div>            
                 
                 <div class="flex mb-4">
-                    <label class="inline-block text-[#031e49]">Creator(s):</label>
+                    <label class="inline-block 2xl:text-lg text-[#031e49]">Creator(s):</label>
                     <input 
                         type="text" 
                         class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
@@ -221,7 +221,7 @@
                 </div>            
             {% elseif value.titleType == "TV Series" or value.titleType == "TV Mini Series" %}
                 <div class="flex mb-4">
-                    <label class="inline-block text-[#031e49]">Director(s):</label>
+                    <label class="inline-block 2xl:text-lg text-[#031e49]">Director(s):</label>
                     <input 
                         type="text" 
                         class="text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
@@ -233,7 +233,7 @@
                 </div>
                 
                 <div class="flex mb-4">
-                    <label class="inline-block text-[#031e49]">Writer(s):</label>
+                    <label class="inline-block 2xl:text-lg text-[#031e49]">Writer(s):</label>
                     <input 
                         type="text" 
                         class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
@@ -245,7 +245,7 @@
                 </div>            
                 
                 <div class="flex mb-4">
-                    <label class="inline-block text-[#031e49]">Creator(s):</label>
+                    <label class="inline-block 2xl:text-lg text-[#031e49]">Creator(s):</label>
                     <input 
                         type="text" 
                         class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
@@ -256,7 +256,7 @@
                 </div>
             {% elseif value.titleType == "Podcast Episode" or value.titleType == "Podcast Series" %}
                 <div class="flex mb-4">
-                    <label class="inline-block text-[#031e49]">Director(s):</label>
+                    <label class="inline-block 2xl:text-lg text-[#031e49]">Director(s):</label>
                     <input 
                         type="text" 
                         class="text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
@@ -268,7 +268,7 @@
                 </div>
                 
                 <div class="flex mb-4">
-                    <label class="inline-block text-[#031e49]">Writer(s):</label>
+                    <label class="inline-block 2xl:text-lg text-[#031e49]">Writer(s):</label>
                     <input 
                         type="text" 
                         class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
@@ -280,7 +280,7 @@
                 </div>            
                 
                 <div class="flex mb-4">
-                    <label class="inline-block text-[#031e49]">Creator(s):</label>
+                    <label class="inline-block 2xl:text-lg text-[#031e49]">Creator(s):</label>
                     <input 
                         type="text" 
                         class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
@@ -292,7 +292,7 @@
                 </div>
             {% elseif value.titleType == "Music Video" %}
                 <div class="flex mb-4">
-                    <label class="inline-block text-[#031e49]">Director(s):</label>
+                    <label class="inline-block 2xl:text-lg text-[#031e49]">Director(s):</label>
                     <input 
                         type="text" 
                         class="text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
@@ -303,7 +303,7 @@
                 </div>
                 
                 <div class="flex mb-4">
-                    <label class="inline-block text-[#031e49]">Writer(s):</label>
+                    <label class="inline-block 2xl:text-lg text-[#031e49]">Writer(s):</label>
                     <input 
                         type="text" 
                         class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
@@ -315,7 +315,7 @@
                 </div>            
                 
                 <div class="flex mb-4">
-                    <label class="inline-block text-[#031e49]">Creator(s):</label>
+                    <label class="inline-block 2xl:text-lg text-[#031e49]">Creator(s):</label>
                     <input 
                         type="text" 
                         class="inline-block text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 opacity-25 px-1.5 outline-none focus:border-slate-300" 
@@ -330,7 +330,7 @@
             <!--IMDb Rating input-->
             <div class="mb-4">
                 <div class="inline-flex items-center">
-                    <div class="inline-block text-[#031e49]">IMDb Rating:</div>
+                    <div class="inline-block 2xl:text-lg text-[#031e49]">IMDb Rating:</div>
                     <div class="relative" id="imdbRatingAsStars{{ value.id }}">{{ include('library/_edit_imdb_rating_stars.html.twig') }}</div>
                     {% if value.ImdbRating != null %}
                         <div>
@@ -342,7 +342,7 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class="text-xs text-[#031e49] tracking-wide">(*click to select, double click to reset rating)</div>
+                <div class="text-xs 2xl:text-sm text-[#031e49] tracking-wide">(*click to select, double click to reset rating)</div>
             </div>
 
             <!--Genres input-->
@@ -351,7 +351,7 @@
                     <input type="hidden" id="hiddenValueGenres{{ value.id }}" name="hiddenValueGenres" value="{{ value.genres }}">
                 </div>
 
-                <label for="genres" class="inline-block text-[#031e49]">Genres:</label>
+                <label for="genres" class="inline-block 2xl:text-lg text-[#031e49]">Genres:</label>
                 <div class="inline-block font-light border border-[#031e49] grow ml-1">
                     <select name="genres[]" id="genres{{ value.id }}" data-te-select-init multiple data-te-select-filter="true">
                         <option value="Action">Action</option>
@@ -388,7 +388,7 @@
 
             <!--Cast input-->
             <div class="flex mb-4">
-                <label class="inline-block text-[#031e49]">Stars:</label>
+                <label class="inline-block 2xl:text-lg text-[#031e49]">Stars:</label>
                 <input 
                     type="text" 
                     class="text-slate-200 grow ml-1 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 px-1.5 outline-none focus:border-slate-300" 
@@ -403,7 +403,7 @@
             <div class="mb-4">                
                 <div class="inline-flex">                    
                     <div class="flex items-center">                        
-                        <label class="inline-block text-[#031e49]">Edit an image:</label>
+                        <label class="inline-block 2xl:text-lg text-[#031e49]">Edit an image:</label>
                         <div class="relative h-20 w-20 mr-1">
                             {% if value.imageUrl != null %}
                                 <img class="absolute w-full h-full inset-0 object-cover" src="{{ value.imageUrl }}" alt="Cover">
@@ -419,12 +419,12 @@
                             accept=".jpg, .jpeg, .png">                                                
                     </div>
                 </div>
-                <div class="text-xs text-[#031e49] tracking-wide">(*jpg, jpeg or png; max 5MB)</div>
+                <div class="text-xs 2xl:text-sm text-[#031e49] tracking-wide">(*jpg, jpeg or png; max 5MB)</div>
             </div>       
 
             <!--Plot input-->
             <div class="mb-4">
-                <label class="text-[#031e49]">Plot:</label>
+                <label class="2xl:text-lg text-[#031e49]">Plot:</label>
                 <textarea
                     class="text-slate-200 rounded-sm border border-[#031e49] bg-gradient-to-r from-indigo-700 to-indigo-400 p-1.5 outline-none focus:border-slate-300"
                     id="plot{{ value.id }}"
@@ -439,13 +439,13 @@
         <div class="flex justify-end">
             <button
                 type="button"
-                class="font-medium text-xs text-slate-300 uppercase leading-normal bg-slate-900 px-3 py-1 rounded hover:text-slate-50"
+                class="font-medium text-xs 2xl:text-sm text-slate-300 uppercase leading-normal bg-slate-900 px-3 py-1 rounded hover:text-slate-50"
                 data-te-modal-dismiss>
                 Close
             </button>
             <button 
                 type="submit"
-                class="font-bold text-xs text-indigo-700 uppercase leading-normal ml-2 px-3 py-1 rounded border-2 border-[#031e49] hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600"
+                class="font-bold text-xs 2xl:text-sm text-indigo-700 uppercase leading-normal ml-2 px-3 py-1 rounded border-2 border-[#031e49] hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600"
                 onclick="return validateForm()">
                 Save
             </button>

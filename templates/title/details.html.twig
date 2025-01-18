@@ -97,10 +97,10 @@
         </div>
     {% endfor %} #}
     <div class="mt-8">
-        <div class="inline-flex flex-row">
+        <div class="flex flex-col md:flex md:flex-row">
             <div>
-                <div class="text-4xl">{{ data.originalTitle }}</div>
-                <div>
+                <div class="text-xl md:text-2xl lg:text-4xl ml-1.5 md:ml-0">{{ data.originalTitle }}</div>
+                <div class="text-base md:text-lg ml-1.5 md:ml-0">
                     {% if data.titleType == "Movie" %}
                         {% if data.runtime != null %}
                             {{ data.releaseDate.year }} | {{ data.runtime }}
@@ -120,7 +120,7 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="ml-6">                
+            <div class="md:text-lg ml-1.5 md:ml-6 my-1.5 md:my-0">                
                 <div>IMDb Rating</div>
                 {% if data.rating != null %}                
                     <div class="inline-flex flex-row">
@@ -131,7 +131,7 @@
                         </div>
                         <div class="ml-1">                    
                             <div>{{ data.rating }}/10</div>
-                            <div class="text-xs">{{ data.votes }}</div>
+                            <div class="text-xs md:text-sm">{{ data.votes }}</div>
                         </div>
                     </div>               
                 {% else %}
@@ -143,12 +143,12 @@
                         </div>
                         <div class="ml-1">                    
                             <div>/10</div>
-                            <div class="text-xs">No votes yet</div>
+                            <div class="text-xs md:text-sm">No votes yet</div>
                         </div>
                     </div>
                 {% endif %}                
             </div>
-            <div class="ml-6">
+            <div class="md:text-lg ml-1.5 md:ml-6 my-1.5 md:my-0">
                 <div>Your Rating</div>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     {% if userRating != null %}
@@ -187,7 +187,7 @@
                     </div>
                 {% endif %}                
             </div>
-            <div class="ml-6">                
+            <div class="ml-1.5 md:ml-6 my-1.5 md:my-0">                
                 <div class="flex items-center"> 
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         {% if alreadyExist == true %}
@@ -196,7 +196,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                                 </svg>                                                        
                             </button>
-                            <div class="text-xs ml-1.5">Already in library</div>
+                            <div class="text-xs md:text-sm ml-1.5">Already in library</div>
                         {% else %}
                             <a href="{{ path('app_add_title', { 'id': data.titleId }) }}">
                                 <button class="border-solid border-2 border-gray-500">                     
@@ -214,8 +214,8 @@
     </div>    
     <div>
         <div class="inline-flex flex-row">
-            <div class="">
-                <div class="relative h-80 w-56">
+            <div class="ml-1.5 md:ml-0">
+                <div class="relative h-40 w-[100px] md:h-64 md:w-40 lg:h-[360px] lg:w-56">
                     {% if data.image != null %}
                         <img class="absolute w-full h-full inset-0 object-cover" src="{{ data.image }}" alt="Cover" >
                     {% else %}
@@ -224,7 +224,7 @@
                 </div>
             </div>                
             <div class="flex items-center">
-                <div class="ml-6">
+                <div class="md:text-lg ml-1.5 md:ml-6">
                     {% if data.creators != null %}
                         {% if data.creators|length > 1 %}
                             <div>Creators - <span>
@@ -292,7 +292,7 @@
             </div>            
         </div>         
     </div>
-    <div class="my-3">
+    <div class="text-sm sm:text-base md:text-lg ml-1.5 md:ml-0 my-3">
         {% for value in data.genres %}
             {% if loop.first %}
                 <span class="border-solid border-2 border-purple-600 rounded-lg p-2">{{ value }}</span>
@@ -301,16 +301,16 @@
             {% endif %}
         {% endfor %} 
     </div>   
-    <div class="mt-6">{{ data.plot }}</div>
+    <div class="md:text-lg ml-1.5 md:ml-0 mt-6">{{ data.plot }}</div>
     
     <hr class="my-12 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100"> 
     
-    <div class="text-3xl my-3">Top cast</div>
-    <div class="grid grid-cols-2">
+    <div class="text-xl md:text-2xl lg:text-3xl ml-1.5 md:ml-0 my-3">Top cast</div>
+    <div class="grid grid-cols-2 ml-1.5 md:ml-0">
         {% for value in data.cast|slice(0, 10) %}        
             <div class="mb-2">
                 <div class="inline-flex flex-row">
-                    <div class="relative h-24 w-24">
+                    <div class="relative h-12 w-12 md:h-24 md:w-24">
                         {% if value.image != null %}
                             <img class="absolute w-full h-full inset-0 object-cover rounded-full" src="{{ value.image }}" onerror="this.onerror=null; this.src='/img/icon-user.png'">
                         {% else %}
@@ -318,7 +318,7 @@
                         {% endif %}            
                     </div>            
                     <div class="flex items-center">
-                        <div class="ml-2">
+                        <div class="text-sm md:text-base ml-2">
                             <div class="font-bold">{{ value.name }}</div>
                             {% if value.characterName != null %}
                                 <div>{{ value.characterName }}</div>

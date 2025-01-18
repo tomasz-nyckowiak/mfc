@@ -61,8 +61,8 @@
     <div class="flex justify-between mb-5">
         {% if data|length > 0 %}
             {% set numberOfItems = data|length %}
-            <div class="">{{ include('library/_dropdown_filter.html.twig') }}</div>
-            <div class="text-slate-200">Number of titles: {{ numberOfItems }}</div>
+            <div class="ml-1.5 md:ml-0">{{ include('library/_dropdown_filter.html.twig') }}</div>
+            <div class="text-sm sm:text-base md:text-lg text-slate-200 tracking-tight sm:tracking-normal mr-1.5 md:mr-0">Number of titles: {{ numberOfItems }}</div>
         {% endif %}      
     </div>    
     <div>
@@ -119,11 +119,11 @@
                                         {% endfor %}
                                     {% endif %}
                                 {% endif %}                                              
-                            </div>
+                            </div>                            
+                            <div class="flex flex-col 2xl:flex 2xl:flex-row 2xl:justify-between">
                             {# FIRST COLUMN #}
-                            <div class="flex justify-between">
                                 <div class="inline-flex flex-row">
-                                    <div class="relative h-20 w-14 mr-1">
+                                    <div class="relative h-24 w-16 sm:h-28 sm:w-20 mr-1">
                                         {% if value.imageUrl is not empty %}
                                             {% if value.imageUrl starts with 'https' %}
                                                 <img class="absolute w-full h-full inset-0 object-cover" src="{{ value.imageUrl }}" alt="Cover">
@@ -134,9 +134,9 @@
                                             <img class="absolute w-full h-full inset-0 object-cover" src="/img/clapper.jpg" alt="No cover">
                                         {% endif %}
                                     </div>                            
-                                    <div class="flex items-center ml-1">
-                                        <div class="text-sm tracking-wider">
-                                            <div class="text-base font-semibold tracking-normal">{{ value.originalTitle }}</div>                        
+                                    <div class="flex items-center ml-1.5">
+                                        <div class="text-sm sm:text-base lg:text-lg">
+                                            <div class="text-base sm:text-lg lg:text-xl font-semibold">{{ value.originalTitle }}</div>                        
                                             {% if value.titleType == "Movie" %}
                                                 {% if value.releaseDate != null and value.runtime != null %}
                                                     <div>{{ value.releaseDate }} | {{ value.runtime }}</div>
@@ -232,16 +232,16 @@
                                 </div>
 
                                 {# SECOND COLUMN #}
-                                <div class="flex items-center">
-                                    <div class="block text-sm tracking-wider">
+                                <div class="flex items-center my-1.5 md:my-0">
+                                    <div class="block text-sm sm:text-base lg:text-lg">
                                         <div class="inline-flex flex-row mb-1.5">
                                             {% if value.rating != null %}
                                                 <div>My Rating: {{ value.rating }}/10</div>
                                             {% else %}
                                                 <div>My Rating: /10</div>
                                             {% endif %}
-                                            <div class="ml-0.5">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <div class="flex items-center ml-0.5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 lg:w-6 lg:h-6">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
                                                 </svg>
                                             </div>
@@ -252,8 +252,8 @@
                                             {% else %}
                                                 <div>IMDb Rating: /10</div>
                                             {% endif %}
-                                            <div class="ml-0.5">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="yellow" viewBox="0 0 24 24" stroke-width="1.5" stroke="yellow" class="w-5 h-5">
+                                            <div class="flex items-center ml-0.5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="yellow" viewBox="0 0 24 24" stroke-width="1.5" stroke="yellow" class="w-5 h-5 lg:w-6 lg:h-6">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
                                                 </svg>
                                             </div>
@@ -269,31 +269,31 @@
                                 </div>
                             
                                 {# THIRD COLUMN #}
-                                <div class="flex items-center">
+                                <div class="flex justify-end md:flex md:items-center my-1.5 md:my-0">
                                     <div class="flex-col">
-                                        <div class="mb-1">{{ include('library/_edit_modal.html.twig') }}</div>                    
+                                        <div class="mb-1.5">{{ include('library/_edit_modal.html.twig') }}</div>                    
                                         <div class="">{{ include('library/_delete_modal.html.twig') }}</div>
                                     </div>
                                 </div>                        
                             </div>
 
-                            <div class="my-4">
+                            <div class="my-6">
                                 <div class="">
                                     {% if value.genres != null %}
                                         {% set genres = value.genres|split(',') %}
                                         {% for genre in genres %}
-                                            <span class="text-sm border-solid border-2 border-indigo-500 rounded-full p-1.5">{{ genre }}</span>
+                                            <span class="text-sm sm:text-base border-solid border-2 border-indigo-500 rounded-full p-1.5">{{ genre }}</span>
                                         {% endfor %}
                                     {% endif %}
                                 </div>                       
-                                <div class="mt-4">Stars: {{ value.stars }}</div>
-                                <div class="italic text-slate-200 my-3">{{ value.plot }}</div>
+                                <div class="lg:text-lg mt-4">Stars: {{ value.stars }}</div>
+                                <div class="lg:text-lg italic text-slate-200 my-3">{{ value.plot }}</div>
                             </div>
                             <div>
                                 {% if value.review != null %}
                                     <div>{{ include('library/_reviews.html.twig') }}</div>
                                 {% else %}
-                                    <div>No review yet!</div>
+                                    <div class="lg:text-lg">No review yet!</div>
                                 {% endif %}
                             </div>               
                         </div>                              

@@ -1,7 +1,7 @@
 <!-- Button trigger vertically centered modal-->
 <button
     type="button"
-    class="inline-block text-xs uppercase leading-normal text-indigo-400 tracking-wide w-40 px-1 py-1 border-2 border-[#778899] rounded transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600"
+    class="inline-block text-xs 2xl:text-sm uppercase leading-normal text-indigo-400 tracking-wide w-32 sm:w-40 px-1 py-1 border-2 border-[#778899] rounded transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600"
     data-te-toggle="modal"
     data-te-target="#deleteModal{{ value.id }}">
     Delete
@@ -24,18 +24,18 @@
 
       <!--Modal body-->
       <div class="relative p-4">
-        <div class="text-[#031e49] mb-2">Are you sure you want to remove this title from your library?</div>
+        <div class="2xl:text-lg text-[#031e49] mb-2">Are you sure you want to remove this title from your library?</div>
         <div class="flex justify-end">
             <button
                 type="button"
-                class="font-medium text-xs text-slate-300 uppercase leading-normal bg-slate-900 px-3 py-1 rounded hover:text-slate-50"
+                class="font-medium text-xs 2xl:text-sm text-slate-300 uppercase leading-normal bg-slate-900 px-3 py-1 rounded hover:text-slate-50"
                 data-te-modal-dismiss>
                 No
             </button>
             <a href="{{ path('app_library_remove_title', { id: value.id }) }}">
                 <button
                     type="button"
-                    class="font-bold text-xs text-indigo-700 uppercase leading-normal ml-2 px-3 py-1 rounded border-2 border-[#031e49] hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600">
+                    class="font-bold text-xs 2xl:text-sm text-indigo-700 uppercase leading-normal ml-2 px-3 py-1 rounded border-2 border-[#031e49] hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600">
                     Yes
                 </button>
             </a>

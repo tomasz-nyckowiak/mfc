@@ -28,7 +28,7 @@
                     checked
                     disabled>
                 <label 
-                    class="inline-block font-light text-slate-200 ml-1 peer-enabled/ordered:hover:underline peer-enabled/ordered:hover:cursor-pointer" 
+                    class="inline-block font-light sm:font-normal text-slate-200 ml-1 peer-enabled/ordered:hover:underline peer-enabled/ordered:hover:cursor-pointer" 
                     for="orderedListCheckbox">
                     Numbered list
                 </label>
@@ -40,7 +40,7 @@
                     id="unorderedListCheckbox" 
                     name="unorderedTop10">
                 <label 
-                    class="inline-block font-light text-slate-200 ml-1 hover:underline hover:cursor-pointer peer-disabled/unordered:hover:no-underline peer-disabled/unordered:hover:cursor-default" 
+                    class="inline-block font-light sm:font-normal text-slate-200 ml-1 hover:underline hover:cursor-pointer peer-disabled/unordered:hover:no-underline peer-disabled/unordered:hover:cursor-default" 
                     for="unorderedListCheckbox">
                     In no particular order
                 </label>
@@ -52,9 +52,9 @@
             <input type="hidden" id="typeOfList" name="typeOfList" value="ordered">
         </div>
 
-        <div>        
+        <div class="mx-5 lg:mx-0">        
             {% if data|length > 0 %}
-                <ul id="top10MoviesList" class="list-decimal">
+                <ul id="top10MoviesList" class="list-decimal text-sm sm:text-base">
                     {% for i in 1..10 %} 
                         <li id="movieItem{{ i }}" class="border border-emerald-500 mb-4">
                             <select 
@@ -79,7 +79,7 @@
         <div class="flex justify-center mt-4">       
             <button 
                 type="submit"
-                class="font-bold text-xs text-indigo-700 uppercase leading-normal ml-8 px-3 py-1 rounded border-2 border-[#708090] hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600 opacity-25"
+                class="font-bold text-xs 2xl:text-sm text-indigo-700 uppercase leading-normal ml-8 px-3 py-1 rounded border-2 border-[#708090] hover:text-slate-300 hover:bg-gradient-to-r from-indigo-600 opacity-25"
                 id="top10MoviesBtn"
                 disabled>
                 Save

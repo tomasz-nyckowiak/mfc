@@ -1,6 +1,6 @@
-<li>
+<li class="text-sm md:text-base lg:text-lg ml-1.5 md:ml-0">
     <div class="inline-flex flex-row">
-        <div class="relative h-20 w-12">
+        <div class="relative h-20 w-12 md:h-40 md:w-[100px] lg:h-64 lg:w-40">
             {% if value.image != null %}
                 <a href="{{ path('app_details', { 'id': value.id }) }}"><img class="absolute w-full h-full inset-0 object-cover" src="{{ value.image }}" alt="Cover"></a>
             {% else %}

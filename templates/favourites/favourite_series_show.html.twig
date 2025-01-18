@@ -10,11 +10,11 @@
         {% if top5|length > 0 %}
             <div>
                 {% if top5.typeOfList == "ordered" %}
-                    <ul class="list-decimal font-light text-lg text-slate-200">
+                    <ul class="list-decimal font-normal text-lg text-slate-200">
                         {# 1 #}
                         <li class="font-bold mb-2">
                             <div class="inline-flex flex-row">
-                                <div class="relative h-20 w-14 mr-1">
+                                <div class="relative h-20 w-14 md:h-40 md:w-[100px] lg:h-64 lg:w-40 mr-1.5">
                                     {% if images.0 is not empty %}
                                         {% if images.0 starts with 'https' %}
                                             <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.0 }}" alt="Cover">
@@ -30,10 +30,15 @@
                                 <div class="flex items-center">{{ top5.first }}</div>
                             </div>
                         </li>
+                        
+                        <div>
+                            <hr class="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent">
+                        </div>
+
                         {# 2 #}
                         <li class="font-semibold mb-2">
                             <div class="inline-flex flex-row">
-                                <div class="relative h-20 w-14 mr-1">
+                                <div class="relative h-20 w-14 md:h-40 md:w-[100px] lg:h-64 lg:w-40 mr-1.5">
                                     {% if images.1 is not empty %}
                                         {% if images.1 starts with 'https' %}
                                             <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.1 }}" alt="Cover">
@@ -49,10 +54,15 @@
                                 <div class="flex items-center">{{ top5.second }}</div>
                             </div>
                         </li>
+
+                        <div>
+                            <hr class="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent">
+                        </div>
+
                         {# 3 #}
                         <li class="font-medium mb-2">
                             <div class="inline-flex flex-row">
-                                <div class="relative h-20 w-14 mr-1">
+                                <div class="relative h-20 w-14 md:h-40 md:w-[100px] lg:h-64 lg:w-40 mr-1.5">
                                     {% if images.2 is not empty %}
                                         {% if images.2 starts with 'https' %}
                                             <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.2 }}" alt="Cover">
@@ -68,10 +78,15 @@
                                 <div class="flex items-center">{{ top5.third }}</div>
                             </div>
                         </li>
+
+                        <div>
+                            <hr class="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent">
+                        </div>
+
                         {# 4 #}
-                        <li class="font-normal mb-2">
+                        <li class="mb-2">
                             <div class="inline-flex flex-row">
-                                <div class="relative h-20 w-14 mr-1">
+                                <div class="relative h-20 w-14 md:h-40 md:w-[100px] lg:h-64 lg:w-40 mr-1.5">
                                     {% if images.3 is not empty %}
                                         {% if images.3 starts with 'https' %}
                                             <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.3 }}" alt="Cover">
@@ -87,10 +102,15 @@
                                 <div class="flex items-center">{{ top5.fourth }}</div>
                             </div>
                         </li>
+
+                        <div>
+                            <hr class="my-5 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent">
+                        </div>
+                        
                         {# 5 #}
-                        <li class="font-normal mb-2">
+                        <li class="mb-2">
                             <div class="inline-flex flex-row">
-                                <div class="relative h-20 w-14 mr-1">
+                                <div class="relative h-20 w-14 md:h-40 md:w-[100px] lg:h-64 lg:w-40 mr-1.5">
                                     {% if images.4 is not empty %}
                                         {% if images.4 starts with 'https' %}
                                             <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.4 }}" alt="Cover">
@@ -109,10 +129,10 @@
                     </ul>
                 {% else %}
                     {# IN NO PARTICULAR ORDER #}
-                    <ul class="list-none font-light text-lg text-slate-200">
-                        <li class="font-normal mb-2">
+                    <ul class="list-none font-semibold text-lg text-slate-200">
+                        <li class="mb-2">
                             <div class="inline-flex flex-row">
-                                <div class="relative h-20 w-14 mr-1">
+                                <div class="relative h-20 w-14 md:h-40 md:w-[100px] lg:h-64 lg:w-40 mr-1.5">
                                     {% if images.0 is not empty %}
                                         {% if images.0 starts with 'https' %}
                                             <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.0 }}" alt="Cover">
@@ -128,9 +148,9 @@
                                 <div class="flex items-center">{{ top5.first }}</div>
                             </div>
                         </li>
-                        <li class="font-normal mb-2">
+                        <li class="mb-2">
                             <div class="inline-flex flex-row">
-                                <div class="relative h-20 w-14 mr-1">
+                                <div class="relative h-20 w-14 md:h-40 md:w-[100px] lg:h-64 lg:w-40 mr-1.5">
                                     {% if images.1 is not empty %}
                                         {% if images.1 starts with 'https' %}
                                             <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.1 }}" alt="Cover">
@@ -146,9 +166,9 @@
                                 <div class="flex items-center">{{ top5.second }}</div>
                             </div>
                         </li>
-                        <li class="font-normal mb-2">
+                        <li class="mb-2">
                             <div class="inline-flex flex-row">
-                                <div class="relative h-20 w-14 mr-1">
+                                <div class="relative h-20 w-14 md:h-40 md:w-[100px] lg:h-64 lg:w-40 mr-1.5">
                                     {% if images.2 is not empty %}
                                         {% if images.2 starts with 'https' %}
                                             <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.2 }}" alt="Cover">
@@ -164,9 +184,9 @@
                                 <div class="flex items-center">{{ top5.third }}</div>
                             </div>
                         </li>
-                        <li class="font-normal mb-2">
+                        <li class="mb-2">
                             <div class="inline-flex flex-row">
-                                <div class="relative h-20 w-14 mr-1">
+                                <div class="relative h-20 w-14 md:h-40 md:w-[100px] lg:h-64 lg:w-40 mr-1.5">
                                     {% if images.3 is not empty %}
                                         {% if images.3 starts with 'https' %}
                                             <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.3 }}" alt="Cover">
@@ -182,9 +202,9 @@
                                 <div class="flex items-center">{{ top5.fourth }}</div>
                             </div>
                         </li>
-                        <li class="font-normal mb-2">
+                        <li class="mb-2">
                             <div class="inline-flex flex-row">
-                                <div class="relative h-20 w-14 mr-1">
+                                <div class="relative h-20 w-14 md:h-40 md:w-[100px] lg:h-64 lg:w-40 mr-1.5">
                                     {% if images.4 is not empty %}
                                         {% if images.4 starts with 'https' %}
                                             <img class="absolute w-full h-full inset-0 object-cover" src="{{ images.4 }}" alt="Cover">

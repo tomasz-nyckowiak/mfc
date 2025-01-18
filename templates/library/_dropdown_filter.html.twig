@@ -1,6 +1,6 @@
 <div class="relative" data-te-dropdown-position="dropend">
     <button
-        class="inline-flex items-center text-xs uppercase leading-normal text-indigo-400 tracking-wide px-3 py-1 border-2 border-[#778899] rounded shadow-[3px_3px_15px_1px_#6366f1] transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600 hover:shadow-[3px_3px_15px_1px_#708090]"
+        class="inline-flex items-center text-xs 2xl:text-sm uppercase leading-normal text-indigo-400 tracking-wide px-3 py-1 border-2 border-[#778899] rounded shadow-[3px_3px_15px_1px_#6366f1] transition duration-150 ease-in-out hover:text-white hover:bg-gradient-to-r from-indigo-600 hover:shadow-[3px_3px_15px_1px_#708090]"
         type="button"
         id="dropdownFilter"
         data-te-dropdown-toggle-ref
@@ -59,14 +59,14 @@
         <li>
             {% if title is defined and chosenFilter == title %}
                 <a
-                    class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
+                    class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
                     href="{{ path('app_library_title_filter') }}"
                     data-te-dropdown-item-ref>
                     Title
                 </a>
             {% else %}
                 <a
-                    class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
+                    class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
                     href="{{ path('app_library_title_filter') }}"
                     data-te-dropdown-item-ref>
                     Title
@@ -75,19 +75,19 @@
         </li>
         <li>
             <div
-                class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-white active:no-underline disabled:pointer-events-none"
+                class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-white active:no-underline disabled:pointer-events-none"
                 >Title type:
                 <hr class="my-1 h-0 border border-t-0 border-solid border-[#031e49]">
                 {% if typeMovie is defined and chosenFilter == typeMovie %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_titletype_movie_filter') }}"
                         data-te-dropdown-item-ref>
                         Movie
                     </a>
                 {% else %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_titletype_movie_filter') }}"
                         data-te-dropdown-item-ref>
                         Movie
@@ -95,14 +95,14 @@
                 {% endif %}
                 {% if typeSeries is defined and chosenFilter == typeSeries %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_titletype_tvseries_filter') }}"
                         data-te-dropdown-item-ref>
                         Tv Series
                     </a>
                 {% else %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_titletype_tvseries_filter') }}"
                         data-te-dropdown-item-ref>
                         Tv Series
@@ -110,14 +110,14 @@
                 {% endif %}
                 {% if typeOther is defined and chosenFilter == typeOther %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_titletype_other_filter') }}"
                         data-te-dropdown-item-ref>
                         Other
                     </a>
                 {% else %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_titletype_other_filter') }}"
                         data-te-dropdown-item-ref>
                         Other
@@ -126,19 +126,19 @@
                 <hr class="my-1 h-0 border border-t-0 border-solid border-[#031e49]">
             </div>                
             <div 
-                class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-white active:no-underline disabled:pointer-events-none"
+                class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-white active:no-underline disabled:pointer-events-none"
                 >Rating:
                 <hr class="my-1 h-0 border border-t-0 border-solid border-[#031e49]">
                 {% if ratASC is defined and chosenFilter == ratASC %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_rating_asc_filter') }}"
                         data-te-dropdown-item-ref>
                         Ascending
                     </a>
                 {% else %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_rating_asc_filter') }}"
                         data-te-dropdown-item-ref>
                         Ascending
@@ -146,14 +146,14 @@
                 {% endif %}
                 {% if ratDESC is defined and chosenFilter == ratDESC %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_rating_desc_filter') }}"
                         data-te-dropdown-item-ref>
                         Descending
                     </a>
                 {% else %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_rating_desc_filter') }}"
                         data-te-dropdown-item-ref>
                         Descending
@@ -162,19 +162,19 @@
                 <hr class="my-1 h-0 border border-t-0 border-solid border-[#031e49]">
             </div>
             <div 
-                class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-white active:no-underline disabled:pointer-events-none"
+                class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-white active:no-underline disabled:pointer-events-none"
                 >IMDb Rating:
                 <hr class="my-1 h-0 border border-t-0 border-solid border-[#031e49]">
                 {% if imdbRatASC is defined and chosenFilter == imdbRatASC %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_imdbrating_asc_filter') }}"
                         data-te-dropdown-item-ref>
                         Ascending
                     </a>
                 {% else %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_imdbrating_asc_filter') }}"
                         data-te-dropdown-item-ref>
                         Ascending
@@ -182,14 +182,14 @@
                 {% endif %}
                 {% if imdbRatDESC is defined and chosenFilter == imdbRatDESC %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_imdbrating_desc_filter') }}"
                         data-te-dropdown-item-ref>
                         Descending
                     </a>
                 {% else %}
                     <a
-                        class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
+                        class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
                         href="{{ path('app_library_imdbrating_desc_filter') }}"
                         data-te-dropdown-item-ref>
                         Descending
@@ -201,14 +201,14 @@
         <li>
             {% if toWatch is defined and chosenFilter == toWatch %}
                 <a
-                    class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
+                    class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
                     href="{{ path('app_library_towatch_filter') }}"
                     data-te-dropdown-item-ref>
                     To Watch
                 </a>
             {% else %}
                 <a
-                    class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
+                    class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
                     href="{{ path('app_library_towatch_filter') }}"
                     data-te-dropdown-item-ref>
                     To Watch
@@ -218,14 +218,14 @@
         <li>
             {% if default is defined and chosenFilter == default %}
                 <a
-                    class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
+                    class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal bg-gradient-to-r from-indigo-600 text-[#031e49] hover:text-white active:no-underline disabled:pointer-events-none"
                     href="{{ path('app_library') }}"
                     data-te-dropdown-item-ref>
                     Default
                 </a>
             {% else %}
                 <a
-                    class="block w-full whitespace-nowrap px-4 py-2 text-sm font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
+                    class="block w-full whitespace-nowrap px-4 py-2 text-sm 2xl:text-lg font-normal hover:bg-gradient-to-r from-indigo-600 hover:text-[#031e49] active:no-underline disabled:pointer-events-none"
                     href="{{ path('app_library') }}"
                     data-te-dropdown-item-ref>
                     Default

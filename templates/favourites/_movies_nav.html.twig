@@ -1,5 +1,14 @@
 <div class="flex justify-center">
-    <div class="text-xl text-slate-200 mb-2">TOP 10 MOVIES</div>
+    <div class="text-xl md:text-2xl text-slate-200 mb-2">TOP 10 MOVIES</div>
+    {% if app.request.get('_route') != "app_favourites" %}
+        <div class="ml-1">
+            <a href="{{ path('app_favourites') }}" data-twe-toggle="tooltip" title="Back to Favourites!">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                </svg>
+            </a>
+        </div>
+    {% endif %}
 </div>    
 
 <div class="flex justify-center mt-2 mb-1">

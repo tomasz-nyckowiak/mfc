@@ -1,4 +1,8 @@
 {{ form_label(form.name, 'Username', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
-{{ form_widget(form.name, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}}) }}
+{% if errorMsg1 in errors or errorMsg2 in errors %}
+    {{ form_widget(form.name, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#af1e1e] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}}) }}
+{% else %}
+    {{ form_widget(form.name, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}}) }}
+{% endif %}
 {{ form_errors(form.name) }}
-<div class="text-sm font-medium">(*Your username must be at least 3 characters)</div>
+<div class="text-sm md:text-base font-medium">(*Your username must be at least 3 characters)</div>

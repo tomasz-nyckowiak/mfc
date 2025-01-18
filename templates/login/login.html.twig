@@ -7,10 +7,10 @@
 {% endblock %}
 
 {% block body %}
-    <div class="w-1/2 mx-auto">    
+    <div class="xl:w-1/2 mx-1.5 xl:mx-auto">    
         <div class="text-[#708090] rounded border-2 border-indigo-500/75 p-4">
             <form id="loginForm" action="{{ path('app_login') }}" method="POST">
-                <div>                    
+                <div class="md:text-lg">                    
                     <label class="block font-medium tracking-wide mb-0.5">Email</label>
                     {% if error is not null %}
                         {% if error.message == 'Bad credentials.' %}
@@ -42,8 +42,8 @@
                     {% endif %}
                 </div>
 
-                <div class="mt-4">
-                    <div class="flex justify-between">
+                <div class="mt-4 md:text-lg">
+                    <div class="flex justify-between md:text-lg">
                         <label class="font-medium tracking-wide mb-0.5">Password</label>
                         <a href="{{ path('app_forgot_password_request') }}" class="hover:text-indigo-500 hover:underline decoration-1">Forgot password?</a>
                     </div>
@@ -76,7 +76,7 @@
                         <button 
                             type="button"
                             id="togglePasswordOn"
-                            class="absolute text-slate-200 top-0 end-0 mt-2.5 mr-2">
+                            class="absolute text-slate-200 top-0 end-0 mt-2.5 md:mt-3 mr-2">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                                 <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                 <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clip-rule="evenodd" />
@@ -85,7 +85,7 @@
                         <button
                             type="button"
                             id="togglePasswordOff"
-                            class="hidden absolute text-slate-200 top-0 end-0 mt-2.5 mr-2">
+                            class="hidden absolute text-slate-200 top-0 end-0 mt-2.5 md:mt-3 mr-2">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                                 <path d="M3.53 2.47a.75.75 0 0 0-1.06 1.06l18 18a.75.75 0 1 0 1.06-1.06l-18-18ZM22.676 12.553a11.249 11.249 0 0 1-2.631 4.31l-3.099-3.099a5.25 5.25 0 0 0-6.71-6.71L7.759 4.577a11.217 11.217 0 0 1 4.242-.827c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113Z" />
                                 <path d="M15.75 12c0 .18-.013.357-.037.53l-4.244-4.243A3.75 3.75 0 0 1 15.75 12ZM12.53 15.713l-4.243-4.244a3.75 3.75 0 0 0 4.244 4.243Z" />
@@ -99,14 +99,14 @@
 
                 <div class="mt-10">
                     <button type="submit" 
-                        class="block w-full font-semibold text-slate-200 uppercase tracking-wider border-2 border-[#708090] hover:text-indigo-500 hover:border-indigo-500/75 rounded-md p-2">Login</button>
+                        class="block w-full md:text-lg font-semibold text-slate-200 uppercase tracking-wider md:tracking-widest border-2 border-[#708090] hover:text-indigo-500 hover:border-indigo-500/75 rounded-md p-2">Login</button>
                 </div>                
                 
                 <hr
                     class="my-10 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-slate-400 to-transparent opacity-75"
                 >
                 
-                <div class="text-slate-400 text-center">
+                <div class="md:text-xl text-slate-400 text-center">
                     Don't have an account? <a href="{{ path('app_register') }}" class="hover:text-indigo-500 hover:underline decoration-1">Register</a>
                 </div>
             </form>

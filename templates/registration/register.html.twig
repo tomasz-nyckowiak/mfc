@@ -44,46 +44,66 @@
         </div>
     {% endfor %}
 
-    <div class="w-1/2 mx-auto mb-10">
-        <div class="text-[#708090] rounded border-2 border-indigo-500/75 p-4">    
+    <div class="xl:w-1/2 mx-1.5 xl:mx-auto mb-10">
+        <div class="md:text-lg text-[#708090] rounded border-2 border-indigo-500/75 p-4">    
             {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
-                <h1 class="text-3xl font-normal leading-tight mb-4">Create account</h1>
+                {% set errorMsg1 = "Please enter a username" %}
+                {% set errorMsg2 = "Your username must be at least 3 characters" %}
+                {% set errorMsg3 = "Please enter your email" %}
+                {% set errorMsg4 = "Please enter a valid email address" %}                
+                {% set errorMsg5 = "Please enter a password" %}
+                {% set errorMsg6 = "Your password should be at least 8 characters" %}
+                {% set errorMsg7 = "The password fields must match" %}
+                {% set errorMsg8 = "You should agree to our terms" %}
+                
+                <h1 class="text-xl md:text-3xl font-normal leading-tight mb-4">Create account</h1>
 
                 <div class="mb-4">
                     {{ include('/profile/_profile_form.html.twig', { form: registrationForm.userProfile }) }}
                 </div>
-
+                
                 <div>
                     {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
-                    {{ form_widget(registrationForm.email, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                    {% if errorMsg3 in errors or errorMsg4 in errors %}
+                        {{ form_widget(registrationForm.email, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#af1e1e] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                    {% else %}
+                        {{ form_widget(registrationForm.email, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                    {% endif %}
                     {{ form_errors(registrationForm.email) }}
                 </div>
 
                 <div class="grid grid-cols-1 gap-4">
                     <div>
                         {{ form_label(registrationForm.plainPassword.first, 'Password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
-                        {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                        {% if errorMsg5 in errors or errorMsg6 in errors or errorMsg7 in errors %}
+                            {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#af1e1e] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                        {% else %}
+                            {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                        {% endif %}                        
                         {{ form_errors(registrationForm.plainPassword.first) }}
-                        <div class="text-sm font-medium">(*Passwords must be at least 8 characters)</div>
+                        <div class="text-sm md:text-base font-medium">(*Passwords must be at least 8 characters)</div>
                     </div>
                     
                     <div>
                         {{ form_label(registrationForm.plainPassword.second, 'Re-enter password', {'label_attr': {'class': 'block font-medium text-[#708090] tracking-wide mb-0.5'}}) }}
-                        {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                        {% if errorMsg7 in errors %}
+                            {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#af1e1e] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                        {% else %}
+                            {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'block w-full text-slate-200 rounded-md border-2 border-[#708090] bg-gradient-to-r from-indigo-700 to-indigo-400 outline-none focus:border-slate-300 hover:border-slate-400 p-2 mt-1 mb-2'}})}}
+                        {% endif %}                        
                         {{ form_errors(registrationForm.plainPassword.second) }}
                     </div>
                 </div>
                 
-                <div class="flex items-center mt-4 mb-4">
+                <div class="flex items-center mt-4 mb-4">                    
                     {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'h-4 w-4 accent-indigo-500 mr-1 hover:cursor-pointer hover:shadow-[4px_4px_8px_1px_#94a3b8]'}}) }}
-                    {{ form_label(registrationForm.agreeTerms, 'Agree to terms', {'label_attr': {'class': 'font-medium text-[#708090] tracking-wide ml-1 hover:underline hover:cursor-pointer'}}) }}
-                    
+                    {{ form_label(registrationForm.agreeTerms, 'Agree to terms', {'label_attr': {'class': 'font-medium text-[#708090] tracking-wide ml-1 hover:underline hover:cursor-pointer'}}) }}                    
                 </div>
                 <div>{{ form_errors(registrationForm.agreeTerms) }}</div>
 
                 <div class="mt-10">
                     <button type="submit" 
-                        class="block w-full font-semibold text-slate-200 uppercase tracking-wider border-2 border-[#708090] hover:text-indigo-500 hover:border-indigo-500/75 rounded-md p-2">Register</button>
+                        class="block w-full md:text-lg font-semibold text-slate-200 uppercase tracking-wider md:tracking-widest border-2 border-[#708090] hover:text-indigo-500 hover:border-indigo-500/75 rounded-md p-2">Register</button>
                 </div>
             {{ form_end(registrationForm) }}
 
@@ -91,7 +111,7 @@
                 class="my-10 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-slate-400 to-transparent opacity-75"
             >
             
-            <div class="text-slate-400 text-center">
+            <div class="md:text-xl text-slate-400 text-center">
                 Already have an account? <a href="{{ path('app_login') }}" class="hover:text-indigo-500 hover:underline decoration-1">Log in</a>
             </div>
         </div>

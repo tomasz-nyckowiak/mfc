@@ -42,6 +42,9 @@ class RegistrationController extends AbstractController
             $form = $this->createForm(RegistrationFormType::class, $user);
             $form->handleRequest($request);
 
+            $formIsValid = true;
+            $errors = [];
+
             if ($form->isSubmitted() && $form->isValid()) {
                 //Encode the plain password
                 $user->setPassword(
@@ -67,9 +70,18 @@ class RegistrationController extends AbstractController
                 );
 
                 return $this->redirectToRoute('app_register_success');
+            } else {
+                $formIsValid = false;                
+
+                foreach ($form->getErrors(true) as $error) {
+                    $msg = $error->getMessage();
+                    $errors[] = $msg;
+                }
             }
 
             return $this->render('registration/register.html.twig', [
+                'formIsValid' => $formIsValid,
+                'errors' => $errors,
                 'registrationForm' => $form->createView()
             ]);
         }

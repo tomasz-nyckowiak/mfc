@@ -3,9 +3,9 @@
 {% block title %}MFC Favourites{% endblock %}
 
 {% block body %}
-    <div>
-        <div class="text-lg text-slate-200">Here you can manage your TOP 10 (for movies) and TOP 5 (for tv series) lists!</div>
-        <div class="font-medium text-[#708090] tracking-wide">(You can choose only movies and tv series that are <span class="underline">already</span> in your library!)</div>
+    <div class="ml-1.5 md:ml-0">
+        <div class="text-base md:text-lg text-slate-200">Here you can manage your TOP 10 (for movies) and TOP 5 (for TV series) lists!</div>
+        <div class="text-sm sm:text-base md:text-lg text-[#708090] md:tracking-wide">(You can choose only movies and TV series that are <span class="underline">already</span> in your library!)</div>
     </div>
     
     {% for message in app.flashes('delete') %}                                                       

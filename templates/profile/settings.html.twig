@@ -6,7 +6,7 @@
     {{ include('profile/_flash_message.html.twig') }}
     
     <div class="flex w-full items-center mb-5">
-        <div>
+        <div class="ml-1.5">
             {% if form1IsSubmitted == true %}
                 {% if form1IsValid == true %}
                     <img class="" src="{{ asset('img/uploads/' ~ userProfile.imageFileName) }}" height="100" width="100">
@@ -25,8 +25,8 @@
                 {% endif %}
             {% endif %}
         </div>
-        <div class="ml-2">
-            <div class="text-xl font-bold">
+        <div class="text-slate-200 ml-2">
+            <div class="text-lg md:text-xl font-bold">
                 {% if form1IsSubmitted == true %}
                     {% if form1IsValid == true %}
                         {{ userProfile.name }}
@@ -37,7 +37,7 @@
                     {{ userProfile.name }}
                 {% endif %}
             </div>  
-            <div class="text-lg">
+            <div class="text-base md:text-lg">
                 {% if form1IsSubmitted == true %}
                     {% if form1IsValid == true %}
                         {{ userProfile.websiteUrl }}
@@ -48,11 +48,13 @@
                     {{ userProfile.websiteUrl }}
                 {% endif %}
             </div>
-            <div class="text-sm">MFC member since {{ userProfile.memberSince }}</div>
+            <div class="text-sm md:text-base">MFC member since {{ userProfile.memberSince }}</div>
         </div>        
     </div>
     
-    <div class="w-1/2 mx-auto">
-        {{ include('profile/_accordion_settings.html.twig') }}
-    </div>    
+    <div class="flex justify-center">
+        <div class="w-full sm:w-9/12 xl:w-1/2 mx-1.5 md:mx-auto">
+            {{ include('profile/_accordion_settings.html.twig') }}
+        </div>
+    </div>  
 {% endblock %}

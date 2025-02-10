@@ -22,10 +22,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     const loginForm = document.getElementById('loginForm');
-    
-    // loginForm.addEventListener('submit', function(event) {
-    //     event.preventDefault();
-    //     loginForm.reset(); //Reset the form
-    //     //alert('Form submitted');
-    // });
 });

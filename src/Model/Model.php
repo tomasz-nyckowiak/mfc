@@ -4,7 +4,6 @@ namespace App\Model;
 
 use App\Model\Auxiliary;
 use App\Model\Validation;
-use Symfony\Component\Validator\Constraints\Length;
 
 class Model
 {    
@@ -18,11 +17,6 @@ class Model
                 array_push($titles, $baseInfo['results'][$i]);
             }
         }
-
-        // if (empty($titles)) {
-        //     $lessPopularTitles = self::extractingLessPopularTitles($baseInfo);
-        //     return $lessPopularTitles;
-        // }
         
         return $titles;
     }

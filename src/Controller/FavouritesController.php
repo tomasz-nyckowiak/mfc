@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Loader\Configurator\serializer;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class FavouritesController extends AbstractController
@@ -307,18 +306,12 @@ class FavouritesController extends AbstractController
             $titlesWithImages = $titles->findTVSeriesByUserIdThenReturnArray($userId);
             
             $imagesForTop5 = Favourites::managingFavouriteSeries($top5series, $titlesWithImages);
-            //dd($imagesForTop10);
+            
             return $this->render('favourites/favourite_series_show.html.twig', [
                 'top5' => $top5series,
                 'images' => $imagesForTop5,
                 'isTop5exists' => $isTop5exists
-            ]);
-            // $data = $favourites->findby(['user' => $userId]);
-            
-            // return $this->render('favourites/favourite_series_show.html.twig', [
-            //     'data' => $data,
-            //     'isTop5exists' => $isTop5exists
-            // ]);            
+            ]);           
         } else {
             $isTop5exists = false;
 
@@ -391,12 +384,6 @@ class FavouritesController extends AbstractController
                     'images' => $imagesForTop5,
                     'isTop5exists' => $isTop5exists
             ]);
-            // $data = $favourites->findby(['user' => $userId]);       
-
-            // return $this->render('favourites/favourite_series_show.html.twig', [
-            //         'data' => $data,
-            //         'isTop5exists' => $isTop5exists
-            // ]);
         } else {
             $isTop5exists = false;
 

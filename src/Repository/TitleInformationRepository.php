@@ -5,8 +5,6 @@ namespace App\Repository;
 use App\Entity\TitleInformation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use mysqli;
-use Symfony\Component\VarDumper\Caster\MysqliCaster;
 
 /**
  * @extends ServiceEntityRepository<TitleInformation>

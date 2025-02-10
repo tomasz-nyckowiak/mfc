@@ -222,8 +222,7 @@ class ApiController extends AbstractController
 
         $input = $service->preparingUserInput($title);
 
-        //Preparing URLs
-        //$url = $service->preparingUrlForSearchRequestWithStartYearAndEndYear($input, $startYear, $endYear);                
+        //Preparing URLs                
         //MOVIES
         $url = $service->preparingUrlForSearchRequestWithStartYearAndEndYearRequestMovies($input, $startYear, $endYear);                
         $response = [];

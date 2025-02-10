@@ -8,11 +8,9 @@ use App\Model\AddTitle;
 use App\Model\EditTitle;
 use App\Service\Service;
 use App\Entity\TitleInformation;
-use App\Form\TitleInformationType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\FavouriteMoviesRepository;
 use App\Repository\FavouriteSeriesRepository;
-use Symfony\Component\HttpFoundation\Request;
 use App\Repository\TitleInformationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,7 +29,6 @@ class LibraryController extends AbstractController
         $userId = $currentUser->getId();
         
         $data = $titles->findby(['user' => $userId]);
-        //dd($data);
                 
         return $this->render('library/default_list.html.twig', [
                 'data' => $data,
@@ -44,7 +41,6 @@ class LibraryController extends AbstractController
     {        
         /** @var User $currentUser */
         $currentUser = $this->getUser();
-        $userId = $currentUser->getId();
 
         $service = new Service();
         $model = new Model();
@@ -72,7 +68,7 @@ class LibraryController extends AbstractController
 
         //Merging all data arrays into one
         $data = array_merge($baseInfo, $mainCast, $creators);
-        //dd($data);
+        
         $title = new TitleInformation();
 
         $title->setUser($currentUser);
@@ -141,28 +137,8 @@ class LibraryController extends AbstractController
                 $title->setWriter($writersAsString);
             } else $title->setWriter($data['writers'][0]);            
         }
-        
-        $userRating = null;
 
         $message = $data['originalTitle'];
-
-        // $result = $titles->checkIfTitleAlreadyExistInLibraryForCurrentUser($userId, $data['originalTitle'], $data['titleType']);
-        
-        // if (!$result) {
-        //     $this->addFlash('success', $message);
-        //     $titles->add($title, true);
-        //     $nowTitleIsInLibrary = true;
-
-        //     return $this->render('title/details.html.twig', [
-        //         'data' => $data,
-        //         'alreadyExist' => $nowTitleIsInLibrary,
-        //         'userRating' => $userRating
-        //     ]);
-        // } else {
-        //     $this->addFlash('fail', $message);
-            
-        //     return $this->redirectToRoute('app_add_title_manually_fail');
-        // }
         
         $this->addFlash('success', $message);
         
@@ -171,16 +147,9 @@ class LibraryController extends AbstractController
         return $this->redirectToRoute('app_details', [
             'id' => $id
         ]);
-        
-        // $nowTitleIsInLibrary = true;
-        
-        // return $this->render('title/details.html.twig', [
-        //     'data' => $data,
-        //     'alreadyExist' => $nowTitleIsInLibrary,
-        //     'userRating' => $userRating
-        // ]);
     }
 
+    //ADD TITLE MANUALLY
     #[Route('/library/addtitle', name: 'app_form_add_title_manually')]
     public function addTitleToLibraryManually(): Response
     {
@@ -271,8 +240,7 @@ class LibraryController extends AbstractController
         $userId = $currentUser->getId();
         
         $editTitle = new EditTitle();
-        $allData = $editTitle->editTitle();
-        //dd($allData);        
+        $allData = $editTitle->editTitle();        
 
         $title = $entityManager->getRepository(TitleInformation::class)->find($id);
         
@@ -340,9 +308,7 @@ class LibraryController extends AbstractController
         $userId = $currentUser->getId();
         
         $result = $titles->findOneBy(['id' => $id]);
-        $titleToRemove = $result->getOriginalTitle();        
-        
-        //dd($image);
+        $titleToRemove = $result->getOriginalTitle();
 
         $message = "Title " . $titleToRemove . " has been successfully removed from your library!";
 
@@ -391,8 +357,7 @@ class LibraryController extends AbstractController
             if (!str_starts_with($image, 'https')) {
                 unlink("$imageDir/$image");
             }
-        }
-        
+        }        
 
         $this->addFlash('delete', $message);
         

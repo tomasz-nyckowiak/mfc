@@ -32,8 +32,8 @@ class UserChecker implements UserCheckerInterface
    */
   public function checkPostAuth(UserInterface $user): void
   {
-    if (!$user->isVerified()) {  
-      throw new CustomUserMessageAccountStatusException('Your account was not activated yet! Please confirm your email!');
-    }
+    // if (!$user->isVerified()) {  
+    //   throw new CustomUserMessageAccountStatusException('Your account was not activated yet! Please confirm your email!');
+    // }
   }
 }

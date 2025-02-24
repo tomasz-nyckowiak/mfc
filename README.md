@@ -1,2 +1,0 @@
-# mfc
-Final course aplication

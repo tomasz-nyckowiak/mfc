@@ -1,8 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Find - MFC{% endblock %}
+{% block title %}Search - MFC{% endblock %}
 
 {% block body %}
-    <div>{{ include('api/_search_form.html.twig') }}</div>    
-    <div class="text-slate-200 mt-2">Search title by typing a word or phrase in the search box or add the title manually <a href="{{ path('app_form_add_title_manually')}}" class="hover:text-indigo-500 hover:underline decoration-1">here</a>.</div>
+    <div>{{ include('api/_search_form.html.twig') }}</div>
+    <div class="text-xl md:text-2xl lg:text-3xl ml-1.5 md:ml-0">No result!</div>    
+    <div class="font-medium text-[#708090] text-xs md:text-sm lg:text-base tracking-normal lg:tracking-wide ml-1.5 md:ml-0 my-2">Double check spelling, or try adding more specific searching filter or add the title manually <a href="{{ path('app_form_add_title_manually')}}" class="hover:text-indigo-500 hover:underline decoration-1">here</a>.</div>
 {% endblock %}

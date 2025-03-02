@@ -387,42 +387,124 @@ class ApiController extends AbstractController
     public function findTitle($title): Response 
     {
         $service = new Service();
-        $model = new Model();        
+        $model = new Model();
+        
+        $isThereAreMovies = true;
+        $isThereAreTvSeries = true;        
 
-        $input = $service->preparingUserInput($title);        
+        $input = $service->preparingUserInput($title);
         
         //MOVIES
         $url = $service->preparingUrlForSearchRequestMovies($input);                
-        $response = [];
-        $response = $service->search($url);        
+        $responseMovies = [];
+        $responseMovies = $service->search($url);        
         
-        //Drawing out only most popular titles
-        $popularTitlesForMovies = $model->extractingMostPopularTitles($response);
-        
-        //Extracting data
-        $popularTitlesMoviesInfo = [];
-        $popularTitlesMoviesInfo = $model->extractingMainData($popularTitlesForMovies);        
-        
+        if ($model->checkingResponseOutcome($responseMovies) == false) {$isThereAreMovies = false;}
+
         //TV SERIES
         $url = $service->preparingUrlForSearchRequestTvSeries($input);                
-        $response = [];
-        $response = $service->search($url);
+        $responseTvSeries = [];
+        $responseTvSeries = $service->search($url);
+
+        if ($model->checkingResponseOutcome($responseTvSeries) == false) {$isThereAreTvSeries = false;}
+        
+        if (!$isThereAreMovies) {
+            if (!$isThereAreTvSeries) {
+                return $this->render('api/no_results.html.twig');
+            }
+
+            $popularTitlesForTvSeries = $model->extractingMostPopularTitles($responseTvSeries);
+            $otherTitlesForTvSeries = $model->extractingLessPopularTitles($responseTvSeries);
+
+            if ($popularTitlesForTvSeries != null) {
+                //Extracting data
+                $popularTitlesTvSeriesInfo = [];
+                $popularTitlesTvSeriesInfo = $model->extractingMainData($popularTitlesForTvSeries);
+                $otherTitlesTvSeriesInfo = [];
+                $otherTitlesTvSeriesInfo = $model->extractingMainData($otherTitlesForTvSeries);                
+    
+                //Sorting the array
+                $titlesByPopularity = $model->sortingTitlesByPopularity($popularTitlesTvSeriesInfo);
+    
+                return $this->render('api/search.html.twig', [            
+                    'title' => $title,
+                    'popularTitlesData' => $titlesByPopularity,
+                    'lessPopularTitlesData' => $otherTitlesTvSeriesInfo
+                ]);
+                
+            } else {
+                
+                return $this->render('api/search.html.twig', [            
+                    'title' => $title,
+                    'lessPopularTitlesData' => $otherTitlesForTvSeries
+                ]);
+            }            
+        }
         
         //Drawing out only most popular titles
-        $popularTitlesForTvSeries = $model->extractingMostPopularTitles($response);        
-
+        $popularTitlesForMovies = $model->extractingMostPopularTitles($responseMovies);                
+                
         //Extracting data
-        $popularTitlesTvSeriesInfo = [];
-        $popularTitlesTvSeriesInfo = $model->extractingMainData($popularTitlesForTvSeries);        
+        $popularTitlesMoviesInfo = [];
+        $popularTitlesMoviesInfo = $model->extractingMainData($popularTitlesForMovies);
 
-        //Merging popular movies and series into single array, then sorting the array
-        $allDataPopularTitles = array_merge($popularTitlesMoviesInfo, $popularTitlesTvSeriesInfo);
-        $titlesByPopularity = $model->sortingTitlesByPopularity($allDataPopularTitles);
+        //Drawing out less popular titles
+        $lessPopularTitlesForMovies= $model->extractingLessPopularTitles($responseMovies);
+        
+        //Extracting data
+        $otherTitlesMoviesInfo = [];
+        $otherTitlesMoviesInfo = $model->extractingMainData($lessPopularTitlesForMovies);
+        
+        if (!$isThereAreTvSeries) {
+            //Sorting the array
+            $movieTitlesByPopularity = $model->sortingTitlesByPopularity($popularTitlesMoviesInfo);
 
-        return $this->render('api/search.html.twig', [            
-            'title' => $title,
-            'popularTitlesData' => $titlesByPopularity
-        ]);        
+            return $this->render('api/search.html.twig', [            
+                'title' => $title,
+                'popularTitlesData' => $movieTitlesByPopularity,
+                'lessPopularTitlesData' => $otherTitlesMoviesInfo
+            ]);        
+        }
+
+        $popularTitlesForTvSeries = $model->extractingMostPopularTitles($responseTvSeries);
+        $otherTitlesForTvSeries = $model->extractingLessPopularTitles($responseTvSeries);
+        
+        if ($popularTitlesForTvSeries != null) {
+            //Extracting data
+            $popularTitlesTvSeriesInfo = [];
+            $popularTitlesTvSeriesInfo = $model->extractingMainData($popularTitlesForTvSeries);
+            $otherTitlesTvSeriesInfo = [];
+            $otherTitlesTvSeriesInfo = $model->extractingMainData($otherTitlesForTvSeries);                
+
+            //Merging popular movies and series into single array, then sorting the array
+            $allDataPopularTitles = array_merge($popularTitlesMoviesInfo, $popularTitlesTvSeriesInfo);
+            $titlesByPopularity = $model->sortingTitlesByPopularity($allDataPopularTitles);
+
+            //Merging less popular movies and series into single array
+            $allDataLessPopularTitles = array_merge($otherTitlesMoviesInfo, $otherTitlesTvSeriesInfo);
+
+            return $this->render('api/search.html.twig', [            
+                'title' => $title,
+                'popularTitlesData' => $titlesByPopularity,
+                'lessPopularTitlesData' => $allDataLessPopularTitles
+            ]);
+            
+        } else {
+            $otherTitlesTvSeriesInfo = [];
+            $otherTitlesTvSeriesInfo = $model->extractingMainData($otherTitlesForTvSeries);
+
+            //Merging less popular movies and series into single array
+            $allDataLessPopularTitles = array_merge($otherTitlesMoviesInfo, $otherTitlesTvSeriesInfo);
+
+            //Sorting the movies by popularity
+            $movieTitlesByPopularity = $model->sortingTitlesByPopularity($popularTitlesMoviesInfo);
+            
+            return $this->render('api/search.html.twig', [            
+                'title' => $title,
+                'popularTitlesData' => $movieTitlesByPopularity,
+                'lessPopularTitlesData' => $allDataLessPopularTitles
+            ]);
+        }            
     }
 
     #[Route('/title/{id}', name: 'app_details')]

@@ -223,6 +223,19 @@ class Service
         return $finalUrl;     
     }
 
+    public function preparingUrlForSearchRequestOnlyTitle(string $userInput) {
+        $url = self::BASIC_URL;
+        $endPoint = "/titles/search/title/";
+        $exact = "?" . self::EXACT;
+        $info = "&" . self::INFO . "base_info";
+        $titleType = "&" . self::TITLE_TYPE . "movie";        
+        $limit = "&" . self::LIMIT . "30";
+
+        $finalUrl = $url . $endPoint . $userInput . $exact . $info . $titleType . $limit;
+        
+        return $finalUrl;     
+    }
+
     //DETAILED DESCRIPTION
     public function creatingBasicUrlWithoutOptionalInfoForSingleEntry(string $id) {
         $url = self::BASIC_URL;

@@ -7,6 +7,16 @@ use App\Model\Validation;
 
 class Model
 {    
+    public function checkingResponseOutcome(array $baseInfo) {
+        $isThereEntries = true;
+
+        if ($baseInfo['entries'] == 0) {
+            $isThereEntries = false;
+        }
+        
+        return $isThereEntries;
+    }
+    
     public function extractingMostPopularTitles(array $baseInfo) {
         $titles = [];
         

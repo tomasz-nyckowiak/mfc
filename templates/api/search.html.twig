@@ -23,14 +23,15 @@
                 {% endfor %}       
             </ul>                       
         {% else %}
-            No result!
+            <div class="text-xl md:text-2xl lg:text-3xl ml-1.5 md:ml-0">No result!</div>
         {% endif %}
         
         {% if lessPopularTitlesData is defined %}
             {% if lessPopularTitlesData|length > 0 %}            
                 <div>
                     <hr class="my-3 h-0 border border-t-0 border-solid border-neutral-700 opacity-25 dark:border-neutral-200">
-                </div>                     
+                </div>
+                <h4 class="text-base md:text-lg lg:text-xl ml-1.5 md:ml-0 my-2">Titles (other)</h4>                    
                 <ul>
                     {% for value in lessPopularTitlesData %}
                         {{ include('api/_search_result.html.twig') }}
@@ -38,7 +39,7 @@
                 </ul>                       
             {% else %}
                 {% if popularTitlesData|length > 0 %}
-                    No result!
+                    <div class="text-xl md:text-2xl lg:text-3xl ml-1.5 md:ml-0">No result!</div>
                 {% endif %}
             {% endif %}
         {% endif %}
